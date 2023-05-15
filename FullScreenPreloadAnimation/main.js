@@ -66,6 +66,17 @@ const PreloaderFullScreen = () => {
           }
         };
         const loadingInterval = setInterval(loadingAnimation, 1);
+
+        // animate percentage out
+        let numberAlpha = 1;
+        const numberAnimation = () => {
+          numberAlpha -= 0.01;
+          progressNumber.style.opacity = numberAlpha;
+          if (numberAlpha <= 0) {
+            clearInterval(numberInterval);
+          }
+        };
+        const numberInterval = setInterval(numberAnimation, 1);
       }
     };
 
