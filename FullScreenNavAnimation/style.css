@@ -37,16 +37,16 @@ header {
   background-color: rgba(0, 0, 0, 0.5);
   position: relative;
   left: 0;
-  /* transform: translate(-100%); */
+  transform: translate(-100%);
 }
 
 .nav--in {
   transform: translate(0);
-  /* animation: nav-left-in 1s ease; */
+  animation: nav-left-in 1s ease;
 }
 
 .nav--out {
-  /* animation: nav-left-out 2s ease; */
+  animation: nav-left-out 2s ease;
 }
 
 .nav__side {
@@ -57,30 +57,30 @@ header {
   background-color: #121212;
   position: relative;
   left: 0;
-  /* transform: translate(-100%); */
+  transform: translate(-100%);
 }
 
 .nav__side--in {
   transform: translate(0);
-  /* animation: nav-left-in 1s ease; */
+  animation: nav-left-in 1s ease;
 }
 
 .nav__side--out {
-  /* animation: nav-side-left-out 1s ease; */
+  animation: nav-side-left-out 1s ease;
 }
 
 .nav__content {
   padding-left: 10vw;
-  /* opacity: 0; */
+  opacity: 0;
 }
 
 .nav__content--in {
   opacity: 1;
-  /* animation: nav-in 1.2s ease; */
+  animation: nav-in 1.2s ease;
 }
 
 .nav__content--out {
-  /* animation: nav-out 0.25s ease; */
+  animation: nav-out 0.25s ease;
 }
 
 .nav__list {
@@ -112,16 +112,16 @@ header {
   background-color: rgba(0, 0, 0, 0.5);
   position: relative;
   right: 0;
-  /* transform: translate(100%); */
+  transform: translate(100%);
 }
 
 .navCom--in {
   transform: translate(0);
-  /* animation: nav-right-in 1s ease; */
+  animation: nav-right-in 1s ease;
 }
 
 .navCom--out {
-  /* animation: nav-right-out 2s ease; */
+  animation: nav-right-out 2s ease;
 }
 
 .navCom__side {
@@ -133,16 +133,16 @@ header {
   background-color: #121212;
   position: relative;
   right: 0;
-  /* transform: translate(100%); */
+  transform: translate(100%);
 }
 
 .navCom__side--in {
   transform: translate(0);
-  /* animation: nav-right-in 1s ease; */
+  animation: nav-right-in 1s ease;
 }
 
 .navCom__side--out {
-  /* animation: nav-side-right-out 1s ease; */
+  animation: nav-side-right-out 1s ease;
 }
 
 .nav__info {
@@ -150,17 +150,17 @@ header {
   flex-direction: column;
   font-size: 1.2rem;
   row-gap: 0.5rem;
-  /* opacity: 0; */
+  opacity: 0;
   font-family: monospace;
 }
 
 .nav__info--in {
   opacity: 1;
-  /* animation: nav-in 1.2s ease; */
+  animation: nav-in 1.2s ease;
 }
 
 .nav__info--out {
-  /* animation: nav-out 0.5s ease; */
+  animation: nav-out 0.5s ease;
 }
 
 .nav__info a {
