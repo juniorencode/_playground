@@ -15,6 +15,17 @@
   background-color: hsl(30, 50%, 75%);
 }
 
+.product::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: hsl(30, 50%, 75%);
+  mix-blend-mode: hue;
+}
+
 .product img {
   max-width: 100%;
   min-width: 20rem;
@@ -66,4 +77,20 @@
 #color-4:checked ~ .product-nav > label:nth-of-type(4),
 #color-5:checked ~ .product-nav > label:nth-of-type(5) {
   transform: scale(1.3);
+}
+
+#color-1:checked ~ .product-nav > label:nth-of-type(1) {
+  background-color: hsl(30, 70%, 45%);
+}
+#color-2:checked ~ .product-nav > label:nth-of-type(2) {
+  background-color: hsl(120, 70%, 45%);
+}
+#color-3:checked ~ .product-nav > label:nth-of-type(3) {
+  background-color: hsl(210, 70%, 45%);
+}
+#color-4:checked ~ .product-nav > label:nth-of-type(4) {
+  background-color: hsl(300, 70%, 45%);
+}
+#color-5:checked ~ .product-nav > label:nth-of-type(5) {
+  background-color: hsl(0, 70%, 45%);
 }
