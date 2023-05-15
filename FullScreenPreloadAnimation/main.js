@@ -51,6 +51,21 @@ const PreloaderFullScreen = () => {
           }
         };
         const titleInterval = setInterval(titleAnimation, 1);
+
+        // animate welcome out
+        let loadingAlpha = 1;
+        let loadingY = 0;
+        const posLoading = progressLoading.getBoundingClientRect().top;
+        const loadingAnimation = () => {
+          loadingAlpha -= 0.01;
+          loadingY -= 1;
+          progressLoading.style.opacity = loadingAlpha;
+          progressLoading.style.top = posLoading - loadingY + 'px';
+          if (loadingAlpha <= 0 && loadingY <= -100) {
+            clearInterval(loadingInterval);
+          }
+        };
+        const loadingInterval = setInterval(loadingAnimation, 1);
       }
     };
 
