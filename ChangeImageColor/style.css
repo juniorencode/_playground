@@ -1,0 +1,69 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+  width: 100vw;
+  padding: 0 2.5rem;
+  background-color: hsl(30, 50%, 75%);
+}
+
+.product img {
+  max-width: 100%;
+  min-width: 20rem;
+}
+
+.product-nav {
+  position: relative;
+}
+
+.product-nav label {
+  display: inline-block;
+  width: 5vmin;
+  height: 5vmin;
+  background-color: hsl(30, 50%, 75%);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0 0.5em #fff, 0.5em 0.5em 1em -0.15em rgba(0, 0, 0, 0.25);
+  transition: 200ms all ease-in-out;
+}
+
+.product-nav label + label {
+  margin-left: 2.5em;
+}
+
+.product-nav label:nth-of-type(1),
+#color-1:checked ~ .product::after {
+  background-color: hsl(30, 50%, 75%);
+}
+.product-nav label:nth-of-type(2),
+#color-2:checked ~ .product::after {
+  background-color: hsl(120, 50%, 75%);
+}
+.product-nav label:nth-of-type(3),
+#color-3:checked ~ .product::after {
+  background-color: hsl(210, 50%, 75%);
+}
+.product-nav label:nth-of-type(4),
+#color-4:checked ~ .product::after {
+  background-color: hsl(300, 50%, 75%);
+}
+.product-nav label:nth-of-type(5),
+#color-5:checked ~ .product::after {
+  background-color: hsl(0, 50%, 75%);
+}
+
+#color-1:checked ~ .product-nav > label:nth-of-type(1),
+#color-2:checked ~ .product-nav > label:nth-of-type(2),
+#color-3:checked ~ .product-nav > label:nth-of-type(3),
+#color-4:checked ~ .product-nav > label:nth-of-type(4),
+#color-5:checked ~ .product-nav > label:nth-of-type(5) {
+  transform: scale(1.3);
+}
