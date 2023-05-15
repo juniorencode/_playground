@@ -32,4 +32,22 @@ class ImageDominantColor {
     this.data = this.ctx.getImageData(0, 0, this.width, this.height);
     this.length = this.data.data.length;
   }
+
+  extractColor() {
+    // number of channels is 4
+    let i = -4;
+    let count = this.length / (this.ratio * 4); // total number of information used
+
+    // sum of numbers per channel
+    while ((i += this.ratio * 4) < this.length) {
+      this.color.r += this.data.data[i];
+      this.color.g += this.data.data[i + 1];
+      this.color.b += this.data.data[i + 2];
+    }
+
+    // averaging the values per channel
+    this.color.r = Math.floor(this.color.r / count);
+    this.color.g = Math.floor(this.color.g / count);
+    this.color.b = Math.floor(this.color.b / count);
+  }
 }
