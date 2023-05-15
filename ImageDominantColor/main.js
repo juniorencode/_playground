@@ -24,6 +24,8 @@ class ImageDominantColor {
     this.height = this.canvas.height = this.image.height;
 
     this.extractData();
+    this.extractColor();
+    this.paintBox();
   }
 
   extractData() {
