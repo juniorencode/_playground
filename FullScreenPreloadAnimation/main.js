@@ -16,16 +16,17 @@ const PreloaderFullScreen = () => {
 
     const updateAnimation = () => {
       val += 0.5;
-      preloaderProgress.style.width = val + '%';
+      preloaderProgress.style.width = val + '%'; // progress bar
       let f =
         (preloaderProgress.clientWidth /
           preloaderProgress.parentNode.clientWidth) *
-        100;
+        100; // percentage
       progressNumber.innerText = parseInt(f);
 
       if (val === 100) {
         clearInterval(preloadInterval);
 
+        // animate progress bar
         let bar = 0;
         const barAnimation = () => {
           bar += 0.5;
@@ -35,6 +36,21 @@ const PreloaderFullScreen = () => {
           }
         };
         const barInterval = setInterval(barAnimation, 1);
+
+        // animate title
+        let titleAlpha = 1;
+        let titleY = 0;
+        const posTitle = progressTitle.getBoundingClientRect().top;
+        const titleAnimation = () => {
+          titleAlpha -= 0.01;
+          titleY -= 1;
+          progressTitle.style.opacity = titleAlpha;
+          progressTitle.style.top = posTitle + titleY + 'px';
+          if (titleAlpha <= 0 && titleY <= -100) {
+            clearInterval(titleInterval);
+          }
+        };
+        const titleInterval = setInterval(titleAnimation, 1);
       }
     };
 
