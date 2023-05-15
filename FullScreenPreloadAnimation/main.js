@@ -77,6 +77,37 @@ const PreloaderFullScreen = () => {
           }
         };
         const numberInterval = setInterval(numberAnimation, 1);
+
+        // animate top out
+        setTimeout(() => {
+          let beforeY = 0;
+          const beforeAnimation = () => {
+            beforeY -= 0.5;
+            preloaderBefore.style.top = beforeY + '%';
+            if (beforeY <= -100) {
+              clearInterval(beforeInterval);
+            }
+          };
+          const beforeInterval = setInterval(beforeAnimation, 1);
+        }, 700);
+
+        // animate bottom out
+        setTimeout(() => {
+          let afterY = 0;
+          const afterAnimation = () => {
+            afterY -= 0.5;
+            preloaderAfter.style.bottom = afterY + '%';
+            if (afterY <= -100) {
+              clearInterval(afterInterval);
+            }
+          };
+          const afterInterval = setInterval(afterAnimation, 1);
+        }, 700);
+
+        // clear
+        setTimeout(() => {
+          preloader.style.display = 'none';
+        }, 1100);
       }
     };
 
