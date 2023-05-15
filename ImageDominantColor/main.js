@@ -50,4 +50,9 @@ class ImageDominantColor {
     this.color.g = Math.floor(this.color.g / count);
     this.color.b = Math.floor(this.color.b / count);
   }
+
+  paintBox() {
+    // apply background color to the box
+    this.box.style.background = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+  }
 }
