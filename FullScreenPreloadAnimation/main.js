@@ -25,6 +25,16 @@ const PreloaderFullScreen = () => {
 
       if (val === 100) {
         clearInterval(preloadInterval);
+
+        let bar = 0;
+        const barAnimation = () => {
+          bar += 0.5;
+          preloaderBar.style.left = bar + '%';
+          if (bar === 100) {
+            clearInterval(barInterval);
+          }
+        };
+        const barInterval = setInterval(barAnimation, 1);
       }
     };
 
