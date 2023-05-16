@@ -28,10 +28,19 @@ const convertToDeuteranopia = color => {
   return [r, g, b];
 };
 
+// Protanopia
 const convertToProtanopia = color => {
   const r = color[0] * 0.567 + color[1] * 0.433 + color[2] * 0;
   const g = color[0] * 0.558 + color[1] * 0.442 + color[2] * 0;
   const b = color[0] * 0 + color[1] * 0.242 + color[2] * 0.758;
+  return [r, g, b];
+};
+
+// Tritanopia
+const convertToTritanopia = color => {
+  const r = color[0] * 0.95 + color[1] * 0.05 + color[2] * 0;
+  const g = color[0] * 0 + color[1] * 0.433 + color[2] * 0.567;
+  const b = color[0] * 0 + color[1] * 0.475 + color[2] * 0.525;
   return [r, g, b];
 };
 
@@ -45,4 +54,8 @@ colorPicker.addEventListener('input', () => {
   const hexProtanopia = convertToHex(convertToProtanopia(color));
   protanopia.querySelector('.view__color').style.background = hexProtanopia;
   protanopia.querySelector('p').innerText = hexProtanopia;
+
+  const hexTritanopia = convertToHex(convertToTritanopia(color));
+  tritanopia.querySelector('.view__color').style.background = hexTritanopia;
+  tritanopia.querySelector('p').innerText = hexTritanopia;
 });
