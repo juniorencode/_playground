@@ -1,0 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.container {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.upload label {
+  display: block;
+  padding: 10px 40px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: solid 1px #121212;
+  cursor: pointer;
+}
+
+.upload input {
+  display: none;
+}
+
+.buttons button {
+  padding: 10px 20px;
+  border: 0;
+  background-color: #121212;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -8,6 +8,19 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <section class="container">
+      <div class="upload">
+        <label for="file">Upload Image</label>
+        <input type="file" id="file" />
+      </div>
+      <div class="buttons">
+        <button id="btnGrayscale">Gray scale</button>
+        <button id="btnInver">Invert color</button>
+        <button id="btnSepia">Sepia</button>
+        <button id="btnReset">Reset</button>
+      </div>
+      <canvas id="canvas"></canvas>
+    </section>
     <script src="./main.js"></script>
   </body>
 </html>
