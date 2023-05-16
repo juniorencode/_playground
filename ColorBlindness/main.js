@@ -28,10 +28,21 @@ const convertToDeuteranopia = color => {
   return [r, g, b];
 };
 
+const convertToProtanopia = color => {
+  const r = color[0] * 0.567 + color[1] * 0.433 + color[2] * 0;
+  const g = color[0] * 0.558 + color[1] * 0.442 + color[2] * 0;
+  const b = color[0] * 0 + color[1] * 0.242 + color[2] * 0.758;
+  return [r, g, b];
+};
+
 colorPicker.addEventListener('input', () => {
   const color = convertToRGB(colorPicker.value);
 
   const hexDeuteranopia = convertToHex(convertToDeuteranopia(color));
   deuteranopia.querySelector('.view__color').style.background = hexDeuteranopia;
   deuteranopia.querySelector('p').innerText = hexDeuteranopia;
+
+  const hexProtanopia = convertToHex(convertToProtanopia(color));
+  protanopia.querySelector('.view__color').style.background = hexProtanopia;
+  protanopia.querySelector('p').innerText = hexProtanopia;
 });
