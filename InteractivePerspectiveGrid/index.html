@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <canvas></canvas>
     <script src="./main.js"></script>
+    <script>
+      new Window({
+        canvas: document.querySelector('canvas'),
+        size: {
+          width: 10,
+          height: 10
+        }
+      });
+    </script>
   </body>
 </html>
