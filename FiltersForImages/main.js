@@ -2,10 +2,12 @@ const input = document.querySelector('.upload input');
 const btnGrayscale = document.querySelector('#btnGrayscale');
 const btnInvertColor = document.querySelector('#btnInvertColor');
 const btnSepia = document.querySelector('#btnSepia');
+const btnReset = document.querySelector('#btnReset');
 
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
 let image = new Image();
+console.log(image.src);
 
 // when the image has been selected
 input.addEventListener('change', () => {
@@ -38,6 +40,10 @@ btnInvertColor.addEventListener('click', () => {
 
 btnSepia.addEventListener('click', () => {
   convertToSepia();
+});
+
+btnReset.addEventListener('click', () => {
+  convertToReset();
 });
 
 // filters
@@ -85,4 +91,10 @@ const convertToSepia = () => {
   }
 
   ctx.putImageData(imageData, 0, 0);
+};
+
+const convertToReset = () => {
+  if (image.src !== '') {
+    ctx.drawImage(image, 0, 0, image.width, image.height);
+  }
 };
