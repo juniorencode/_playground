@@ -1,6 +1,7 @@
 const input = document.querySelector('.upload input');
 const btnGrayscale = document.querySelector('#btnGrayscale');
 const btnInvertColor = document.querySelector('#btnInvertColor');
+const btnSepia = document.querySelector('#btnSepia');
 
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
@@ -35,10 +36,15 @@ btnInvertColor.addEventListener('click', () => {
   convertToInvertColor();
 });
 
+btnSepia.addEventListener('click', () => {
+  convertToSepia();
+});
+
 // filters
 const convertToGrayscale = () => {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const pixels = imageData.data;
+
   for (let i = 0; i < pixels.length; i += 4) {
     const r = pixels[i];
     const g = pixels[i + 1];
@@ -48,16 +54,35 @@ const convertToGrayscale = () => {
     pixels[i + 1] = gray;
     pixels[i + 2] = gray;
   }
+
   ctx.putImageData(imageData, 0, 0);
 };
 
 const convertToInvertColor = () => {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const pixels = imageData.data;
+
   for (let i = 0; i < pixels.length; i += 4) {
     pixels[i] = 255 - pixels[i];
     pixels[i + 1] = 255 - pixels[i + 1];
     pixels[i + 2] = 255 - pixels[i + 2];
   }
+
+  ctx.putImageData(imageData, 0, 0);
+};
+
+const convertToSepia = () => {
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const pixels = imageData.data;
+
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    pixels[i] = r * 0.393 + g * 0.769 + b * 0.189;
+    pixels[i + 1] = r * 0.349 + g * 0.686 + b * 0.168;
+    pixels[i + 2] = r * 0.272 + g * 0.534 + b * 0.131;
+  }
+
   ctx.putImageData(imageData, 0, 0);
 };
