@@ -3,8 +3,8 @@ let ctx = canvas.getContext('2d');
 
 let squares = [];
 
-canvas.width = 700;
-canvas.height = 700;
+canvas.width = 600;
+canvas.height = 600;
 
 const clear = () => {
   canvas.width = canvas.width;
@@ -15,15 +15,7 @@ const draw = () => {
   squares.map(square => square.draw());
 };
 
-const loop = () => {
-  clear();
-  draw();
-
-  requestAnimationFrame(loop);
-};
-
-loop();
-
+// interactivity module
 currentObject = null;
 startX = 0;
 startY = 0;
@@ -41,7 +33,6 @@ canvas.addEventListener('mousedown', e => {
       startY = e.offsetY - square.y;
     }
   });
-  console.log(currentObject);
 });
 
 canvas.addEventListener('mousemove', e => {
@@ -59,12 +50,14 @@ canvas.addEventListener('mouseup', e => {
   currentObject = null;
 });
 
+// helper functions
 const randomRGBColor = () => {
   return `rgb(${Math.floor(Math.random() * 225)}, ${Math.floor(
     Math.random() * 225
   )}, ${Math.floor(Math.random() * 225)})`;
 };
 
+// shape module
 class Square {
   constructor(x, y, w, h) {
     this.x = x;
@@ -84,3 +77,44 @@ class Square {
 
 squares.push(new Square(10, 10, 50, 50));
 squares.push(new Square(10, 70, 50, 50));
+
+// collision module
+const collisionSquares = () => {
+  let collision = false;
+
+  squares.map((one, i) => {
+    squares.map((two, j) => {
+      if (i !== j) {
+        if (
+          one.x + one.w > two.x &&
+          one.x < two.x + two.w &&
+          one.y + one.h > two.y &&
+          one.y < two.y + two.h
+        ) {
+          collision = true;
+        }
+      }
+    });
+  });
+
+  return collision;
+};
+
+// loop module
+const loop = () => {
+  let isCollision = collisionSquares();
+
+  // change background color
+  if (document.body.classList.value === '' && isCollision) {
+    document.body.classList.add('error');
+  } else if (document.body.classList.value !== '' && !isCollision) {
+    document.body.classList.remove('error');
+  }
+
+  clear();
+  draw();
+
+  requestAnimationFrame(loop);
+};
+
+loop();
