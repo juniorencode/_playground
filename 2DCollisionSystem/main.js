@@ -24,6 +24,41 @@ const loop = () => {
 
 loop();
 
+currentObject = null;
+startX = 0;
+startY = 0;
+
+canvas.addEventListener('mousedown', e => {
+  squares.map(square => {
+    if (
+      square.x < e.offsetX &&
+      square.w + square.x > e.offsetX &&
+      square.y < e.offsetY &&
+      square.h + square.y > e.offsetY
+    ) {
+      currentObject = square;
+      startX = e.offsetX - square.x;
+      startY = e.offsetY - square.y;
+    }
+  });
+  console.log(currentObject);
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (currentObject != null) {
+    currentObject.x = e.offsetX - startX;
+    currentObject.y = e.offsetY - startY;
+
+    if (currentObject.normalize) {
+      currentObject.normalize();
+    }
+  }
+});
+
+canvas.addEventListener('mouseup', e => {
+  currentObject = null;
+});
+
 const randomRGBColor = () => {
   return `rgb(${Math.floor(Math.random() * 225)}, ${Math.floor(
     Math.random() * 225
