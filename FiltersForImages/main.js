@@ -1,5 +1,6 @@
 const input = document.querySelector('.upload input');
 const btnGrayscale = document.querySelector('#btnGrayscale');
+const btnInvertColor = document.querySelector('#btnInvertColor');
 
 const canvas = document.querySelector('#canvas');
 const ctx = canvas.getContext('2d');
@@ -30,6 +31,10 @@ btnGrayscale.addEventListener('click', () => {
   convertToGrayscale();
 });
 
+btnInvertColor.addEventListener('click', () => {
+  convertToInvertColor();
+});
+
 // filters
 const convertToGrayscale = () => {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -42,6 +47,17 @@ const convertToGrayscale = () => {
     pixels[i] = gray;
     pixels[i + 1] = gray;
     pixels[i + 2] = gray;
+  }
+  ctx.putImageData(imageData, 0, 0);
+};
+
+const convertToInvertColor = () => {
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const pixels = imageData.data;
+  for (let i = 0; i < pixels.length; i += 4) {
+    pixels[i] = 255 - pixels[i];
+    pixels[i + 1] = 255 - pixels[i + 1];
+    pixels[i + 2] = 255 - pixels[i + 2];
   }
   ctx.putImageData(imageData, 0, 0);
 };
