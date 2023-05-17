@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container h1 {
+  margin-bottom: 30px;
+  font-size: 3rem;
+  color: #bbb;
+}
+
+.container button {
+  padding: 16px;
+  width: 300px;
+  background-color: #121212;
+  color: #fff;
+  font-size: 1.1rem;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  /* z-index: 1; */
+}
+
+.container button:hover {
+  background-color: #2c2c2c;
+}
+
+.clickmap {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+}
