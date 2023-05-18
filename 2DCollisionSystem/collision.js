@@ -17,12 +17,12 @@ const collisionSquareWithPoint = (square, point) => {
 const collisionCircleWithCircle = (circle1, circle2) => {
   const radii = circle1.r + circle2.r; // sum of the radii of both circles
 
-  // calculate the absolute difference between the centers of the circles
-  const dxs = Math.abs(circle1.x - circle2.x);
-  const dys = Math.abs(circle1.y - circle2.y);
-  const distance = Math.sqrt(Math.pow(dxs, 2) + Math.pow(dys, 2)); // distance from centers
+  // distance between the squared and the centers of the circles
+  const dx = circle1.x - circle2.x;
+  const dy = circle1.y - circle2.y;
+  const distanceSquared = dx * dx + dy * dy; // squared distance from centers
 
-  return distance <= radii;
+  return distanceSquared <= radii * radii;
 };
 
 const collisionCircleWithPoint = (circle, point) => {
@@ -30,11 +30,11 @@ const collisionCircleWithPoint = (circle, point) => {
 };
 
 const collisionSquareWithCircle = (square, circle) => {
-  // calculate the closest point of the square to the circle
+  // closest point of the square to the circle
   const closestX = Math.max(square.x, Math.min(circle.x, square.x + square.w));
   const closestY = Math.max(square.y, Math.min(circle.y, square.y + square.h));
 
-  // calculate the squared distance between the closest point and the center of the circle
+  // distance between the squared and the closest point and the center of the circle
   const distanceX = circle.x - closestX;
   const distanceY = circle.y - closestY;
   const distanceSquared = distanceX * distanceX + distanceY * distanceY;
