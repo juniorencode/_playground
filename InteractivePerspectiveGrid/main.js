@@ -23,6 +23,8 @@ class Window {
     this.grid = new Grid({ size: this.size, tile: this.tile, draw: this.draw });
 
     this.grid.drawGrid();
+
+    window.addEventListener('resize', this.grid.resize.bind(this.grid));
   }
 }
 
@@ -91,6 +93,20 @@ class Grid {
         }
       }
     }
+  }
+
+  resize() {
+    this.draw.canvas.width =
+      this.draw.canvas.clientWidth * window.devicePixelRatio;
+    this.draw.canvas.height =
+      this.draw.canvas.clientHeight * window.devicePixelRatio;
+
+    this.origin = {
+      x: this.draw.canvas.width / 2 + this.tile.width / 2,
+      y: this.tile.height
+    };
+
+    this.drawGrid();
   }
 }
 
