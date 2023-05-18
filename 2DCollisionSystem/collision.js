@@ -37,6 +37,22 @@ const checkSquaresWithSquares = () => {
   return collision;
 };
 
+function checkCirclesWithCircles() {
+  let collision = false;
+
+  circles.map((one, i) => {
+    circles.map((two, j) => {
+      if (i !== j) {
+        if (collisionCircle(one, two)) {
+          collision = true;
+        }
+      }
+    });
+  });
+
+  return collision;
+}
+
 const checkAllCollisions = () => {
-  return checkSquaresWithSquares();
+  return checkSquaresWithSquares() || checkCirclesWithCircles();
 };
