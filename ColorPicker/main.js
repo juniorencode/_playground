@@ -77,8 +77,8 @@ const createShadeSpectrum = color => {
 const getSpectrumColor = e => {
   e.preventDefault();
 
-  const x = e.pageX - spectrumRect.left;
-  const y = e.pageY - spectrumRect.top;
+  let x = e.pageX - spectrumRect.left;
+  let y = e.pageY - spectrumRect.top;
 
   if (x > spectrumRect.width) x = spectrumRect.width;
   if (x < 0) x = 0;
