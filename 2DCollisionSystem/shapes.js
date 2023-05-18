@@ -3,8 +3,8 @@ class Square {
   constructor(x, y, w, h) {
     this.x = x;
     this.y = y;
-    this.w = w;
-    this.h = h;
+    this.w = w; // width
+    this.h = h; // height
     this.color = randomRGBColor();
 
     this.draw();
@@ -20,7 +20,7 @@ class Circle {
   constructor(x, y, r) {
     this.x = x;
     this.y = y;
-    this.r = r;
+    this.r = r; // radii
 
     this.draw();
     this.color = randomRGBColor();

@@ -14,11 +14,12 @@ const collisionSquareWithPoint = (square, point) => {
   return collisionSquareWithSquare(square, { ...point, w: 0, h: 0 });
 };
 
-const collisionCircleWithCircle = (one, two) => {
-  const radii = one.r + two.r; // sum of the radii of both circles
+const collisionCircleWithCircle = (circle1, circle2) => {
+  const radii = circle1.r + circle2.r; // sum of the radii of both circles
 
-  const dxs = Math.abs(one.x - two.x);
-  const dys = Math.abs(one.y - two.y);
+  // calculate the absolute difference between the centers of the circles
+  const dxs = Math.abs(circle1.x - circle2.x);
+  const dys = Math.abs(circle1.y - circle2.y);
   const distance = Math.sqrt(Math.pow(dxs, 2) + Math.pow(dys, 2)); // distance from centers
 
   return distance <= radii;
@@ -28,14 +29,29 @@ const collisionCircleWithPoint = (circle, point) => {
   return collisionCircleWithCircle(circle, { ...point, r: 0 });
 };
 
+const collisionSquareWithCircle = (square, circle) => {
+  // calculate the closest point of the square to the circle
+  const closestX = Math.max(square.x, Math.min(circle.x, square.x + square.w));
+  const closestY = Math.max(square.y, Math.min(circle.y, square.y + square.h));
+
+  // calculate the squared distance between the closest point and the center of the circle
+  const distanceX = circle.x - closestX;
+  const distanceY = circle.y - closestY;
+  const distanceSquared = distanceX * distanceX + distanceY * distanceY;
+
+  // check if the squared distance is less than or equal to the squared radius of the circle
+  return distanceSquared <= circle.r * circle.r;
+};
+
+// =================================================
 // iteration of all possible collisions
 const checkSquaresWithSquares = () => {
   let collision = false;
 
-  squares.map((one, i) => {
-    squares.map((two, j) => {
+  squares.map((square1, i) => {
+    squares.map((square2, j) => {
       if (i !== j) {
-        if (collisionSquareWithSquare(one, two)) {
+        if (collisionSquareWithSquare(square1, square2)) {
           collision = true;
         }
       }
@@ -48,10 +64,10 @@ const checkSquaresWithSquares = () => {
 function checkCirclesWithCircles() {
   let collision = false;
 
-  circles.map((one, i) => {
-    circles.map((two, j) => {
+  circles.map((circle1, i) => {
+    circles.map((circle2, j) => {
       if (i !== j) {
-        if (collisionCircleWithCircle(one, two)) {
+        if (collisionCircleWithCircle(circle1, circle2)) {
           collision = true;
         }
       }
@@ -61,6 +77,24 @@ function checkCirclesWithCircles() {
   return collision;
 }
 
+const checkSquaresWithCircles = () => {
+  let collision = false;
+
+  squares.map(square => {
+    circles.map(circle => {
+      if (collisionSquareWithCircle(square, circle)) {
+        collision = true;
+      }
+    });
+  });
+
+  return collision;
+};
+
 const checkAllCollisions = () => {
-  return checkSquaresWithSquares() || checkCirclesWithCircles();
+  return (
+    checkSquaresWithSquares() ||
+    checkCirclesWithCircles() ||
+    checkSquaresWithCircles()
+  );
 };
