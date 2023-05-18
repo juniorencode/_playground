@@ -42,8 +42,28 @@ const drawMap = () => {
     maxDensity = Math.max(maxDensity, density);
   }
 
+  function isInRange(number, initialRange, finalRange) {
+    if (number >= initialRange && number <= finalRange) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   for (let x = 0; x < canvas.width; x += gridSize) {
+    const kickOutX = points.filter(point => {
+      return isInRange(x, point.x - rango, point.x + rango);
+    });
+
+    if (kickOutX > 0) continue;
+
     for (let y = 0; y < canvas.height; y += gridSize) {
+      const kickOutY = kickOutX.some(point => {
+        return isInRange(y, point.y - rango, point.y + rango);
+      });
+
+      if (!kickOutY) continue;
+
       let density = 0;
 
       for (let j = 0; j < pointsLength; j++) {
