@@ -48,6 +48,29 @@ const hslToRgb = (h, s, l) => {
   };
 };
 
+const getColorCodes = (h, s, l) => {
+  const { r, g, b } = hslToRgb(h, s, l);
+  return {
+    _r: r,
+    _g: g,
+    _b: b,
+    _rgb: `rgba(${r}, ${g}, ${b}, 1)`,
+    _h: h,
+    _s: s,
+    _l: l,
+    _hsl: `hsl(${h}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`
+  };
+};
+
+const setCurrentColor = color => {
+  color = tinycolor(color);
+  currentColor = color;
+  colorIndicator.style.backgroundColor = color;
+  document.body.style.backgroundColor = color;
+  spectrumCursor.style.backgroundColor = color;
+  hueCursor.style.backgroundColor = 'hsl(' + color.toHsl().h + ',100%, 50%)';
+};
+
 const createLinearGradient = (canvas, ctx, color, horizontal = true) => {
   const gradient = ctx.createLinearGradient(
     0,
@@ -91,7 +114,7 @@ const getSpectrumColor = e => {
   const hsvSaturation = xRatio / 100;
   lightness = (hsvValue / 2) * (2 - hsvSaturation);
   saturation = (hsvValue * hsvSaturation) / (1 - Math.abs(2 * lightness - 1));
-  const color = hslToRgb(hue, saturation, lightness);
+  const color = getColorCodes(hue, saturation, lightness);
   console.log(color);
 };
 
