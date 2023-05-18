@@ -2,6 +2,7 @@ let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
 let squares = [];
+let circles = [];
 
 canvas.width = 600;
 canvas.height = 600;
@@ -13,6 +14,7 @@ const clear = () => {
 
 const draw = () => {
   squares.map(square => square.draw());
+  circles.map(circle => circle.draw());
 };
 
 // helper functions
@@ -43,3 +45,5 @@ loop();
 
 squares.push(new Square(10, 10, 50, 50));
 squares.push(new Square(10, 70, 50, 50));
+circles.push(new Circle(35, 155, 25));
+circles.push(new Circle(35, 215, 25));
