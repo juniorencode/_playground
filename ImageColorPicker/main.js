@@ -28,6 +28,11 @@ class ImageColorPicker {
       this.move(e);
     });
 
+    // detect the click on the selected color
+    window.addEventListener('click', e => {
+      this.copy(e);
+    });
+
     // detect when screen is resized
     window.addEventListener('resize', e => {
       this.resize();
@@ -102,6 +107,23 @@ class ImageColorPicker {
   resize() {
     // obj: position local
     this.position = this.image.getBoundingClientRect();
+  }
+
+  copy(e) {
+    if (this.isInside(e.pageX, e.pageY)) {
+      let R, G, B;
+      // (yMouse - yContent) * channels * widthImage + (xMouse - xContent) * channels
+      const index =
+        Math.floor(e.pageY - this.position.y) * 4 * this.image.width +
+        Math.floor(e.pageX - this.position.x) * 4;
+
+      R = this.data[index];
+      G = this.data[index + 1];
+      B = this.data[index + 2];
+
+      // provisional way
+      console.log(`rgba(${R}, ${G}, ${B}, 1)`);
+    }
   }
 
   move(e) {
