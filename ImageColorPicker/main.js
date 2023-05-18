@@ -134,6 +134,9 @@ class ImageColorPicker {
   }
 
   paintGrid(x, y) {
+    // list of non-visible positions
+    const ignored = [0, 1, 7, 8, 9, 17, 63, 71, 72, 73, 79, 80];
+
     // paint the background a contrasting color
     const aux = y * 4 * this.image.width + x * 4;
     let color = this.data[aux] + this.data[aux + 1] + this.data[aux + 2];
@@ -148,6 +151,9 @@ class ImageColorPicker {
     for (let i = 0; i < this.dim; i++) {
       const aux = (y - this.middle + i) * this.image.width;
       for (let j = 0; j < this.dim; j++) {
+        // ignore if position is not visible
+        if (ignored.includes(i * this.dim + j)) continue;
+
         const index = (aux + (x - this.middle + j)) * 4;
         // default white color
         let R = 255,
