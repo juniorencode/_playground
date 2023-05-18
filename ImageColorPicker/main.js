@@ -121,8 +121,8 @@ class ImageColorPicker {
       G = this.data[index + 1];
       B = this.data[index + 2];
 
-      // provisional way
-      console.log(`rgba(${R}, ${G}, ${B}, 1)`);
+      // copy to clipboard
+      navigator.clipboard.writeText(`rgba(${R}, ${G}, ${B}, 1)`);
     }
   }
 

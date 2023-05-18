@@ -1,16 +1,20 @@
 // collision module
 
 // native
-const collisionSquare = (one, two) => {
+const collisionSquareWithSquare = (square1, square2) => {
   return (
-    one.x + one.w > two.x &&
-    one.x < two.x + two.w &&
-    one.y + one.h > two.y &&
-    one.y < two.y + two.h
+    square1.x + square1.w > square2.x &&
+    square1.x < square2.x + square2.w &&
+    square1.y + square1.h > square2.y &&
+    square1.y < square2.y + square2.h
   );
 };
 
-const collisionCircle = (one, two) => {
+const collisionSquareWithPoint = (square, point) => {
+  return collisionSquareWithSquare(square, { ...point, w: 0, h: 0 });
+};
+
+const collisionCircleWithCircle = (one, two) => {
   const radii = one.r + two.r; // sum of the radii of both circles
 
   const dxs = Math.abs(one.x - two.x);
@@ -20,14 +24,18 @@ const collisionCircle = (one, two) => {
   return distance <= radii;
 };
 
-// iteration
+const collisionCircleWithPoint = (circle, point) => {
+  return collisionCircleWithCircle(circle, { ...point, r: 0 });
+};
+
+// iteration of all possible collisions
 const checkSquaresWithSquares = () => {
   let collision = false;
 
   squares.map((one, i) => {
     squares.map((two, j) => {
       if (i !== j) {
-        if (collisionSquare(one, two)) {
+        if (collisionSquareWithSquare(one, two)) {
           collision = true;
         }
       }
@@ -43,7 +51,7 @@ function checkCirclesWithCircles() {
   circles.map((one, i) => {
     circles.map((two, j) => {
       if (i !== j) {
-        if (collisionCircle(one, two)) {
+        if (collisionCircleWithCircle(one, two)) {
           collision = true;
         }
       }
