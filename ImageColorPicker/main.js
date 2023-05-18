@@ -66,8 +66,21 @@ class ImageColorPicker {
     canvasGrid.style.cursor = 'none';
     canvasGrid.style.userSelect = 'none';
 
+    // create the selection center box
+    this.pointer = document.createElement('div');
+    this.pointer.style.width = this.tile + 2 + 'px';
+    this.pointer.style.height = this.tile + 2 + 'px';
+    this.pointer.style.border = 'solid 1px #000';
+    this.pointer.style.borderRadius = '3px';
+    this.pointer.style.position = 'absolute';
+    this.pointer.style.top =
+      Math.floor(this.size / 2 - this.tile / 2) - 2 + 'px';
+    this.pointer.style.left =
+      Math.floor(this.size / 2 - this.tile / 2) - 2 + 'px';
+
     // insert the grid inside the container
     this.content.append(canvasGrid);
+    this.content.append(this.pointer);
   }
 
   start() {
