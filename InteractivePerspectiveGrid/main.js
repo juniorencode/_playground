@@ -25,6 +25,29 @@ class Window {
     this.grid.drawGrid();
 
     window.addEventListener('resize', this.grid.resize.bind(this.grid));
+    window.addEventListener('mousedown', this.mouseDown.bind(this));
+    window.addEventListener('mouseup', this.mouseUp.bind(this));
+    window.addEventListener('mouseout', this.mouseOut.bind(this));
+    window.addEventListener('mousemove', this.mouseMove.bind(this));
+  }
+
+  mouseDown(e) {
+    this.grid.updatePosMouseClick(e.offsetX, e.offsetY);
+    this.click = true;
+  }
+
+  mouseUp() {
+    this.click = false;
+  }
+
+  mouseOut() {
+    this.click = false;
+  }
+
+  mouseMove(e) {
+    if (!this.click) return;
+
+    this.grid.moveGrid(e.offsetX, e.offsetY, e.movementX, e.movementY);
   }
 }
 
@@ -51,6 +74,9 @@ class Grid {
       x: this.draw.canvas.width / 2 + this.tile.width / 2,
       y: this.tile.height
     };
+
+    // the current position of the mouse click event within the grid
+    this.cPos = { x: 0, y: 0 };
   }
 
   // converts the Cartesian coordinates to isometric coordinates
@@ -95,12 +121,52 @@ class Grid {
     }
   }
 
+  updatePosMouseClick(x, y) {
+    this.cPos.x = x + this.ini.x;
+    this.cPos.y = y + this.ini.y;
+  }
+
+  moveGrid(x, y, moveX, moveY) {
+    let iniX = this.ini.x;
+    let iniY = this.ini.y;
+
+    const halfWidth = this.draw.canvas.width / 2;
+    const max = Math.max(this.size.width, this.size.height);
+    const width = this.tile.width * max;
+
+    if (this.ini.x - halfWidth >= -width / 2 && moveX > 0) {
+      iniX = this.cPos.x - x;
+    }
+
+    if (this.ini.y >= 0 && moveY > 0) {
+      iniY = this.cPos.y - y;
+    }
+
+    if (this.ini.x + width / 2 <= width - halfWidth && moveX < 0) {
+      iniX = this.cPos.x - x;
+    }
+
+    if (
+      this.ini.y <= this.tile.height * max - this.draw.canvas.height &&
+      moveY < 0
+    ) {
+      iniY = this.cPos.y - y;
+    }
+
+    this.ini.x = iniX;
+    this.ini.y = iniY;
+
+    this.drawGrid();
+  }
+
   resize() {
+    // Adjust the drawing canvas to the client size x the device pixel ratio
     this.draw.canvas.width =
       this.draw.canvas.clientWidth * window.devicePixelRatio;
     this.draw.canvas.height =
       this.draw.canvas.clientHeight * window.devicePixelRatio;
 
+    // Set the origin of the drawing
     this.origin = {
       x: this.draw.canvas.width / 2 + this.tile.width / 2,
       y: this.tile.height
