@@ -134,6 +134,14 @@ class ImageColorPicker {
   }
 
   paintGrid(x, y) {
+    // paint the background a contrasting color
+    const aux = y * 4 * this.image.width + x * 4;
+    let color = this.data[aux] + this.data[aux + 1] + this.data[aux + 2];
+    color = 255 - parseInt(color / 3);
+    this.content.style.background = `rgb(${color}, ${color}, ${color})`;
+    color = color < 255 / 2 ? 50 : 205;
+    this.pointer.style.borderColor = `rgb(${color}, ${color}, ${color})`;
+
     // clean canvas
     this.grid.clearRect(0, 0, this.image.width, this.image.height);
 
