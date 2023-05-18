@@ -28,8 +28,7 @@ body {
 }
 
 .colorpicker__panel:first-child {
-  margin-top: 10px;
-  margin-bottom: 6px;
+  margin-top: 14px;
 }
 
 .colorpicker__panel:after {
@@ -93,4 +92,72 @@ body {
 
 .colorpicker__canvas--hue {
   border-radius: 8px;
+}
+
+.colorpicker__mode {
+  display: none;
+  align-items: center;
+}
+
+.colorpicker__mode.active {
+  display: flex;
+}
+
+.colorpicker__group {
+  display: flex;
+  align-items: center;
+}
+
+.colorpicker__label {
+  color: #8b949a;
+  margin-right: 6px;
+}
+
+.colorpicker__input {
+  width: 42px;
+  margin-right: 10px;
+  background: #15191c;
+  border: 1px solid #364347;
+  box-sizing: border-box;
+  border-radius: 2px;
+  line-height: 38px;
+  padding: 0 4px;
+  text-align: center;
+  color: #8b949a;
+  font-size: 1rem;
+  display: block;
+}
+
+.colorpicker__input--hex {
+  width: 170px;
+}
+
+.colorpicker__button {
+  background: #2a3137;
+  border: 0;
+  border-radius: 4px;
+  color: #8b949a;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  outline: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.colorpicker__button:active {
+  background: #262c31;
+}
+
+.colorpicker__button--toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 68px;
+  height: 40px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

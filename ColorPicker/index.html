@@ -19,6 +19,29 @@
           <canvas class="colorpicker__canvas colorpicker__canvas--hue"></canvas>
         </div>
       </div>
+      <div class="colorpicker__panel">
+        <div class="colorpicker__mode active">
+          <div class="colorpicker__group">
+            <label class="colorpicker__label">R:</label>
+            <input type="number" max="255" min="0" class="colorpicker__input" />
+          </div>
+          <div class="colorpicker__group">
+            <label class="colorpicker__label">G:</label>
+            <input type="number" max="255" min="0" class="colorpicker__input" />
+          </div>
+          <div class="colorpicker__group">
+            <label class="colorpicker__label">B:</label>
+            <input type="number" max="255" min="0" class="colorpicker__input" />
+          </div>
+        </div>
+        <div class="colorpicker__mode">
+          <label class="colorpicker__label">Hex:</label>
+          <input type="text" class="colorpicker__input" />
+        </div>
+        <button class="colorpicker__button colorpicker__button--toggle">
+          Mode
+        </button>
+      </div>
     </div>
     <script src="./main.js"></script>
   </body>
