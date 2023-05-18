@@ -135,6 +135,12 @@ const getSpectrumColor = e => {
   const color = getColorCodes(hue, saturation, lightness);
   setCurrentColor(color);
   setColorValues(color);
+  updateSpectrumCursor(x, y);
+};
+
+const updateSpectrumCursor = (x, y) => {
+  spectrumCursor.style.left = x + 'px';
+  spectrumCursor.style.top = y + 'px';
 };
 
 const ColorPicker = () => {
