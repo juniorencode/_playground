@@ -11,6 +11,14 @@ canvas.addEventListener('mousedown', e => {
       startY = e.offsetY - square.y;
     }
   });
+
+  circles.map(circle => {
+    if (collisionCircle(circle, { x: e.offsetX, y: e.offsetY, r: 0 })) {
+      currentObject = circle;
+      startX = e.offsetX - circle.x;
+      startY = e.offsetY - circle.y;
+    }
+  });
 });
 
 canvas.addEventListener('mousemove', e => {

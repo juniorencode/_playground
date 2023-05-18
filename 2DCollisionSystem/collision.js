@@ -10,6 +10,16 @@ const collisionSquare = (one, two) => {
   );
 };
 
+const collisionCircle = (one, two) => {
+  const radii = one.r + two.r; // sum of the radii of both circles
+
+  const dxs = Math.abs(one.x - two.x);
+  const dys = Math.abs(one.y - two.y);
+  const distance = Math.sqrt(Math.pow(dxs, 2) + Math.pow(dys, 2)); // distance from centers
+
+  return distance <= radii;
+};
+
 // iteration
 const checkSquaresWithSquares = () => {
   let collision = false;
