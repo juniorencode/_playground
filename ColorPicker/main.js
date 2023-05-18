@@ -42,9 +42,9 @@ const hslToRgb = (h, s, l) => {
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p = 2 * l - q;
 
-    r = hueToRgb(p, q, h + 1 / 3);
-    g = hueToRgb(p, q, h);
-    b = hueToRgb(p, q, h - 1 / 3);
+    r = hueToRgb(p, q, h + 1 / 3) ?? 0;
+    g = hueToRgb(p, q, h) ?? 0;
+    b = hueToRgb(p, q, h - 1 / 3) ?? 0;
   }
 
   // scale the RGB components to the range [0, 255]
@@ -61,6 +61,10 @@ function rgbToHex(r, g, b) {
 }
 
 const getColorCodes = (h, s, l) => {
+  if (isNaN(h)) h = 0;
+  if (isNaN(s)) s = 0;
+  if (isNaN(l)) l = 0;
+
   const { r, g, b } = hslToRgb(h, s, l);
   return {
     _hex: rgbToHex(r, g, b),
@@ -110,9 +114,21 @@ const createShadeSpectrum = color => {
   createLinearGradient(spectrumCanvas, spectrumCtx, '#fff');
   createLinearGradient(spectrumCanvas, spectrumCtx, '#000', false);
 
-  spectrumCanvas.addEventListener('click', function (e) {
-    getSpectrumColor(e);
+  spectrumCanvas.addEventListener('mousedown', function (e) {
+    startGetSpectrumColor(e);
   });
+};
+
+const endGetSpectrumColor = e => {
+  spectrumCursor.classList.remove('dragging');
+  window.removeEventListener('mousemove', getSpectrumColor);
+};
+
+const startGetSpectrumColor = e => {
+  getSpectrumColor(e);
+  spectrumCursor.classList.add('dragging');
+  window.addEventListener('mousemove', getSpectrumColor);
+  window.addEventListener('mouseup', endGetSpectrumColor);
 };
 
 const getSpectrumColor = e => {
@@ -132,6 +148,7 @@ const getSpectrumColor = e => {
   const hsvSaturation = xRatio / 100;
   lightness = (hsvValue / 2) * (2 - hsvSaturation);
   saturation = (hsvValue * hsvSaturation) / (1 - Math.abs(2 * lightness - 1));
+  console.log(hue, saturation, lightness);
   const color = getColorCodes(hue, saturation, lightness);
   setCurrentColor(color);
   setColorValues(color);

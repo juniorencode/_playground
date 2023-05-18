@@ -69,6 +69,10 @@ body {
   transition: all 0.2s ease;
 }
 
+.colorpicker__cursor.dragging {
+  transition: none;
+}
+
 .colorpicker__cursor--hue {
   top: 0;
   left: 50%;
