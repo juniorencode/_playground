@@ -23,21 +23,40 @@
         <div class="colorpicker__mode active">
           <div class="colorpicker__group">
             <label class="colorpicker__label">R:</label>
-            <input type="number" max="255" min="0" class="colorpicker__input" />
+            <input
+              type="number"
+              max="255"
+              min="0"
+              id="red"
+              class="colorpicker__input"
+            />
           </div>
           <div class="colorpicker__group">
             <label class="colorpicker__label">G:</label>
-            <input type="number" max="255" min="0" class="colorpicker__input" />
+            <input
+              type="number"
+              max="255"
+              min="0"
+              id="green"
+              class="colorpicker__input"
+            />
           </div>
           <div class="colorpicker__group">
             <label class="colorpicker__label">B:</label>
-            <input type="number" max="255" min="0" class="colorpicker__input" />
+            <input
+              type="number"
+              max="255"
+              min="0"
+              id="blue"
+              class="colorpicker__input"
+            />
           </div>
         </div>
         <div class="colorpicker__mode">
           <label class="colorpicker__label">Hex:</label>
           <input
             type="text"
+            id="hex"
             class="colorpicker__input colorpicker__input--hex"
           />
         </div>
@@ -49,7 +68,7 @@
         <h2 class="colorpicker__title">User Colors</h2>
         <div class="colorpicker__swatches"></div>
         <button class="colorpicker__button colorpicker__button--add">
-          <span class="colorpicker__indicator"></span>
+          <span id="color-indicator" class="colorpicker__indicator"></span>
           <span>Add to Swatches</span>
         </button>
       </div>

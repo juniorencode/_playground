@@ -1,7 +1,14 @@
-const spectrumCanvas = document.getElementById('spectrum-canvas');
+const spectrumCanvas = document.querySelector('#spectrum-canvas');
 const spectrumCtx = spectrumCanvas.getContext('2d');
-const spectrumCursor = document.getElementById('spectrum-cursor');
+const spectrumCursor = document.querySelector('#spectrum-cursor');
 const spectrumRect = spectrumCanvas.getBoundingClientRect();
+
+const red = document.querySelector('#red');
+const blue = document.querySelector('#blue');
+const green = document.querySelector('#green');
+const hex = document.querySelector('#hex');
+
+const colorIndicator = document.querySelector('#color-indicator');
 
 let currentColor = '';
 let hue = 0;
@@ -48,9 +55,15 @@ const hslToRgb = (h, s, l) => {
   };
 };
 
+// convert hsl to RGB
+function rgbToHex(r, g, b) {
+  return '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+}
+
 const getColorCodes = (h, s, l) => {
   const { r, g, b } = hslToRgb(h, s, l);
   return {
+    _hex: rgbToHex(r, g, b),
     _r: r,
     _g: g,
     _b: b,
@@ -63,12 +76,17 @@ const getColorCodes = (h, s, l) => {
 };
 
 const setCurrentColor = color => {
-  color = tinycolor(color);
-  currentColor = color;
-  colorIndicator.style.backgroundColor = color;
-  document.body.style.backgroundColor = color;
-  spectrumCursor.style.backgroundColor = color;
-  hueCursor.style.backgroundColor = 'hsl(' + color.toHsl().h + ',100%, 50%)';
+  currentColor = color._rgb;
+  colorIndicator.style.backgroundColor = color._rgb;
+  document.body.style.backgroundColor = color._rgb;
+  spectrumCursor.style.backgroundColor = color._rgb;
+};
+
+const setColorValues = color => {
+  red.value = color._r;
+  green.value = color._g;
+  blue.value = color._b;
+  hex.value = color._hex;
 };
 
 const createLinearGradient = (canvas, ctx, color, horizontal = true) => {
@@ -115,11 +133,12 @@ const getSpectrumColor = e => {
   lightness = (hsvValue / 2) * (2 - hsvSaturation);
   saturation = (hsvValue * hsvSaturation) / (1 - Math.abs(2 * lightness - 1));
   const color = getColorCodes(hue, saturation, lightness);
-  console.log(color);
+  setCurrentColor(color);
+  setColorValues(color);
 };
 
-function ColorPicker() {
+const ColorPicker = () => {
   createShadeSpectrum();
-}
+};
 
 ColorPicker();
