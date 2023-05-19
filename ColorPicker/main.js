@@ -3,6 +3,11 @@ const spectrumCtx = spectrumCanvas.getContext('2d');
 const spectrumCursor = document.querySelector('#spectrum-cursor');
 const spectrumRect = spectrumCanvas.getBoundingClientRect();
 
+const hueCanvas = document.querySelector('#hue-canvas');
+const hueCtx = hueCanvas.getContext('2d');
+const hueCursor = document.querySelector('#hue-cursor');
+const hueRect = hueCanvas.getBoundingClientRect();
+
 const red = document.querySelector('#red');
 const blue = document.querySelector('#blue');
 const green = document.querySelector('#green');
@@ -160,8 +165,22 @@ const updateSpectrumCursor = (x, y) => {
   spectrumCursor.style.top = y + 'px';
 };
 
+const createHueSpectrum = () => {
+  const hueGradient = hueCtx.createLinearGradient(0, 0, 0, hueCanvas.height);
+  hueGradient.addColorStop(0.0, 'hsl(0, 100%, 50%)');
+  hueGradient.addColorStop(0.17, 'hsl(298.8, 100%, 50%)');
+  hueGradient.addColorStop(0.33, 'hsl(241.2, 100%, 50%)');
+  hueGradient.addColorStop(0.5, 'hsl(180, 100%, 50%)');
+  hueGradient.addColorStop(0.67, 'hsl(118.8, 100%, 50%)');
+  hueGradient.addColorStop(0.83, 'hsl(61.2, 100%, 50%)');
+  hueGradient.addColorStop(1.0, 'hsl(360, 100%, 50%)');
+  hueCtx.fillStyle = hueGradient;
+  hueCtx.fillRect(0, 0, hueCanvas.width, hueCanvas.height);
+};
+
 const ColorPicker = () => {
   createShadeSpectrum();
+  createHueSpectrum();
 };
 
 ColorPicker();
