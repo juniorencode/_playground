@@ -54,19 +54,18 @@ body {
 
 .colorpicker__cursor {
   top: 0;
-  left: 0;
+  right: -15px;
   width: 30px;
   height: 30px;
   margin-left: -15px;
   margin-top: -15px;
   border-radius: 100%;
-  background: #fff;
+  background: #f00;
   box-sizing: border-box;
   position: absolute;
   pointer-events: none;
   z-index: 2;
   border: 2px solid #fff;
-  transition: all 0.2s ease;
 }
 
 .colorpicker__cursor.dragging {

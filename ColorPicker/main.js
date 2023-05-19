@@ -80,7 +80,9 @@ const getColorCodes = (h, s, l) => {
     _h: h,
     _s: s,
     _l: l,
-    _hsl: `hsl(${h}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`
+    _hsl: `hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(
+      l * 100
+    )}%)`
   };
 };
 
@@ -112,7 +114,10 @@ const createLinearGradient = (canvas, ctx, color, horizontal = true) => {
 };
 
 const createShadeSpectrum = color => {
+  spectrumCtx.clearRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
+
   if (!color) color = '#f00';
+  console.log(color);
   spectrumCtx.fillStyle = color;
   spectrumCtx.fillRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
 
@@ -153,7 +158,6 @@ const getSpectrumColor = e => {
   const hsvSaturation = xRatio / 100;
   lightness = (hsvValue / 2) * (2 - hsvSaturation);
   saturation = (hsvValue * hsvSaturation) / (1 - Math.abs(2 * lightness - 1));
-  console.log(hue, saturation, lightness);
   const color = getColorCodes(hue, saturation, lightness);
   setCurrentColor(color);
   setColorValues(color);
@@ -176,6 +180,43 @@ const createHueSpectrum = () => {
   hueGradient.addColorStop(1.0, 'hsl(360, 100%, 50%)');
   hueCtx.fillStyle = hueGradient;
   hueCtx.fillRect(0, 0, hueCanvas.width, hueCanvas.height);
+
+  hueCanvas.addEventListener('mousedown', e => {
+    startGetHueColor(e);
+  });
+};
+
+const startGetHueColor = e => {
+  getHueColor(e);
+  hueCursor.classList.add('dragging');
+  window.addEventListener('mousemove', getHueColor);
+  window.addEventListener('mouseup', endGetHueColor);
+};
+const getHueColor = e => {
+  e.preventDefault();
+  let y = e.pageY - hueRect.top;
+
+  if (y > hueRect.height) y = hueRect.height;
+  if (y < 0) y = 0;
+
+  const percent = y / hueRect.height;
+  hue = 360 - 360 * percent;
+
+  const hueColor = getColorCodes(hue, 1, 0.5);
+  const color = getColorCodes(hue, saturation, lightness);
+  createShadeSpectrum(hueColor._hsl);
+  updateHueCursor(y, hueColor._hsl);
+  setCurrentColor(color);
+  setColorValues(color);
+};
+
+const updateHueCursor = y => {
+  hueCursor.style.top = y + 'px';
+};
+
+const endGetHueColor = e => {
+  hueCursor.classList.remove('dragging');
+  window.removeEventListener('mousemove', getHueColor);
 };
 
 const ColorPicker = () => {
