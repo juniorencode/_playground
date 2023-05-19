@@ -10,6 +10,11 @@ class Rectangle {
     this.draw();
   }
 
+  move(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
   draw() {
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x, this.y, this.w, this.h);
@@ -24,6 +29,11 @@ class Circle {
     this.color = randomRGBColor();
 
     this.draw();
+  }
+
+  move(x, y) {
+    this.x = x;
+    this.y = y;
   }
 
   draw() {
@@ -45,6 +55,19 @@ class Triangle {
     this.color = randomRGBColor();
 
     this.draw();
+  }
+
+  move(x, y) {
+    const dx = x - this.x1;
+    const dy = y - this.y1;
+    console.log(x, y, dx, dy);
+
+    this.x1 += dx;
+    this.y1 += dy;
+    this.x2 += dx;
+    this.y2 += dy;
+    this.x3 += dx;
+    this.y3 += dy;
   }
 
   draw() {

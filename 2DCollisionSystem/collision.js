@@ -28,6 +28,30 @@ const collisionCircleWithPoint = (circle, point) => {
   return collisionCircleWithCircle(circle, { ...point, r: 0 });
 };
 
+const collisionTriangleWithPoint = (triangle, point) => {
+  // calculate the vectors representing the sides of the triangle and the distance between the point and one of the triangle vertices
+  const v0 = { x: triangle.x3 - triangle.x1, y: triangle.y3 - triangle.y1 };
+  const v1 = { x: triangle.x2 - triangle.x1, y: triangle.y2 - triangle.y1 };
+  const v2 = { x: point.x - triangle.x1, y: point.y - triangle.y1 };
+
+  // dot products between the vectors
+  const dot00 = v0.x * v0.x + v0.y * v0.y;
+  const dot01 = v0.x * v1.x + v0.y * v1.y;
+  const dot02 = v0.x * v2.x + v0.y * v2.y;
+  const dot11 = v1.x * v1.x + v1.y * v1.y;
+  const dot12 = v1.x * v2.x + v1.y * v2.y;
+
+  // inverse of the denominator for use in barycentric coordinates
+  const invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+
+  // barycentric coordinates u and v
+  const u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+  const v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+  // check if the point is inside the triangle using the barycentric coordinates
+  return u >= 0 && v >= 0 && u + v <= 1;
+};
+
 const collisionRectangleWithCircle = (rectangle, circle) => {
   // closest point of the rectangle to the circle
   const closestX = Math.max(

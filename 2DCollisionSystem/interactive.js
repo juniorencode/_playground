@@ -21,17 +21,19 @@ canvas.addEventListener('mousedown', e => {
       startY = e.offsetY - circle.y;
     }
   });
+
+  triangles.map(triangle => {
+    if (collisionTriangleWithPoint(triangle, { x: e.offsetX, y: e.offsetY })) {
+      currentObject = triangle;
+      startX = e.offsetX - triangle.x1;
+      startY = e.offsetY - triangle.y1;
+    }
+  });
 });
 
 canvas.addEventListener('mousemove', e => {
-  if (currentObject != null) {
-    currentObject.x = e.offsetX - startX;
-    currentObject.y = e.offsetY - startY;
-
-    if (currentObject.normalize) {
-      currentObject.normalize();
-    }
-  }
+  if (currentObject != null)
+    currentObject.move(e.offsetX - startX, e.offsetY - startY);
 });
 
 canvas.addEventListener('mouseup', () => {
