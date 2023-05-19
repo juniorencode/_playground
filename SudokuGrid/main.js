@@ -1,4 +1,4 @@
-// Initial Sudoku Configuration
+// initial Sudoku Configuration
 const board = [
   [5, 3, 4, 6, 7, 8, 9, 1, 2],
   [6, 7, 2, 1, 9, 5, 3, 4, 8],
@@ -14,12 +14,12 @@ const board = [
 const canvas = document.querySelector('#sudoku');
 const ctx = canvas.getContext('2d');
 
-// Cell size
+// cell size
 const getCellSize = () => {
   return canvas.width / 9;
 };
 
-// Canvas size
+// canvas size
 const getCanvasSize = () => {
   return 450;
 };
@@ -32,7 +32,7 @@ const drawGrid = (cellSize, canvasSize) => {
   ctx.lineWidth = 1;
   ctx.beginPath();
 
-  // Draw vertical and horizontal lines
+  // draw vertical and horizontal lines
   for (let i = 0; i <= canvasSize; i += cellSize) {
     ctx.moveTo(i, 0);
     ctx.lineTo(i, canvasSize);
@@ -43,7 +43,7 @@ const drawGrid = (cellSize, canvasSize) => {
   ctx.closePath();
   ctx.stroke();
 
-  // Draw thicker lines for the subregions
+  // draw thicker lines for the subregions
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -59,7 +59,24 @@ const drawGrid = (cellSize, canvasSize) => {
   ctx.stroke();
 };
 
-// Function to draw the Sudoku
+const drawNumber = cellSize => {
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      const number = board[row][col];
+      const xPos = col * cellSize + cellSize / 2; // adjust for horizontal centering
+      const yPos = row * cellSize + cellSize / 2 + 5; // adjust for vertical centering
+
+      // draw the number
+      ctx.font = '36px sans-serif'; // size and font family
+      ctx.fillStyle = 'black'; // black color
+      ctx.textAlign = 'center'; // center alignment
+      ctx.textBaseline = 'middle'; // vertical center alignment
+      ctx.fillText(number.toString(), xPos, yPos);
+    }
+  }
+};
+
+// draw the Sudoku
 const drawSudoku = () => {
   const cellSize = getCellSize();
   const canvasSize = getCanvasSize();
@@ -67,6 +84,7 @@ const drawSudoku = () => {
   ctx.clearRect(0, 0, canvasSize, canvasSize);
 
   drawGrid(cellSize, canvasSize);
+  drawNumber(cellSize);
 };
 
 drawSudoku();
