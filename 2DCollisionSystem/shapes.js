@@ -1,5 +1,5 @@
 // shape module
-class Square {
+class Rectangle {
   constructor(x, y, w, h) {
     this.x = x;
     this.y = y;

@@ -1,17 +1,16 @@
 // collision module
-
 // native
-const collisionSquareWithSquare = (square1, square2) => {
+const collisionRectangleWithRectangle = (rectangle1, rectangle2) => {
   return (
-    square1.x + square1.w > square2.x &&
-    square1.x < square2.x + square2.w &&
-    square1.y + square1.h > square2.y &&
-    square1.y < square2.y + square2.h
+    rectangle1.x + rectangle1.w > rectangle2.x &&
+    rectangle1.x < rectangle2.x + rectangle2.w &&
+    rectangle1.y + rectangle1.h > rectangle2.y &&
+    rectangle1.y < rectangle2.y + rectangle2.h
   );
 };
 
-const collisionSquareWithPoint = (square, point) => {
-  return collisionSquareWithSquare(square, { ...point, w: 0, h: 0 });
+const collisionRectangleWithPoint = (rectangle, point) => {
+  return collisionRectangleWithRectangle(rectangle, { ...point, w: 0, h: 0 });
 };
 
 const collisionCircleWithCircle = (circle1, circle2) => {
@@ -29,12 +28,18 @@ const collisionCircleWithPoint = (circle, point) => {
   return collisionCircleWithCircle(circle, { ...point, r: 0 });
 };
 
-const collisionSquareWithCircle = (square, circle) => {
-  // closest point of the square to the circle
-  const closestX = Math.max(square.x, Math.min(circle.x, square.x + square.w));
-  const closestY = Math.max(square.y, Math.min(circle.y, square.y + square.h));
+const collisionRectangleWithCircle = (rectangle, circle) => {
+  // closest point of the rectangle to the circle
+  const closestX = Math.max(
+    rectangle.x,
+    Math.min(circle.x, rectangle.x + rectangle.w)
+  );
+  const closestY = Math.max(
+    rectangle.y,
+    Math.min(circle.y, rectangle.y + rectangle.h)
+  );
 
-  // distance between the squared and the closest point and the center of the circle
+  // distance between the rectangle and the closest point to the center of the circle
   const distanceX = circle.x - closestX;
   const distanceY = circle.y - closestY;
   const distanceSquared = distanceX * distanceX + distanceY * distanceY;
@@ -45,13 +50,13 @@ const collisionSquareWithCircle = (square, circle) => {
 
 // =================================================
 // iteration of all possible collisions
-const checkSquaresWithSquares = () => {
+const checkRectanglesWithRectangles = () => {
   let collision = false;
 
-  squares.map((square1, i) => {
-    squares.map((square2, j) => {
+  rectangles.map((rectangle1, i) => {
+    rectangles.map((rectangle2, j) => {
       if (i !== j) {
-        if (collisionSquareWithSquare(square1, square2)) {
+        if (collisionRectangleWithRectangle(rectangle1, rectangle2)) {
           collision = true;
         }
       }
@@ -77,12 +82,12 @@ function checkCirclesWithCircles() {
   return collision;
 }
 
-const checkSquaresWithCircles = () => {
+const checkRectanglesWithCircles = () => {
   let collision = false;
 
-  squares.map(square => {
+  rectangles.map(rectangle => {
     circles.map(circle => {
-      if (collisionSquareWithCircle(square, circle)) {
+      if (collisionRectangleWithCircle(rectangle, circle)) {
         collision = true;
       }
     });
@@ -93,8 +98,8 @@ const checkSquaresWithCircles = () => {
 
 const checkAllCollisions = () => {
   return (
-    checkSquaresWithSquares() ||
+    checkRectanglesWithRectangles() ||
     checkCirclesWithCircles() ||
-    checkSquaresWithCircles()
+    checkRectanglesWithCircles()
   );
 };

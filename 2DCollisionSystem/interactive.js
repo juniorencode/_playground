@@ -4,11 +4,13 @@ startX = 0;
 startY = 0;
 
 canvas.addEventListener('mousedown', e => {
-  squares.map(square => {
-    if (collisionSquareWithPoint(square, { x: e.offsetX, y: e.offsetY })) {
-      currentObject = square;
-      startX = e.offsetX - square.x;
-      startY = e.offsetY - square.y;
+  rectangles.map(rectangle => {
+    if (
+      collisionRectangleWithPoint(rectangle, { x: e.offsetX, y: e.offsetY })
+    ) {
+      currentObject = rectangle;
+      startX = e.offsetX - rectangle.x;
+      startY = e.offsetY - rectangle.y;
     }
   });
 

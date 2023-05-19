@@ -1,7 +1,7 @@
 let canvas = document.querySelector('#canvas');
 let ctx = canvas.getContext('2d');
 
-let squares = [];
+let rectangles = [];
 let circles = [];
 
 canvas.width = 600;
@@ -13,7 +13,7 @@ const clear = () => {
 };
 
 const draw = () => {
-  squares.map(square => square.draw());
+  rectangles.map(square => square.draw());
   circles.map(circle => circle.draw());
 };
 
@@ -43,7 +43,7 @@ const loop = () => {
 
 loop();
 
-squares.push(new Square(10, 10, 50, 50));
-squares.push(new Square(10, 70, 50, 50));
+rectangles.push(new Rectangle(10, 10, 50, 50));
+rectangles.push(new Rectangle(10, 70, 50, 50));
 circles.push(new Circle(35, 155, 25));
 circles.push(new Circle(35, 215, 25));
