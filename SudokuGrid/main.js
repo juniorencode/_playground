@@ -27,6 +27,24 @@ const getCanvasSize = () => {
 canvas.width = getCanvasSize();
 canvas.height = getCanvasSize();
 
+// variable to store the selected number
+let selectedNumber = null;
+
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+
+  // selected cell
+  const selectedCol = Math.floor(mouseX / getCellSize());
+  const selectedRow = Math.floor(mouseY / getCellSize());
+
+  // current number in the selected cell
+  selectedNumber = board[selectedRow][selectedCol];
+
+  console.log(selectedNumber);
+});
+
 const drawGrid = (cellSize, canvasSize) => {
   ctx.strokeStyle = 'lightgray';
   ctx.lineWidth = 1;
