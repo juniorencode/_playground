@@ -28,9 +28,105 @@ const collisionPointInCircle = (point, circle) => {
   return collisionCircleWithCircle(circle, { ...point, r: 0 });
 };
 
+const segmentsIntersect = (x1, y1, x2, y2, x3, y3, x4, y4) => {
+  // directions of the segments
+  const d1 = direction(x1, y1, x2, y2, x3, y3);
+  const d2 = direction(x1, y1, x2, y2, x4, y4);
+  const d3 = direction(x3, y3, x4, y4, x1, y1);
+  const d4 = direction(x3, y3, x4, y4, x2, y2);
+
+  // check if the segments intersect
+  return (
+    ((d1 < 0 && d2 > 0) || (d1 > 0 && d2 < 0)) &&
+    ((d3 < 0 && d4 > 0) || (d3 > 0 && d4 < 0))
+  );
+};
+
 const direction = (x1, y1, x2, y2, x3, y3) => {
   // direction of point (x3, y3) with respect to the segment (x1, y1) - (x2, y2)
   return (x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1);
+};
+
+const collisionTriangleWithTriangle = (triangle1, triangle2) => {
+  // check collision between the three segments of the triangles
+  if (
+    segmentsIntersect(
+      triangle1.x1,
+      triangle1.y1,
+      triangle1.x2,
+      triangle1.y2,
+      triangle2.x1,
+      triangle2.y1,
+      triangle2.x2,
+      triangle2.y2
+    ) ||
+    segmentsIntersect(
+      triangle1.x1,
+      triangle1.y1,
+      triangle1.x2,
+      triangle1.y2,
+      triangle2.x2,
+      triangle2.y2,
+      triangle2.x3,
+      triangle2.y3
+    ) ||
+    segmentsIntersect(
+      triangle1.x2,
+      triangle1.y2,
+      triangle1.x3,
+      triangle1.y3,
+      triangle2.x1,
+      triangle2.y1,
+      triangle2.x2,
+      triangle2.y2
+    ) ||
+    segmentsIntersect(
+      triangle1.x2,
+      triangle1.y2,
+      triangle1.x3,
+      triangle1.y3,
+      triangle2.x2,
+      triangle2.y2,
+      triangle2.x3,
+      triangle2.y3
+    ) ||
+    segmentsIntersect(
+      triangle1.x3,
+      triangle1.y3,
+      triangle1.x1,
+      triangle1.y1,
+      triangle2.x1,
+      triangle2.y1,
+      triangle2.x2,
+      triangle2.y2
+    ) ||
+    segmentsIntersect(
+      triangle1.x3,
+      triangle1.y3,
+      triangle1.x1,
+      triangle1.y1,
+      triangle2.x2,
+      triangle2.y2,
+      triangle2.x3,
+      triangle2.y3
+    )
+  ) {
+    return true;
+  }
+
+  // check if one triangle is completely contained in the other
+  if (
+    collisionPointInTriangle({ x: triangle1.x1, y: triangle1.y1 }, triangle2) ||
+    collisionPointInTriangle({ x: triangle1.x2, y: triangle1.y2 }, triangle2) ||
+    collisionPointInTriangle({ x: triangle1.x3, y: triangle1.y3 }, triangle2) ||
+    collisionPointInTriangle({ x: triangle2.x1, y: triangle2.y1 }, triangle1) ||
+    collisionPointInTriangle({ x: triangle2.x2, y: triangle2.y2 }, triangle1) ||
+    collisionPointInTriangle({ x: triangle2.x3, y: triangle2.y3 }, triangle1)
+  ) {
+    return true;
+  }
+
+  return false;
 };
 
 const collisionPointInTriangle = (point, triangle) => {
@@ -99,6 +195,22 @@ const checkCirclesWithCircles = () => {
   return collision;
 };
 
+const checkTrianglesWithTriangles = () => {
+  let collision = false;
+
+  triangles.map((triangle1, i) => {
+    triangles.map((triangle2, j) => {
+      if (i !== j) {
+        if (collisionTriangleWithTriangle(triangle1, triangle2)) {
+          collision = true;
+        }
+      }
+    });
+  });
+
+  return collision;
+};
+
 const checkRectanglesWithCircles = () => {
   let collision = false;
 
@@ -117,6 +229,7 @@ const checkAllCollisions = () => {
   return (
     checkRectanglesWithRectangles() ||
     checkCirclesWithCircles() ||
-    checkRectanglesWithCircles()
+    checkRectanglesWithCircles() ||
+    checkTrianglesWithTriangles()
   );
 };
