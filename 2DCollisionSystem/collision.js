@@ -9,7 +9,7 @@ const collisionRectangleWithRectangle = (rectangle1, rectangle2) => {
   );
 };
 
-const collisionRectangleWithPoint = (rectangle, point) => {
+const collisionPointInRectangle = (point, rectangle) => {
   return collisionRectangleWithRectangle(rectangle, { ...point, w: 0, h: 0 });
 };
 
@@ -24,32 +24,25 @@ const collisionCircleWithCircle = (circle1, circle2) => {
   return distanceSquared <= radii * radii;
 };
 
-const collisionCircleWithPoint = (circle, point) => {
+const collisionPointInCircle = (point, circle) => {
   return collisionCircleWithCircle(circle, { ...point, r: 0 });
 };
 
-const collisionTriangleWithPoint = (triangle, point) => {
-  // calculate the vectors representing the sides of the triangle and the distance between the point and one of the triangle vertices
-  const v0 = { x: triangle.x3 - triangle.x1, y: triangle.y3 - triangle.y1 };
-  const v1 = { x: triangle.x2 - triangle.x1, y: triangle.y2 - triangle.y1 };
-  const v2 = { x: point.x - triangle.x1, y: point.y - triangle.y1 };
+const direction = (x1, y1, x2, y2, x3, y3) => {
+  // direction of point (x3, y3) with respect to the segment (x1, y1) - (x2, y2)
+  return (x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1);
+};
 
-  // dot products between the vectors
-  const dot00 = v0.x * v0.x + v0.y * v0.y;
-  const dot01 = v0.x * v1.x + v0.y * v1.y;
-  const dot02 = v0.x * v2.x + v0.y * v2.y;
-  const dot11 = v1.x * v1.x + v1.y * v1.y;
-  const dot12 = v1.x * v2.x + v1.y * v2.y;
+const collisionPointInTriangle = (point, triangle) => {
+  const { x1, y1, x2, y2, x3, y3 } = triangle;
 
-  // inverse of the denominator for use in barycentric coordinates
-  const invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+  // direction of the point with respect to each side of the triangle
+  const d1 = direction(x1, y1, x2, y2, point.x, point.y);
+  const d2 = direction(x2, y2, x3, y3, point.x, point.y);
+  const d3 = direction(x3, y3, x1, y1, point.x, point.y);
 
-  // barycentric coordinates u and v
-  const u = (dot11 * dot02 - dot01 * dot12) * invDenom;
-  const v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-
-  // check if the point is inside the triangle using the barycentric coordinates
-  return u >= 0 && v >= 0 && u + v <= 1;
+  // check if the point is inside the triangle
+  return (d1 >= 0 && d2 >= 0 && d3 >= 0) || (d1 <= 0 && d2 <= 0 && d3 <= 0);
 };
 
 const collisionRectangleWithCircle = (rectangle, circle) => {
@@ -90,7 +83,7 @@ const checkRectanglesWithRectangles = () => {
   return collision;
 };
 
-function checkCirclesWithCircles() {
+const checkCirclesWithCircles = () => {
   let collision = false;
 
   circles.map((circle1, i) => {
@@ -104,7 +97,7 @@ function checkCirclesWithCircles() {
   });
 
   return collision;
-}
+};
 
 const checkRectanglesWithCircles = () => {
   let collision = false;

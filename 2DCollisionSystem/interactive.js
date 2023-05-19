@@ -5,9 +5,7 @@ startY = 0;
 
 canvas.addEventListener('mousedown', e => {
   rectangles.map(rectangle => {
-    if (
-      collisionRectangleWithPoint(rectangle, { x: e.offsetX, y: e.offsetY })
-    ) {
+    if (collisionPointInRectangle({ x: e.offsetX, y: e.offsetY }, rectangle)) {
       currentObject = rectangle;
       startX = e.offsetX - rectangle.x;
       startY = e.offsetY - rectangle.y;
@@ -15,7 +13,7 @@ canvas.addEventListener('mousedown', e => {
   });
 
   circles.map(circle => {
-    if (collisionCircleWithPoint(circle, { x: e.offsetX, y: e.offsetY })) {
+    if (collisionPointInCircle({ x: e.offsetX, y: e.offsetY }, circle)) {
       currentObject = circle;
       startX = e.offsetX - circle.x;
       startY = e.offsetY - circle.y;
@@ -23,7 +21,7 @@ canvas.addEventListener('mousedown', e => {
   });
 
   triangles.map(triangle => {
-    if (collisionTriangleWithPoint(triangle, { x: e.offsetX, y: e.offsetY })) {
+    if (collisionPointInTriangle({ x: e.offsetX, y: e.offsetY }, triangle)) {
       currentObject = triangle;
       startX = e.offsetX - triangle.x1;
       startY = e.offsetY - triangle.y1;

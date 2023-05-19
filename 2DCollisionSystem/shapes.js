@@ -60,7 +60,6 @@ class Triangle {
   move(x, y) {
     const dx = x - this.x1;
     const dy = y - this.y1;
-    console.log(x, y, dx, dy);
 
     this.x1 += dx;
     this.y1 += dy;
