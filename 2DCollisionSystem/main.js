@@ -53,3 +53,5 @@ circles.push(new Circle(35, 255, 25));
 circles.push(new Circle(35, 315, 25));
 triangles.push(new Triangle(35, 355, 10, 405, 60, 405));
 triangles.push(new Triangle(35, 415, 10, 465, 60, 465));
+triangles.push(new Triangle(10, 480, 20, 530, 60, 540));
+triangles.push(new Triangle(10, 550, 20, 590, 60, 570));

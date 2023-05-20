@@ -10,7 +10,7 @@ const collisionRectangleWithRectangle = (rectangle1, rectangle2) => {
 };
 
 const collisionPointInRectangle = (point, rectangle) => {
-  return collisionRectangleWithRectangle(rectangle, { ...point, w: 0, h: 0 });
+  return collisionRectangleWithRectangle({ ...point, w: 0, h: 0 }, rectangle);
 };
 
 const collisionCircleWithCircle = (circle1, circle2) => {
@@ -161,6 +161,51 @@ const collisionRectangleWithCircle = (rectangle, circle) => {
   return distanceSquared <= circle.r * circle.r;
 };
 
+function segmentIntersectsRectangle(x1, y1, x2, y2, rx, ry, rw, rh) {
+  // check if the segment intersects with any of the four edges of the rectangle
+  return (
+    segmentsIntersect(x1, y1, x2, y2, rx, ry, rx + rw, ry) ||
+    segmentsIntersect(x1, y1, x2, y2, rx + rw, ry, rx + rw, ry + rh) ||
+    segmentsIntersect(x1, y1, x2, y2, rx + rw, ry + rh, rx, ry + rh) ||
+    segmentsIntersect(x1, y1, x2, y2, rx, ry + rh, rx, ry)
+  );
+}
+
+const collisionRectangleWithTriangle = (rectangle, triangle) => {
+  return (
+    segmentIntersectsRectangle(
+      triangle.x1,
+      triangle.y1,
+      triangle.x2,
+      triangle.y2,
+      rectangle.x,
+      rectangle.y,
+      rectangle.w,
+      rectangle.h
+    ) ||
+    segmentIntersectsRectangle(
+      triangle.x2,
+      triangle.y2,
+      triangle.x3,
+      triangle.y3,
+      rectangle.x,
+      rectangle.y,
+      rectangle.w,
+      rectangle.h
+    ) ||
+    segmentIntersectsRectangle(
+      triangle.x3,
+      triangle.y3,
+      triangle.x1,
+      triangle.y1,
+      rectangle.x,
+      rectangle.y,
+      rectangle.w,
+      rectangle.h
+    )
+  );
+};
+
 // =================================================
 // iteration of all possible collisions
 const checkRectanglesWithRectangles = () => {
@@ -225,11 +270,25 @@ const checkRectanglesWithCircles = () => {
   return collision;
 };
 
+const checkRectanglesWithTriangles = () => {
+  let collision = false;
+  rectangles.map(rectangle => {
+    triangles.map(triangle => {
+      if (collisionRectangleWithTriangle(rectangle, triangle)) {
+        collision = true;
+      }
+    });
+  });
+
+  return collision;
+};
+
 const checkAllCollisions = () => {
   return (
     checkRectanglesWithRectangles() ||
     checkCirclesWithCircles() ||
     checkRectanglesWithCircles() ||
-    checkTrianglesWithTriangles()
+    checkTrianglesWithTriangles() ||
+    checkRectanglesWithTriangles()
   );
 };
