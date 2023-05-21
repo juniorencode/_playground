@@ -317,6 +317,7 @@ const colorToPos = hsl => {
   const hueY = hueRect.height - (hue / 360) * hueRect.height;
   updateSpectrumCursor(x, y);
   updateHueCursor(hueY);
+  setCurrentColor(color);
 };
 
 ColorPicker();
