@@ -314,7 +314,9 @@ const colorToPos = hsl => {
   const x = spectrumRect.width * hsv.s;
   const y = spectrumRect.height * (1 - hsv.v);
   hue = hsl.h;
+  const hueY = hueRect.height - (hue / 360) * hueRect.height;
   updateSpectrumCursor(x, y);
+  updateHueCursor(hueY);
 };
 
 ColorPicker();
