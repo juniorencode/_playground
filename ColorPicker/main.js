@@ -33,6 +33,20 @@ const hueToRgb = (p, q, t) => {
   return p;
 };
 
+// convert hsl to hsv
+const hslToHsv = (h, s, l) => {
+  const max = l + s * Math.min(l, 1 - l);
+  const min = l - s * Math.min(l, 1 - l);
+  const delta = max - min;
+  const saturation = max === 0 ? 0 : delta / max;
+
+  return {
+    h: h,
+    s: saturation,
+    v: max
+  };
+};
+
 // convert hsl to RGB
 const hslToRgb = (h, s, l) => {
   // normalize the HSL values to the range [0, 1]
@@ -63,29 +77,77 @@ const hslToRgb = (h, s, l) => {
   };
 };
 
+// convert RGB to hsl
+const rgbToHsl = (r, g, b) => {
+  const normalizedR = r / 255;
+  const normalizedG = g / 255;
+  const normalizedB = b / 255;
+
+  const max = Math.max(normalizedR, normalizedG, normalizedB);
+  const min = Math.min(normalizedR, normalizedG, normalizedB);
+
+  const lightness = (max + min) / 2;
+
+  let saturation = 0;
+  if (max !== min) {
+    const delta = max - min;
+    saturation =
+      lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min);
+  }
+
+  let hue = 0;
+  if (max !== min) {
+    switch (max) {
+      case normalizedR:
+        hue =
+          (normalizedG - normalizedB) / (6 * (max - min)) +
+          (normalizedG < normalizedB ? 1 : 0);
+        break;
+      case normalizedG:
+        hue = (normalizedB - normalizedR) / (6 * (max - min)) + 1 / 3;
+        break;
+      case normalizedB:
+        hue = (normalizedR - normalizedG) / (6 * (max - min)) + 2 / 3;
+        break;
+    }
+  }
+
+  if (hue < 0) hue++;
+
+  return {
+    h: hue * 360,
+    s: saturation,
+    l: lightness
+  };
+};
+
 // convert hsl to RGB
 function rgbToHex(r, g, b) {
   return '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
 }
 
-const getColorCodes = (h, s, l) => {
-  if (isNaN(h)) h = 0;
-  if (isNaN(s)) s = 0;
-  if (isNaN(l)) l = 0;
+const getColorCodes = (h0, s0, l0) => {
+  if (isNaN(h0)) h0 = 0;
+  if (isNaN(s0)) s0 = 0;
+  if (isNaN(l0)) l0 = 0;
 
-  const { r, g, b } = hslToRgb(h, s, l);
+  const { r, g, b } = hslToRgb(h0, s0, l0);
+  const { h, s, v } = hslToHsv(h0, s0, l0);
   return {
     _hex: rgbToHex(r, g, b),
     _r: r,
     _g: g,
     _b: b,
     _rgb: `rgba(${r}, ${g}, ${b}, 1)`,
-    _h: h,
-    _s: s,
-    _l: l,
-    _hsl: `hsl(${Math.round(h)}, ${Math.round(s * 100)}%, ${Math.round(
-      l * 100
-    )}%)`
+    _h: h0,
+    _s: s0,
+    _l: l0,
+    _hsl: `hsl(${Math.round(h0)}, ${Math.round(s0 * 100)}%, ${Math.round(
+      l0 * 100
+    )}%)`,
+    _h2: h,
+    _s2: s,
+    _v2: v
   };
 };
 
@@ -120,7 +182,6 @@ const createShadeSpectrum = color => {
   spectrumCtx.clearRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
 
   if (!color) color = '#f00';
-  console.log(color);
   spectrumCtx.fillStyle = color;
   spectrumCtx.fillRect(0, 0, spectrumCanvas.width, spectrumCanvas.height);
 
@@ -231,5 +292,29 @@ modeToggle.addEventListener('click', () => {
   rgbFields.classList.toggle('active');
   hexField.classList.toggle('active');
 });
+
+red.addEventListener('change', function () {
+  const color = rgbToHsl(red.value, green.value, blue.value);
+  colorToPos(color);
+});
+
+green.addEventListener('change', function () {
+  const color = rgbToHsl(red.value, green.value, blue.value);
+  colorToPos(color);
+});
+
+blue.addEventListener('change', function () {
+  const color = rgbToHsl(red.value, green.value, blue.value);
+  colorToPos(color);
+});
+
+const colorToPos = hsl => {
+  const color = getColorCodes(hsl.h, hsl.s, hsl.l);
+  const hsv = { h: color._h2, s: color._s2, v: color._v2 };
+  const x = spectrumRect.width * hsv.s;
+  const y = spectrumRect.height * (1 - hsv.v);
+  hue = hsl.h;
+  updateSpectrumCursor(x, y);
+};
 
 ColorPicker();
