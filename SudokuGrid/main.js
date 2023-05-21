@@ -44,6 +44,10 @@ canvas.addEventListener('click', e => {
   selectedCol = Math.floor(mouseX / getCellSize());
   selectedRow = Math.floor(mouseY / getCellSize());
 
+  // region index
+  selectedRegionRow = Math.floor(selectedRow / 3);
+  selectedRegionCol = Math.floor(selectedCol / 3);
+
   // current number in the selected cell
   selectedNumber = board[selectedRow][selectedCol];
 
@@ -57,12 +61,6 @@ const drawSelectedCell = cellSize => {
     for (let col = 0; col < 9; col++) {
       const number = board[row][col];
 
-      // draw the highlighted square if it is selected or if the number matches
-      if (number !== '' && number === selectedNumber) {
-        ctx.fillStyle = '#bbdefb';
-        ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
-      }
-
       // check if the current square is selected
       const isSelectedSquare =
         col === selectedCol ||
@@ -72,6 +70,12 @@ const drawSelectedCell = cellSize => {
 
       if (isSelectedSquare) {
         ctx.fillStyle = 'rgba(0, 0, 0, .1)';
+        ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+      }
+
+      // draw the highlighted square if it is selected or if the number matches
+      if (number !== '' && number === selectedNumber) {
+        ctx.fillStyle = '#bbdefb';
         ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
       }
     }
