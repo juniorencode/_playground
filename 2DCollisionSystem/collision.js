@@ -161,7 +161,7 @@ const collisionRectangleWithCircle = (rectangle, circle) => {
   return distanceSquared <= circle.r * circle.r;
 };
 
-function segmentIntersectsRectangle(x1, y1, x2, y2, rx, ry, rw, rh) {
+const segmentIntersectsRectangle = (x1, y1, x2, y2, rx, ry, rw, rh) => {
   // check if the segment intersects with any of the four edges of the rectangle
   return (
     segmentsIntersect(x1, y1, x2, y2, rx, ry, rx + rw, ry) ||
@@ -169,7 +169,7 @@ function segmentIntersectsRectangle(x1, y1, x2, y2, rx, ry, rw, rh) {
     segmentsIntersect(x1, y1, x2, y2, rx + rw, ry + rh, rx, ry + rh) ||
     segmentsIntersect(x1, y1, x2, y2, rx, ry + rh, rx, ry)
   );
-}
+};
 
 const collisionRectangleWithTriangle = (rectangle, triangle) => {
   return (
@@ -202,6 +202,74 @@ const collisionRectangleWithTriangle = (rectangle, triangle) => {
       rectangle.y,
       rectangle.w,
       rectangle.h
+    )
+  );
+};
+
+const segmentIntersectsCircle = (x1, y1, x2, y2, cx, cy, radius) => {
+  // length and direction of the segment
+  const segmentLength = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+  const segmentDirectionX = (x2 - x1) / segmentLength;
+  const segmentDirectionY = (y2 - y1) / segmentLength;
+
+  // calculate the projected point on the segment
+  const projectedPointOnSegment =
+    (cx - x1) * segmentDirectionX + (cy - y1) * segmentDirectionY;
+
+  // check if the projected point is outside the segment
+  if (projectedPointOnSegment < 0 || projectedPointOnSegment > segmentLength)
+    return false;
+
+  const projectedPointX = x1 + projectedPointOnSegment * segmentDirectionX;
+  const projectedPointY = y1 + projectedPointOnSegment * segmentDirectionY;
+
+  // distance between the projected point and the center of the circle
+  const distanceToPoint = Math.sqrt(
+    (projectedPointX - cx) ** 2 + (projectedPointY - cy) ** 2
+  );
+
+  return distanceToPoint <= radius;
+};
+
+const collisionCircleWithTriangle = (circle, triangle) => {
+  // check if the center of the circle is inside the triangle
+  // check if any of the vertices are inside the circle
+  if (
+    collisionPointInTriangle({ x: circle.x, y: circle.y }, triangle) ||
+    collisionPointInCircle({ x: triangle.x1, y: triangle.y1 }, circle) ||
+    collisionPointInCircle({ x: triangle.x2, y: triangle.y2 }, circle) ||
+    collisionPointInCircle({ x: triangle.x3, y: triangle.y3 }, circle)
+  )
+    return true;
+
+  // check if the circle intersects with any side of the triangle
+  return (
+    segmentIntersectsCircle(
+      triangle.x1,
+      triangle.y1,
+      triangle.x2,
+      triangle.y2,
+      circle.x,
+      circle.y,
+      circle.r
+    ) ||
+    segmentIntersectsCircle(
+      triangle.x2,
+      triangle.y2,
+      triangle.x3,
+      triangle.y3,
+      circle.x,
+      circle.y,
+      circle.r
+    ) ||
+    segmentIntersectsCircle(
+      triangle.x3,
+      triangle.y3,
+      triangle.x1,
+      triangle.y1,
+      circle.x,
+      circle.y,
+      circle.r
     )
   );
 };
@@ -283,12 +351,26 @@ const checkRectanglesWithTriangles = () => {
   return collision;
 };
 
+const checkCirclesWithTriangles = () => {
+  let collision = false;
+  circles.map(circle => {
+    triangles.map(triangle => {
+      if (collisionCircleWithTriangle(circle, triangle)) {
+        collision = true;
+      }
+    });
+  });
+
+  return collision;
+};
+
 const checkAllCollisions = () => {
   return (
     checkRectanglesWithRectangles() ||
     checkCirclesWithCircles() ||
     checkRectanglesWithCircles() ||
     checkTrianglesWithTriangles() ||
-    checkRectanglesWithTriangles()
+    checkRectanglesWithTriangles() ||
+    checkCirclesWithTriangles()
   );
 };
