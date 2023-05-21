@@ -13,6 +13,9 @@ const blue = document.querySelector('#blue');
 const green = document.querySelector('#green');
 const hex = document.querySelector('#hex');
 
+const modeToggle = document.querySelector('#mode-toggle');
+const rgbFields = document.querySelector('#rgb-fields');
+const hexField = document.querySelector('#hex-field');
 const colorIndicator = document.querySelector('#color-indicator');
 
 let currentColor = '';
@@ -223,5 +226,10 @@ const ColorPicker = () => {
   createShadeSpectrum();
   createHueSpectrum();
 };
+
+modeToggle.addEventListener('click', () => {
+  rgbFields.classList.toggle('active');
+  hexField.classList.toggle('active');
+});
 
 ColorPicker();

@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="colorpicker__panel">
-        <div class="colorpicker__mode active">
+        <div id="rgb-fields" class="colorpicker__mode active">
           <div class="colorpicker__group">
             <label class="colorpicker__label">R:</label>
             <input
@@ -61,7 +61,7 @@
             />
           </div>
         </div>
-        <div class="colorpicker__mode">
+        <div id="hex-field" class="colorpicker__mode">
           <label class="colorpicker__label">Hex:</label>
           <input
             type="text"
@@ -70,7 +70,10 @@
             value="#FF0000"
           />
         </div>
-        <button class="colorpicker__button colorpicker__button--toggle">
+        <button
+          id="mode-toggle"
+          class="colorpicker__button colorpicker__button--toggle"
+        >
           Mode
         </button>
       </div>
