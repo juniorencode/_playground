@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  line-height: 1.4rem;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: royalblue;
+}
+
+.container {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+}
+
+.card {
+  padding: 20px;
+  background-color: #fff;
+  color: #424242;
+  border-radius: 10px;
+}
+
+.card span {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
