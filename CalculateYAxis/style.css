@@ -34,3 +34,8 @@ body {
   font-weight: bold;
   font-size: 0.9rem;
 }
+
+.card pre {
+  overflow: auto;
+  white-space: pre-wrap;
+}
