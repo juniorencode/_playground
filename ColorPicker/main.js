@@ -318,6 +318,11 @@ const colorToPos = hsl => {
   updateSpectrumCursor(x, y);
   updateHueCursor(hueY);
   setCurrentColor(color);
+  createShadeSpectrum(colorToHue(color));
+};
+
+const colorToHue = color => {
+  return getColorCodes(color._h, 1, 0.5)._hsl;
 };
 
 ColorPicker();
