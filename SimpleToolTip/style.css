@@ -99,3 +99,16 @@ body {
   border-left-width: 0;
   border-right-color: rgba(0, 0, 0, 0.8);
 }
+
+.tooltip__bottom:before {
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.tooltip__bottom:after {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-width: 0;
+  border-bottom-color: rgba(0, 0, 0, 0.8);
+}
