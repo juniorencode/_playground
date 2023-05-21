@@ -65,7 +65,10 @@ const drawSelectedCell = cellSize => {
 
       // check if the current square is selected
       const isSelectedSquare =
-        row === selectedRow || Math.floor(row / 3) === selectedRegionRow;
+        col === selectedCol ||
+        row === selectedRow ||
+        (Math.floor(row / 3) === selectedRegionRow &&
+          Math.floor(col / 3) === selectedRegionCol);
 
       if (isSelectedSquare) {
         ctx.fillStyle = 'rgba(0, 0, 0, .1)';
