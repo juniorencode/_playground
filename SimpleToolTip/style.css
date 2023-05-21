@@ -43,3 +43,45 @@ body {
 .button:hover {
   background-color: #1e88e5;
 }
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip:before {
+  display: none;
+  position: absolute;
+  content: attr(title);
+  max-width: 200px;
+  padding: 10px;
+  font-size: 0.8em;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+.tooltip:after {
+  display: none;
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+}
+
+.tooltip:hover:before,
+.tooltip:hover:after {
+  display: inline-block;
+}
+
+.tooltip__top:before {
+  bottom: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.tooltip__top:after {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-width: 0;
+  border-top-color: rgba(0, 0, 0, 0.8);
+}
