@@ -52,6 +52,7 @@ body {
   display: none;
   position: absolute;
   content: attr(title);
+  width: max-content;
   max-width: 200px;
   padding: 10px;
   font-size: 0.8em;
@@ -84,4 +85,17 @@ body {
   transform: translateX(-50%);
   border-bottom-width: 0;
   border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+.tooltip__right:before {
+  top: 50%;
+  left: calc(100% + 5px);
+  transform: translateY(-50%);
+}
+.tooltip__right:after {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-left-width: 0;
+  border-right-color: rgba(0, 0, 0, 0.8);
 }
