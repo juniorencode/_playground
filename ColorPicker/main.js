@@ -156,6 +156,7 @@ const setCurrentColor = color => {
   colorIndicator.style.backgroundColor = color._rgb;
   document.body.style.backgroundColor = color._rgb;
   spectrumCursor.style.backgroundColor = color._rgb;
+  hueCursor.style.backgroundColor = 'hsl(' + color._h + ',100%, 50%)';
 };
 
 const setColorValues = color => {
