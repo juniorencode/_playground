@@ -30,7 +30,7 @@ const reduceToNearestPowerOfTen = number => {
 const calculate = elem => {
   elem.step = 10;
   elem.absMinValue = Math.floor(elem.minValue / elem.step) * elem.step;
-  elem.absMaxValue = (Math.floor(elem.maxValue / elem.step) + 1) * elem.step;
+  elem.absMaxValue = Math.ceil(elem.maxValue / elem.step) * elem.step;
   elem.absMax = Math.max(
     Math.abs(elem.absMinValue),
     Math.abs(elem.absMaxValue)
@@ -44,9 +44,15 @@ const calculate = elem => {
 
   while (elem.cleanNumbers.length > elem.limit) {
     elem.step *= 2;
-    elem.cleanNumbers = elem.cleanNumbers.filter(
-      (_, index) => (index + 1) % 2 !== 0
-    );
+    const tempCleanNumbers = [];
+
+    for (let i = 0; i < elem.cleanNumbers.length; i++) {
+      if (i % 2 === 0 || Math.abs(elem.cleanNumbers[i]) === 0) {
+        tempCleanNumbers.push(elem.cleanNumbers[i]);
+      }
+    }
+
+    elem.cleanNumbers = tempCleanNumbers;
     elem.result = elem.cleanNumbers.filter(
       n =>
         n >= elem.absMinValue - elem.step && n <= elem.absMaxValue + elem.step
@@ -89,6 +95,7 @@ const createCard = (minValue, maxValue, limit) => {
   });
 };
 
+createCard(-1200, 700, 11);
 createCard(-44, 182, 11);
 createCard(-44, 192, 11);
 createCard(16, 157, 5);
