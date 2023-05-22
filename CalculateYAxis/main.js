@@ -6,12 +6,11 @@ const isCleanNumber = number => {
   return Math.abs(number) % 10 === 0;
 };
 
-const findCleanNumbers = (minValue, maxValue) => {
-  const absMax = Math.max(Math.abs(minValue), Math.abs(maxValue));
-  const ini = minValue < 0 ? -absMax : 0;
+const findCleanNumbers = elem => {
+  const ini = elem.minValue < 0 ? -elem.absMax : 0;
   const cleanNumbers = [];
 
-  for (let i = ini; i <= absMax; i++) {
+  for (let i = ini; i <= elem.absMax; i++) {
     if (isCleanNumber(i)) {
       cleanNumbers.push(i);
     }
@@ -20,10 +19,39 @@ const findCleanNumbers = (minValue, maxValue) => {
   return cleanNumbers;
 };
 
+const reduceToNearestPowerOfTen = number => {
+  const log = Math.floor(Math.log10(number));
+  const powerOfTen = Math.pow(10, log);
+  const reduced = Math.ceil(number / powerOfTen) * powerOfTen;
+
+  return reduced;
+};
+
 const calculate = elem => {
-  elem.absMinValue = Math.floor(elem.minValue / 10) * 10;
-  elem.absMaxValue = (Math.floor(elem.maxValue / 10) + 1) * 10;
-  elem.cleanNumbers = findCleanNumbers(elem.absMinValue, elem.absMaxValue);
+  elem.step = 10;
+  elem.absMinValue = Math.floor(elem.minValue / elem.step) * elem.step;
+  elem.absMaxValue = (Math.floor(elem.maxValue / elem.step) + 1) * elem.step;
+  elem.absMax = Math.max(
+    Math.abs(elem.absMinValue),
+    Math.abs(elem.absMaxValue)
+  );
+  elem.absMax =
+    elem.absMax % (elem.step * 2) !== 0 ? elem.absMax + elem.step : elem.absMax;
+  elem.cleanNumbers = findCleanNumbers(elem);
+  elem.result = elem.cleanNumbers.filter(
+    n => n >= elem.absMinValue - elem.step && n <= elem.absMaxValue + elem.step
+  );
+
+  while (elem.cleanNumbers.length > elem.limit) {
+    elem.step *= 2;
+    elem.cleanNumbers = elem.cleanNumbers.filter(
+      (_, index) => (index + 1) % 2 !== 0
+    );
+    elem.result = elem.cleanNumbers.filter(
+      n =>
+        n >= elem.absMinValue - elem.step && n <= elem.absMaxValue + elem.step
+    );
+  }
 };
 
 const print = () => {
@@ -34,32 +62,35 @@ const print = () => {
 
     card.classList.add('card');
     card.innerHTML = `
+      <p><span>Step:</span> ${elem.step}</p>
       <p><span>Minimum value:</span> ${elem.minValue} (${elem.absMinValue})</p>
       <p><span>Maximun value:</span> ${elem.maxValue} (${elem.absMaxValue})</p>
-      <p><span>Max target count:</span> ${elem.count}</p>
-      <p><span>Clean numbers: </span></p>
+      <p><span>Maximun absolute value:</span> ${elem.absMax}</p>
+      <p><span>Limit target count:</span> ${elem.limit}</p>
+      <p><span>Clean numbers: (${elem.cleanNumbers.length})</span></p>
       <pre>${`[${elem.cleanNumbers.join(', ')}]`}</pre>
-      <p><span>Y Axis: </span></p>
-      <pre>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</pre>
+      <p><span>Y Axis: (${elem.result.length})</span></p>
+      <pre>${`[${elem.result.join(', ')}]`}</pre>
     `;
 
-    console.log(container);
     container.append(card);
   });
 };
 
-const createCard = (minValue, maxValue, count) => {
+const createCard = (minValue, maxValue, limit) => {
   test.push({
     minValue,
     maxValue,
-    count,
+    limit,
     absMinValue: 0,
     absMaxValue: 0,
-    cleanArray: []
+    cleanArray: [],
+    result: []
   });
 };
 
-createCard(-44, 182, 10);
+createCard(-44, 182, 11);
+createCard(-44, 192, 11);
 createCard(16, 157, 5);
 
 print();

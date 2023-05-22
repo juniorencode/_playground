@@ -7,15 +7,14 @@
 body {
   font-family: sans-serif;
   line-height: 1.4rem;
-  width: 100vw;
-  height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
   background-color: royalblue;
+  overflow-x: hidden;
 }
 
 .container {
+  margin-top: 50px;
   width: 600px;
   display: flex;
   flex-direction: column;
