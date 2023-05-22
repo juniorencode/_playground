@@ -1,12 +1,12 @@
 const spectrumCanvas = document.querySelector('#spectrum-canvas');
 const spectrumCtx = spectrumCanvas.getContext('2d');
 const spectrumCursor = document.querySelector('#spectrum-cursor');
-const spectrumRect = spectrumCanvas.getBoundingClientRect();
+let spectrumRect = spectrumCanvas.getBoundingClientRect();
 
 const hueCanvas = document.querySelector('#hue-canvas');
 const hueCtx = hueCanvas.getContext('2d');
 const hueCursor = document.querySelector('#hue-cursor');
-const hueRect = hueCanvas.getBoundingClientRect();
+let hueRect = hueCanvas.getBoundingClientRect();
 
 const red = document.querySelector('#red');
 const blue = document.querySelector('#blue');
@@ -16,6 +16,8 @@ const hex = document.querySelector('#hex');
 const modeToggle = document.querySelector('#mode-toggle');
 const rgbFields = document.querySelector('#rgb-fields');
 const hexField = document.querySelector('#hex-field');
+const userSwatches = document.querySelector('#user-swatches');
+const addSwatch = document.querySelector('#add-swatch');
 const colorIndicator = document.querySelector('#color-indicator');
 
 let currentColor = '';
@@ -324,6 +326,34 @@ const colorToPos = hsl => {
 
 const colorToHue = color => {
   return getColorCodes(color._h, 1, 0.5)._hsl;
+};
+
+addSwatch.addEventListener('click', () => {
+  createSwatch(userSwatches, currentColor);
+});
+
+const createSwatch = (target, color) => {
+  const swatch = document.createElement('button');
+  swatch.classList.add('colorpicker__swatch');
+  swatch.setAttribute('title', color);
+  swatch.style.backgroundColor = color;
+  swatch.addEventListener('click', e => {
+    const rgbValue = e.target.style.backgroundColor;
+    const [red, green, blue] = rgbValue
+      .slice(4, -1)
+      .split(', ')
+      .map(value => parseInt(value));
+    const color = rgbToHsl(red, green, blue);
+    colorToPos(color);
+    setColorValues(color);
+  });
+  target.appendChild(swatch);
+  refreshElementRects();
+};
+
+const refreshElementRects = () => {
+  spectrumRect = spectrumCanvas.getBoundingClientRect();
+  hueRect = hueCanvas.getBoundingClientRect();
 };
 
 ColorPicker();

@@ -11,6 +11,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.5s ease;
 }
 
 .colorpicker {
@@ -66,6 +67,7 @@ body {
   pointer-events: none;
   z-index: 2;
   border: 2px solid #fff;
+  transition: all 0.2s ease;
 }
 
 .colorpicker__cursor.dragging {
@@ -182,6 +184,19 @@ body {
   margin: 0 -10px 10px;
   text-align: center;
   letter-spacing: 0.05em;
+}
+
+.colorpicker__swatch {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: #ccc;
+  border-radius: 4px;
+  margin-left: 4px;
+  margin-bottom: 4px;
+  box-sizing: border-box;
+  border: 2px solid #364347;
+  cursor: pointer;
 }
 
 .colorpicker__indicator {
