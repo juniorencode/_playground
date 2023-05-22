@@ -356,4 +356,8 @@ const refreshElementRects = () => {
   hueRect = hueCanvas.getBoundingClientRect();
 };
 
+window.addEventListener('resize', function () {
+  refreshElementRects();
+});
+
 ColorPicker();
