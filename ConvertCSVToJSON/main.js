@@ -9,7 +9,6 @@ inputFile.addEventListener('change', e => {
 });
 
 btnConvert.addEventListener('click', () => {
-  XLSX.utils.json_to_sheet(fileData, 'output.xlsx');
   if (uploadedFile) {
     let fileReader = new FileReader();
     fileReader.readAsBinaryString(uploadedFile);
