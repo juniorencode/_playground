@@ -62,8 +62,8 @@ body {
   left: 50%;
   width: 100%;
   transform: translateX(-50%);
-  opacity: 1;
-  display: block;
+  opacity: 0;
+  display: none;
   transition: 0.2s;
   z-index: 1;
 }
