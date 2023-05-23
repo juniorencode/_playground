@@ -5,9 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ConvertExcelToJSON</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"
+      integrity="sha512-r22gChDnGvBylk90+2e/ycr3RVrDi8DIOkIGNhJlKfuyQM4tIRAI062MaV8sfjQKYVGjOBaZBOA87z+IhZE9DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <div class="container">
+      <h1 class="title">Convert Excel file to JSON</h1>
+      <div class="header">
+        <input
+          class="form-control"
+          type="file"
+          id="uploadFile"
+          accept=".xls,.xlsx"
+        />
+        <button class="button" id="convert-to-json">Convert To Json</button>
+      </div>
+      <div class="code">
+        <pre id="resultJsonData">Result JSON data here</pre>
+      </div>
+    </div>
     <script src="./main.js"></script>
   </body>
 </html>
