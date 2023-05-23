@@ -8,6 +8,21 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <div class="container">
+      <h1 class="title">Convert CSV file to JSON</h1>
+      <div class="header">
+        <input
+          id="upload-file"
+          class="form-control"
+          type="file"
+          accept=".xls,.xlsx"
+        />
+        <button class="button" id="convert-to-json">Convert To JSON</button>
+      </div>
+      <div class="code">
+        <pre id="result-json-data">Result JSON data here</pre>
+      </div>
+    </div>
     <script src="./main.js"></script>
   </body>
 </html>
