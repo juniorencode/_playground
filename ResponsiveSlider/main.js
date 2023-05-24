@@ -30,3 +30,30 @@ arrRight.addEventListener('click', () => {
     arrRight.disabled = false;
   }, 500);
 });
+
+arrLeft.addEventListener('click', () => {
+  arrLeft.disabled = true;
+  offset = slides[0].offsetWidth;
+  container.style.transition = 'none';
+
+  if (slideDecrement < 0) {
+    slides.forEach(slide => {
+      slide.style.order = 'initial';
+    });
+    slideDecrement = slides.length - 1;
+  }
+
+  slides[slideDecrement].style.order = '-1';
+  container.style.left = -offset + 'px';
+
+  setTimeout(() => {
+    container.style.transition = 'left ease-in-out 500ms';
+    container.style.left = 0;
+  }, 1);
+
+  setTimeout(() => {
+    slideDecrement--;
+    slideIncrement = slideDecrement + 1;
+    arrLeft.disabled = false;
+  }, 500);
+});
