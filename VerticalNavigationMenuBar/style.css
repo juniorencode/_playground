@@ -1,0 +1,80 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #424242;
+}
+
+.container {
+  /* top: 150px; */
+  width: 70px;
+  height: 70px;
+  background-color: #fff;
+  border-radius: 50px;
+  position: relative;
+  transition: 0.4s ease;
+}
+
+.toggle-box {
+  position: relative;
+  display: block;
+  width: 70px;
+  height: 70px;
+  border-radius: 50px;
+}
+
+.icon {
+  position: absolute;
+  width: 35px;
+  height: 4px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #000;
+  border-radius: 50px;
+}
+
+.toggle-box.active .icon {
+  width: 0;
+}
+
+.icon::before,
+.icon::after {
+  position: absolute;
+  content: '';
+  width: 35px;
+  height: 4px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #000;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.icon::before {
+  top: 12px;
+}
+
+.icon::after {
+  bottom: 8px;
+}
+
+.toggle-box.active .icon::before {
+  width: 40px;
+  transform-origin: right;
+  transform: translate(-25px, 4px) rotate(45deg);
+}
+
+.toggle-box.active .icon::after {
+  width: 40px;
+  transform-origin: right;
+  transform: translate(-25px, -4px) rotate(-45deg);
+}
