@@ -1,4 +1,7 @@
 const inputs = document.querySelectorAll('.otp__input');
+const btnSubmit = document.querySelector('#button-submit');
+
+btnSubmit.disabled = true;
 
 inputs.forEach((input, currentIndex) => {
   // paste event
@@ -15,10 +18,12 @@ inputs.forEach((input, currentIndex) => {
         } else {
           item.blur();
         }
-
-        toggleFilledClass(item);
       }
+
+      toggleFilledClass(item);
     });
+
+    if (isAllInputFilled()) btnSubmit.disabled = false;
   });
 
   // backspace event
@@ -43,6 +48,7 @@ inputs.forEach((input, currentIndex) => {
     }
 
     toggleFilledClass(input);
+    if (isAllInputFilled()) btnSubmit.disabled = false;
   });
 });
 
@@ -52,4 +58,8 @@ const toggleFilledClass = field => {
   } else {
     field.classList.remove('otp__input--filled');
   }
+};
+
+const isAllInputFilled = () => {
+  return Array.from(inputs).every(item => item.value);
 };
