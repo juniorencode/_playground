@@ -42,16 +42,20 @@ body {
   width: 62px;
   height: 62px;
   border: none;
-  background-color: #000;
+  background-color: rgba(18, 18, 18, 1);
   color: white;
   font-size: 2rem;
   text-align: center;
   border-radius: 4px;
-  outline: 2px solid rgba(62, 62, 62, 1);
+  outline: solid 2px rgba(62, 62, 62, 1);
 }
 
 .otp__input:focus-visible {
-  outline: 2px solid rgba(182, 182, 182, 1);
+  outline-color: rgba(182, 182, 182, 1);
+}
+
+.otp__input--filled {
+  outline-color: rgba(7, 192, 99, 1);
 }
 
 .otp__button {
