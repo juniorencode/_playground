@@ -5,12 +5,14 @@
 }
 
 body {
+  padding-top: 150px;
   display: flex;
-  align-items: center;
   justify-content: center;
   width: 100vw;
   min-height: 100vh;
+  overflow: hidden;
   background-color: #424242;
+  font-family: sans-serif;
 }
 
 .container {
@@ -21,6 +23,10 @@ body {
   border-radius: 50px;
   position: relative;
   transition: 0.4s ease;
+}
+
+.container.active {
+  height: 420px;
 }
 
 .toggle-box {
@@ -77,4 +83,80 @@ body {
   width: 40px;
   transform-origin: right;
   transform: translate(-25px, -4px) rotate(-45deg);
+}
+
+.nav-items {
+  width: 100%;
+  visibility: hidden;
+}
+
+.container.active .nav-items {
+  visibility: visible;
+}
+
+li {
+  list-style: none;
+}
+
+li a {
+  text-transform: uppercase;
+  color: #000;
+}
+
+li a i {
+  position: relative;
+  display: block;
+  font-size: 18px;
+  padding: 25px 0;
+  width: 100%;
+  text-align: center;
+  transform: scale(0);
+}
+
+li a i::after {
+  position: absolute;
+  content: '';
+  top: 50%;
+  right: 0;
+  width: 0;
+  height: 50%;
+  transform: translateY(-50%);
+  background-color: #1976d2;
+  border-radius: 8px 0 0 8px;
+}
+
+li:hover a i::after {
+  width: 8px;
+  transition: 0.3s;
+}
+
+.container.active .nav-items li a i {
+  transform: scale(1);
+  transition: 0.4s ease;
+  transition-delay: calc(0.08s * var(--i));
+}
+
+.container.active .nav-items li:hover a i {
+  transition: 0.2s ease;
+  color: #1976d2;
+}
+
+li a span {
+  position: absolute;
+  color: #fff;
+  margin: 22px 0;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.container.active .nav-items li a span {
+  transform: translateX(15px);
+  transition: 0.4s ease;
+  transition-delay: calc(0.08s * var(--g));
+}
+
+.container.active .nav-items li:hover a span {
+  transform: translateX(30px);
+  color: #1976d2;
+  transition: 0.2s ease;
 }
