@@ -65,6 +65,7 @@ body {
 
 .input:focus {
   outline: none;
+  border-color: #ccc;
 }
 
 .good {
