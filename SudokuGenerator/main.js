@@ -2,6 +2,12 @@ const sudoku = document.querySelector('#sudoku');
 const grid = [];
 
 const sudokuGenerate = () => {
+  const nums = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+  for (let j = 0; j < 9; j++) {
+    grid[0][j] = nums[j];
+  }
+
   printGrid();
 };
 
@@ -31,6 +37,15 @@ const printGrid = () => {
 
 const cleanGrid = () => {
   sudoku.innerHTML = '';
+};
+
+const shuffle = array => {
+  // Fisher-Yates Shuffle Algorithm
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 };
 
 fillZeros();
