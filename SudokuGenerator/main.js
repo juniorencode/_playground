@@ -1,4 +1,5 @@
 const sudoku = document.querySelector('#sudoku');
+const button = document.querySelector('#button');
 const grid = [];
 
 const sudokuGenerate = () => {
@@ -48,5 +49,13 @@ const shuffle = array => {
   return array;
 };
 
-fillZeros();
-sudokuGenerate();
+const init = () => {
+  fillZeros();
+  sudokuGenerate();
+};
+
+button.addEventListener('click', () => {
+  init();
+});
+
+init();
