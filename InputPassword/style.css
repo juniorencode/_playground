@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: rgba(42, 42, 42, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+}
+
+.password {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.password__input {
+  padding: 10px;
+  border: none;
+}
+
+.password__input:focus {
+  outline: none;
+}
+
+.password__icon {
+  margin: 0 5px;
+  padding: 5px 0;
+  width: 30px;
+  text-align: center;
+  cursor: pointer;
+}
