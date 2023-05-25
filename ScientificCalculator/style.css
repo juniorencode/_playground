@@ -71,3 +71,32 @@ body {
   font-weight: 400;
   font-size: 20px;
 }
+
+.calculator__display {
+  padding: 20px;
+  text-align: right;
+}
+
+.calculator__result {
+  font-weight: 500;
+  font-size: 3em;
+}
+
+.calculator__options {
+  width: 100%;
+  display: flex;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.calculator__option {
+  background-color: transparent;
+  border: none;
+  width: 82px;
+  height: 44px;
+  font-size: 0.7em;
+}
+
+.calculator__option:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
