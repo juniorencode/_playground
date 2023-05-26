@@ -61,22 +61,27 @@ const reset = () => {
   baseForm.value = '';
   baseForm.classList.remove('good');
   baseForm.classList.remove('wrong');
+  baseForm.nextElementSibling.classList.remove('show');
 
   gerund.value = '';
   gerund.classList.remove('good');
   gerund.classList.remove('wrong');
+  gerund.nextElementSibling.classList.remove('show');
 
   thirdPerson.value = '';
   thirdPerson.classList.remove('good');
   thirdPerson.classList.remove('wrong');
+  thirdPerson.nextElementSibling.classList.remove('show');
 
   past.value = '';
   past.classList.remove('good');
   past.classList.remove('wrong');
+  past.nextElementSibling.classList.remove('show');
 
   participle.value = '';
   participle.classList.remove('good');
   participle.classList.remove('wrong');
+  participle.nextElementSibling.classList.remove('show');
 
   baseForm.focus();
 };
