@@ -24,7 +24,7 @@ body {
   width: 80%;
   height: 80%;
   display: flex;
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(10px);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.25);
