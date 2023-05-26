@@ -51,6 +51,7 @@ const shuffle = array => {
 };
 
 const solve = board => {
+  const nums = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   const nextEmptyCell = findNextEmptyCell(board);
 
   // if there are no empty cells, the Sudoku is solved
@@ -58,9 +59,9 @@ const solve = board => {
 
   const [row, col] = nextEmptyCell;
 
-  for (let num = 1; num <= 9; num++) {
-    if (isValid(board, row, col, num)) {
-      board[row][col] = num;
+  for (let num = 0; num < nums.length; num++) {
+    if (isValid(board, row, col, nums[num])) {
+      board[row][col] = nums[num];
 
       // call solve() recursively with the updated new cell
       if (solve(board)) return true;
