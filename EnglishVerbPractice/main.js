@@ -81,10 +81,22 @@ const reset = () => {
   baseForm.focus();
 };
 
+const handleHelper = e => {
+  if (e.ctrlKey && e.key === 'q') {
+    e.target.nextElementSibling.classList.add('show');
+  }
+};
+
 baseForm.addEventListener('blur', e => check(e, 'base'));
 gerund.addEventListener('blur', e => check(e, 'gerund'));
 thirdPerson.addEventListener('blur', e => check(e, 'third'));
 past.addEventListener('blur', e => check(e, 'past'));
 participle.addEventListener('blur', e => check(e, 'participle'));
+
+baseForm.addEventListener('keydown', handleHelper);
+gerund.addEventListener('keydown', handleHelper);
+thirdPerson.addEventListener('keydown', handleHelper);
+past.addEventListener('keydown', handleHelper);
+participle.addEventListener('keydown', handleHelper);
 
 play();
