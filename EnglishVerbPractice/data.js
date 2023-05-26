@@ -1097,7 +1097,7 @@ const verbs = [
     participle: 'asked'
   },
   {
-    spanish: 'vestir, vestirse, aliniar',
+    spanish: 'vestir, vestirse, aliñar',
     base: 'dress',
     gerund: 'dressing',
     third: 'dresses',
@@ -1689,7 +1689,7 @@ const verbs = [
     participle: 'bent'
   },
   {
-    spanish: 'sangrar; purgar; destinierse',
+    spanish: 'sangrar',
     base: 'bleed',
     gerund: 'bleeding',
     third: 'bleeds',
@@ -1849,11 +1849,11 @@ const verbs = [
     participle: 'struck'
   },
   {
-    spanish: 'esforzar, esforzarse, luchar, empeniarse',
+    spanish: 'esforzar, esforzarse, luchar',
     base: 'strive',
     gerund: 'striving',
     third: 'strives',
-    past: 'strove',
+    past: 'strived',
     participle: 'striven'
   },
   {
@@ -1889,7 +1889,7 @@ const verbs = [
     participle: 'withdrawn'
   },
   {
-    spanish: 'cuidar, hacer de niniera, cuidar ninios, hacer de canjuro',
+    spanish: 'cuidar, hacer de niñera, cuidar niños, hacer de canjuro',
     base: 'babysit',
     gerund: 'babysitting',
     third: 'babysits',
