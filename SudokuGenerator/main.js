@@ -79,7 +79,11 @@ const findNextEmptyCell = board => {
 };
 
 const isValid = (board, row, col, num) => {
-  return !getRow(board, row).includes(num) && !getCol(board, col).includes(num);
+  return (
+    !getRow(board, row).includes(num) &&
+    !getCol(board, col).includes(num) &&
+    !getBox(board, row, col).includes(num)
+  );
 };
 
 // return the values in the specified row
@@ -94,6 +98,21 @@ const getCol = (board, col) => {
   }
 
   return colValues;
+};
+
+// return the values in the 3x3 square to which the specified cell belongs
+const getBox = (board, row, col) => {
+  const boxValues = [];
+  const boxRow = Math.floor(row / 3) * 3;
+  const boxCol = Math.floor(col / 3) * 3;
+
+  for (let i = boxRow; i < boxRow + 3; i++) {
+    for (let j = boxCol; j < boxCol + 3; j++) {
+      boxValues.push(board[i][j]);
+    }
+  }
+
+  return boxValues;
 };
 
 const init = () => {
