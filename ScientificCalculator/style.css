@@ -34,6 +34,9 @@ body {
 
 .calculator__content {
   width: 75vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .calculator__side {
@@ -76,12 +79,6 @@ body {
   font-size: 20px;
 }
 
-.calculator__content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
 .calculator__display {
   padding: 20px;
   text-align: right;
@@ -89,7 +86,7 @@ body {
 
 .calculator__result {
   font-weight: 500;
-  font-size: 3em;
+  font-size: 3.2em;
 }
 
 .calculator__options {
