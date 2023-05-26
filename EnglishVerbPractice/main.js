@@ -86,7 +86,13 @@ const reset = () => {
   baseForm.focus();
 };
 
-const handleHelper = e => {
+const handleHelper = (e, type) => {
+  e.preventDefault();
+
+  if (e.key === 'Tab' && type === 'participle') {
+    baseForm.select();
+  }
+
   if (e.ctrlKey && e.key === 'q') {
     e.target.nextElementSibling.classList.add('show');
   }
@@ -98,10 +104,10 @@ thirdPerson.addEventListener('blur', e => check(e, 'third'));
 past.addEventListener('blur', e => check(e, 'past'));
 participle.addEventListener('blur', e => check(e, 'participle'));
 
-baseForm.addEventListener('keydown', handleHelper);
-gerund.addEventListener('keydown', handleHelper);
-thirdPerson.addEventListener('keydown', handleHelper);
-past.addEventListener('keydown', handleHelper);
-participle.addEventListener('keydown', handleHelper);
+baseForm.addEventListener('keydown', e => handleHelper(e, 'base'));
+gerund.addEventListener('keydown', e => handleHelper(e, 'gerund'));
+thirdPerson.addEventListener('keydown', e => handleHelper(e, 'third'));
+past.addEventListener('keydown', e => handleHelper(e, 'past'));
+participle.addEventListener('keydown', e => handleHelper(e, 'participle'));
 
 play();
