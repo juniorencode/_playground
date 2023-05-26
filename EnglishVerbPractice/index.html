@@ -9,51 +9,47 @@
   </head>
   <body>
     <section class="container">
-      <div class="spanish">jugar, tocar, reproducir</div>
+      <div id="spanish" class="spanish">jugar, tocar, reproducir</div>
       <div class="content">
         <div class="item">
           <p class="title">BASE FORM</p>
           <input
             type="text"
+            id="base-form"
             class="input"
             spellcheck="false"
-            value="play"
             autofocus
           />
-          <p class="extra">play</p>
+          <p class="extra"></p>
         </div>
         <div class="item">
           <p class="title">GERUND</p>
-          <input
-            type="text"
-            class="input good"
-            spellcheck="false"
-            value="playing"
-          />
-          <p class="extra">playing</p>
+          <input type="text" id="gerund" class="input" spellcheck="false" />
+          <p class="extra"></p>
         </div>
         <div class="item">
           <p class="title">3RD PERSON</p>
           <input
             type="text"
-            class="input wrong"
+            id="third-person"
+            class="input"
             spellcheck="false"
-            value="plays"
           />
-          <p class="extra">plays</p>
+          <p class="extra"></p>
         </div>
         <div class="item">
           <p class="title">PAST</p>
-          <input type="text" class="input" spellcheck="false" value="played" />
-          <p class="extra">played</p>
+          <input type="text" id="past" class="input" spellcheck="false" />
+          <p class="extra"></p>
         </div>
         <div class="item">
           <p class="title">PARTICIPLE</p>
-          <input type="text" class="input" spellcheck="false" value="played" />
-          <p class="extra">played</p>
+          <input type="text" id="participle" class="input" spellcheck="false" />
+          <p class="extra"></p>
         </div>
       </div>
     </section>
+    <script src="./data.js"></script>
     <script src="./main.js"></script>
   </body>
 </html>
