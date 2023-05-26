@@ -59,10 +59,18 @@ const solve = board => {
   const [row, col] = nextEmptyCell;
 
   for (let num = 1; num <= 9; num++) {
-    console.log(row, col, num, isValid(board, row, col, num));
+    if (isValid(board, row, col, num)) {
+      board[row][col] = num;
+
+      // call solve() recursively with the updated new cell
+      if (solve(board)) return true;
+
+      // if a solution cannot be found with the current number, go back
+      board[row][col] = 0;
+    }
   }
 
-  return false;
+  return false; // if a solution cannot be found with any of the numbers, go back even
 };
 
 const findNextEmptyCell = board => {
