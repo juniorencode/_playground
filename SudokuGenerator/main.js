@@ -9,6 +9,7 @@ const sudokuGenerate = () => {
     grid[0][j] = nums[j];
   }
 
+  solve(grid);
   printGrid();
 };
 
@@ -47,6 +48,24 @@ const shuffle = array => {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
+};
+
+const solve = board => {
+  const nextEmptyCell = findNextEmptyCell(board);
+  console.log(nextEmptyCell);
+};
+
+const findNextEmptyCell = board => {
+  // find the next empty cell
+  for (let i = 0; i < 9; i++) {
+    for (let j = 0; j < 9; j++) {
+      if (board[i][j] === 0) {
+        return [i, j];
+      }
+    }
+  }
+
+  return null; // if there are no empty cells
 };
 
 const init = () => {
