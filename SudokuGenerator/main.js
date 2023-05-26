@@ -52,7 +52,17 @@ const shuffle = array => {
 
 const solve = board => {
   const nextEmptyCell = findNextEmptyCell(board);
-  console.log(nextEmptyCell);
+
+  // if there are no empty cells, the Sudoku is solved
+  if (!nextEmptyCell) return true;
+
+  const [row, col] = nextEmptyCell;
+
+  for (let num = 1; num <= 9; num++) {
+    console.log(row, col, num, isValid(board, row, col, num));
+  }
+
+  return false;
 };
 
 const findNextEmptyCell = board => {
@@ -66,6 +76,24 @@ const findNextEmptyCell = board => {
   }
 
   return null; // if there are no empty cells
+};
+
+const isValid = (board, row, col, num) => {
+  return !getRow(board, row).includes(num) && !getCol(board, col).includes(num);
+};
+
+// return the values in the specified row
+const getRow = (board, row) => board[row];
+
+// return the values in the specified column
+const getCol = (board, col) => {
+  const colValues = [];
+
+  for (let i = 0; i < 9; i++) {
+    colValues.push(board[i][col]);
+  }
+
+  return colValues;
 };
 
 const init = () => {
