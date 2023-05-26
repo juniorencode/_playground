@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -8,7 +11,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-image: url('https://news.microsoft.com/wp-content/uploads/prod/sites/68/2022/06/Light_16x9-1600x900.png');
   background-position: center;
   background-size: cover;
@@ -26,6 +29,7 @@ body {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .calculator__content {
@@ -72,6 +76,12 @@ body {
   font-size: 20px;
 }
 
+.calculator__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 .calculator__display {
   padding: 20px;
   text-align: right;
@@ -99,4 +109,34 @@ body {
 
 .calculator__option:hover {
   background-color: rgba(0, 0, 0, 0.2);
+}
+
+.calculator__grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 2px;
+}
+
+.calculator__button {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.48);
+}
+
+.calculator__button:hover,
+.calculator__option:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.calculator__button--number {
+  background-color: rgba(255, 255, 255, 0.84);
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.calculator__button--operator {
+  font-size: 2.4em;
+  font-weight: 200;
 }
