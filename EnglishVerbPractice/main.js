@@ -87,9 +87,8 @@ const reset = () => {
 };
 
 const handleHelper = (e, type) => {
-  e.preventDefault();
-
   if (e.key === 'Tab' && type === 'participle') {
+    e.preventDefault();
     baseForm.select();
   }
 
