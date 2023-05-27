@@ -11,6 +11,27 @@ class Chart {
     this.numLabels = 10;
     this.range = 0;
     this.calculateStadistic();
+
+    this.paddingLeft = 40;
+    this.paddingTop = 50;
+    this.paddingBottom = 40;
+    this.paddingSection = 5;
+
+    // normalize size
+    this.canvas.width = this.canvas.parentNode.clientWidth;
+    this.canvas.height = this.canvas.width / 2;
+
+    // chart
+    this.chart = {
+      width: this.canvas.width - this.paddingLeft,
+      height: this.canvas.height - this.paddingTop - this.paddingBottom
+    };
+
+    // bar
+    this.sectionWidth = Math.floor(this.chart.width / this.data.length);
+    this.barWidth = this.sectionWidth - this.paddingSection * 2;
+
+    this.drawGrid();
   }
 
   calculateStadistic() {
@@ -21,11 +42,7 @@ class Chart {
     this.range = this.maxValue - adjustedMin;
 
     // // calculate the width of each interval
-    this.intervalWidth = this.calculateIntervalWidth(
-      this.range,
-      this.numLabels
-    );
-    console.log(this.intervalWidth);
+    this.calculateIntervalWidth();
 
     // // round the range limits down and up
     this.roundedMin =
@@ -34,16 +51,13 @@ class Chart {
       Math.ceil(this.maxValue / this.intervalWidth) * this.intervalWidth;
   }
 
-  calculateIntervalWidth(range, numLabels) {
-    const intervalWidth = Math.ceil(range / numLabels);
-    const multiple = this.nearestPowerOfTen(intervalWidth);
-    let newIntervalWidth = intervalWidth;
+  calculateIntervalWidth() {
+    this.intervalWidth = Math.ceil(this.range / this.numLabels);
+    const multiple = this.nearestPowerOfTen(this.intervalWidth);
 
-    while (newIntervalWidth % multiple !== 0) {
-      newIntervalWidth++;
+    while (this.intervalWidth % multiple !== 0) {
+      this.intervalWidth++;
     }
-
-    return newIntervalWidth;
   }
 
   nearestPowerOfTen(number) {
@@ -51,5 +65,31 @@ class Chart {
     const powerOfTen = Math.pow(10, log); // calculate the power of ten
 
     return powerOfTen;
+  }
+
+  drawGrid() {
+    this.drawHorizontalLines();
+  }
+
+  drawHorizontalLines() {
+    this.ctx.strokeStyle = '#000';
+    this.ctx.lineWidth = 0.2;
+
+    for (
+      let value = this.roundedMin;
+      value <= this.roundedMax;
+      value += this.intervalWidth
+    ) {
+      const y =
+        this.chart.height -
+        ((value - this.roundedMin) / (this.roundedMax - this.roundedMin)) *
+          this.chart.height +
+        this.paddingTop;
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.paddingLeft, y);
+      this.ctx.lineTo(this.canvas.width, y);
+      this.ctx.stroke();
+    }
   }
 }
