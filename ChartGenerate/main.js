@@ -68,13 +68,14 @@ class Chart {
   }
 
   drawGrid() {
-    this.drawHorizontalLines();
-  }
-
-  drawHorizontalLines() {
     this.ctx.strokeStyle = '#000';
     this.ctx.lineWidth = 0.2;
 
+    this.drawHorizontalLines();
+    this.drawVerticalLines();
+  }
+
+  drawHorizontalLines() {
     for (
       let value = this.roundedMin;
       value <= this.roundedMax;
@@ -87,8 +88,19 @@ class Chart {
         this.paddingTop;
 
       this.ctx.beginPath();
-      this.ctx.moveTo(this.paddingLeft, y);
+      this.ctx.moveTo(this.paddingLeft - 10, y);
       this.ctx.lineTo(this.canvas.width, y);
+      this.ctx.stroke();
+    }
+  }
+
+  drawVerticalLines() {
+    for (let i = 0; i < this.labels.length; i++) {
+      const x = i * this.sectionWidth + this.paddingLeft;
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, this.paddingTop);
+      this.ctx.lineTo(x, this.canvas.height - this.paddingBottom + 10);
       this.ctx.stroke();
     }
   }
