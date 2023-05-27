@@ -15,7 +15,7 @@ class Chart {
     this.paddingLeft = 40;
     this.paddingTop = 50;
     this.paddingBottom = 24;
-    this.paddingSection = 5;
+    this.paddingSection = 12;
 
     // normalize size
     this.canvas.width = this.canvas.parentNode.clientWidth;
@@ -75,6 +75,8 @@ class Chart {
     this.drawVerticalLines();
     this.drawAxisX();
     this.drawAxisY();
+
+    this.drawBars();
   }
 
   drawHorizontalLines() {
@@ -144,6 +146,27 @@ class Chart {
       this.ctx.font = '12px sans-serif';
 
       this.ctx.fillText(value, this.paddingLeft - 15, y);
+    }
+  }
+
+  drawBars() {
+    this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
+    this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
+    this.ctx.lineWidth = 2;
+
+    for (let i = 0; i < this.data.length; i++) {
+      const value = this.data[i];
+      const barheight = (value / this.roundedMax) * this.chart.height;
+      const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
+      const y = this.chart.height - barheight + this.paddingTop;
+
+      this.ctx.fillRect(x, y, this.barWidth, barheight);
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, y + barheight);
+      this.ctx.lineTo(x, y);
+      this.ctx.lineTo(x + this.barWidth, y);
+      this.ctx.lineTo(x + this.barWidth, y + barheight);
+      this.ctx.stroke();
     }
   }
 }
