@@ -38,3 +38,7 @@ body {
   overflow: auto;
   white-space: pre-wrap;
 }
+
+.card hr {
+  margin: 5px 0;
+}
