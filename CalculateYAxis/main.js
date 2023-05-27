@@ -10,16 +10,7 @@ const generateLabels = elem => {
   elem.range = elem.maxValue - adjustedMin;
 
   // calculate the width of each interval
-  elem.intervalWidth = Math.ceil(elem.range / (elem.numLabels - 1));
-
-  // if there are no single-digit numbers in the range, adjust the interval width to multiples of 10
-  if (!hasSingleDigit(elem.minValue, elem.maxValue)) {
-    elem.intervalWidth = calculateIntervalWidth(
-      elem.range,
-      elem.numLabels - 2,
-      10
-    );
-  }
+  elem.intervalWidth = calculateIntervalWidth(elem.range, elem.numLabels - 1);
 
   // round the range limits down and up
   elem.roundedMin =
@@ -33,18 +24,25 @@ const generateLabels = elem => {
   }
 };
 
-// function to check if there are single-digit numbers in the range
-const hasSingleDigit = (min, max) => {
-  return Math.abs(min) < 10 || Math.abs(max) < 10;
+// calculate the nearest power of ten for the given number
+const reduceToNearestPowerOfTen = number => {
+  const log = Math.floor(Math.log10(number)); // calculate the logarithm base 10
+  const powerOfTen = Math.pow(10, log); // calculate the power of ten
+
+  return powerOfTen;
 };
 
 // function to calculate the interval width in multiples of a number
-const calculateIntervalWidth = (range, numLabels, multiple) => {
-  let intervalWidth = Math.ceil(range / numLabels);
-  while (intervalWidth % multiple !== 0) {
-    intervalWidth++;
+const calculateIntervalWidth = (range, numLabels) => {
+  const intervalWidth = Math.ceil(range / numLabels);
+  const multiple = reduceToNearestPowerOfTen(intervalWidth);
+  let newIntervalWidth = intervalWidth;
+
+  while (newIntervalWidth % multiple !== 0) {
+    newIntervalWidth++;
   }
-  return intervalWidth;
+
+  return newIntervalWidth;
 };
 
 const print = () => {
@@ -93,12 +91,14 @@ createCard(2, 9, 5);
 createCard(1, 9, 10);
 createCard(1, 9, 9);
 createCard(-1, 1, 5);
+createCard(-5, 5, 5);
 createCard(-8, 6, 10);
 createCard(-9, 9, 5);
-createCard(-5, 5, 5);
+createCard(-12, 12, 5);
 createCard(16, 157, 5);
 createCard(-44, 182, 11);
 createCard(-44, 192, 11);
+createCard(-1160, 7, 11);
 createCard(-1200, 700, 11);
 createCard(-6500, 34, 11);
 createCard(-720, 835, 11);
