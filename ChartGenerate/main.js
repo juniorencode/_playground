@@ -74,6 +74,7 @@ class Chart {
     this.drawHorizontalLines();
     this.drawVerticalLines();
     this.drawAxisX();
+    this.drawAxisY();
   }
 
   drawHorizontalLines() {
@@ -107,16 +108,11 @@ class Chart {
   }
 
   drawAxisX() {
-    console.log(
-      this.canvas.height,
-      this.paddingBottom / 2,
-      this.canvas.height - this.paddingBottom / 2
-    );
     for (let i = 0; i < this.labels.length; i++) {
       const x = i * this.sectionWidth + this.paddingLeft;
 
       const label = this.labels[i];
-      const barCenterX = x + this.sectionWidth / 2;
+      const sectionCenterX = x + this.sectionWidth / 2;
 
       this.ctx.fillStyle = 'rgb(62, 62, 62)';
       this.ctx.textAlign = 'center';
@@ -124,9 +120,30 @@ class Chart {
       this.ctx.font = '12px sans-serif';
       this.ctx.fillText(
         label,
-        barCenterX,
+        sectionCenterX,
         this.canvas.height - this.paddingBottom / 2
       );
+    }
+  }
+
+  drawAxisY() {
+    for (
+      let value = this.roundedMin;
+      value <= this.roundedMax;
+      value += this.intervalWidth
+    ) {
+      const y =
+        this.chart.height -
+        ((value - this.roundedMin) / (this.roundedMax - this.roundedMin)) *
+          this.chart.height +
+        this.paddingTop;
+
+      this.ctx.fillStyle = 'rgb(62, 62, 62)';
+      this.ctx.textAlign = 'right';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.font = '12px sans-serif';
+
+      this.ctx.fillText(value, this.paddingLeft - 15, y);
     }
   }
 }
