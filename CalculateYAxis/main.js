@@ -155,26 +155,45 @@ print();
 // ================================================================
 
 function generateLabels(min, max, numLabels) {
-  // set the minimum value if it is less than zero
+  // adjust the minimum value if it is less than zero
   var adjustedMin = Math.min(0, min);
 
   // calculate the range of values
   var range = max - adjustedMin;
 
   // calculate the width of each interval
-  var intervalWidth = Math.ceil(range / numLabels);
+  var intervalWidth = Math.ceil(range / (numLabels - 1));
+
+  // if there are no single-digit numbers in the range, adjust the interval width to multiples of 10
+  if (!hasSingleDigit(min, max)) {
+    intervalWidth = calculateIntervalWidth(range, numLabels, 10);
+  }
 
   // round the range limits down and up
   var roundedMin = Math.floor(adjustedMin / intervalWidth) * intervalWidth;
   var roundedMax = Math.ceil(max / intervalWidth) * intervalWidth;
 
-  // generar las etiquetas
+  // generate the labels
   var labels = [];
   for (var i = roundedMin; i <= roundedMax; i += intervalWidth) {
-    labels.push(Math.round(i)); // Round to the nearest integer
+    labels.push(Math.round(i)); // round to the nearest integer
   }
 
   return labels;
+}
+
+// function to check if there are single-digit numbers in the range
+function hasSingleDigit(min, max) {
+  return Math.abs(min) < 10 || Math.abs(max) < 10;
+}
+
+// function to calculate the interval width in multiples of a number
+function calculateIntervalWidth(range, numLabels, multiple) {
+  var intervalWidth = Math.ceil(range / numLabels);
+  while (intervalWidth % multiple !== 0) {
+    intervalWidth++;
+  }
+  return intervalWidth;
 }
 
 console.log(generateLabels(-10, 10, 5));
@@ -191,4 +210,24 @@ console.log(-7, 6, 10, generateLabels(-7, 6, 10));
 console.log(16, 157, 5, generateLabels(16, 157, 5));
 console.log(-1200, 700, 11, generateLabels(-1200, 700, 11));
 console.log(-44, 188, 11, generateLabels(-44, 188, 11));
+console.log(-44, 192, 11, generateLabels(-44, 192, 11));
+console.log('==================');
+console.log(-9, 9, 5, generateLabels(-9, 9, 5));
+console.log(-1, 1, 5, generateLabels(-1, 1, 5));
+console.log(1, 1, 5, generateLabels(1, 1, 5));
+console.log(1, 2, 5, generateLabels(1, 2, 5));
+console.log(2, 3, 5, generateLabels(2, 3, 5));
+console.log(2, 4, 5, generateLabels(2, 4, 5));
+console.log(2, 5, 5, generateLabels(2, 5, 5));
+console.log(2, 6, 5, generateLabels(2, 6, 5));
+console.log(2, 7, 5, generateLabels(2, 7, 5));
+console.log(2, 8, 5, generateLabels(2, 8, 5));
+console.log(2, 9, 5, generateLabels(2, 9, 5));
+console.log(1, 9, 10, generateLabels(1, 9, 10));
+console.log(1, 9, 5, generateLabels(1, 9, 5));
+console.log(-8, 6, 10, generateLabels(-8, 6, 10));
+console.log(-5, 5, 5, generateLabels(-5, 5, 5));
+console.log(16, 157, 5, generateLabels(16, 157, 5));
+console.log(-1200, 700, 11, generateLabels(-1200, 700, 11));
+console.log(-44, 182, 11, generateLabels(-44, 182, 11));
 console.log(-44, 192, 11, generateLabels(-44, 192, 11));
