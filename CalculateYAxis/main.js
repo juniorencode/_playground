@@ -16,7 +16,7 @@ const generateLabels = elem => {
   if (!hasSingleDigit(elem.minValue, elem.maxValue)) {
     elem.intervalWidth = calculateIntervalWidth(
       elem.range,
-      elem.numLabels - 1,
+      elem.numLabels - 2,
       10
     );
   }
@@ -97,8 +97,11 @@ createCard(-8, 6, 10);
 createCard(-9, 9, 5);
 createCard(-5, 5, 5);
 createCard(16, 157, 5);
-createCard(-1200, 700, 12);
 createCard(-44, 182, 11);
 createCard(-44, 192, 11);
+createCard(-1200, 700, 11);
+createCard(-6500, 34, 11);
+createCard(-720, 835, 11);
+createCard(-3100, 760, 11);
 
 print();
