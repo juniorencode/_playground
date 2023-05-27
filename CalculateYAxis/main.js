@@ -151,3 +151,44 @@ createCard(-44, 182, 11);
 createCard(-44, 192, 11);
 
 print();
+
+// ================================================================
+
+function generateLabels(min, max, numLabels) {
+  // set the minimum value if it is less than zero
+  var adjustedMin = Math.min(0, min);
+
+  // calculate the range of values
+  var range = max - adjustedMin;
+
+  // calculate the width of each interval
+  var intervalWidth = Math.ceil(range / numLabels);
+
+  // round the range limits down and up
+  var roundedMin = Math.floor(adjustedMin / intervalWidth) * intervalWidth;
+  var roundedMax = Math.ceil(max / intervalWidth) * intervalWidth;
+
+  // generar las etiquetas
+  var labels = [];
+  for (var i = roundedMin; i <= roundedMax; i += intervalWidth) {
+    labels.push(Math.round(i)); // Round to the nearest integer
+  }
+
+  return labels;
+}
+
+console.log(generateLabels(-10, 10, 5));
+console.log('==================');
+console.log(-9, 9, 5, generateLabels(-9, 9, 5));
+console.log(-1, 1, 5, generateLabels(-1, 1, 5));
+console.log(1, 1, 5, generateLabels(1, 1, 5));
+console.log(1, 2, 5, generateLabels(1, 2, 5));
+console.log(2, 3, 5, generateLabels(2, 3, 5));
+console.log(2, 4, 5, generateLabels(2, 4, 5));
+console.log(2, 5, 5, generateLabels(2, 5, 5));
+console.log(2, 8, 5, generateLabels(2, 8, 5));
+console.log(-7, 6, 10, generateLabels(-7, 6, 10));
+console.log(16, 157, 5, generateLabels(16, 157, 5));
+console.log(-1200, 700, 11, generateLabels(-1200, 700, 11));
+console.log(-44, 188, 11, generateLabels(-44, 188, 11));
+console.log(-44, 192, 11, generateLabels(-44, 192, 11));
