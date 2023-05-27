@@ -14,7 +14,7 @@ class Chart {
 
     this.paddingLeft = 40;
     this.paddingTop = 50;
-    this.paddingBottom = 40;
+    this.paddingBottom = 24;
     this.paddingSection = 5;
 
     // normalize size
@@ -69,10 +69,11 @@ class Chart {
 
   drawGrid() {
     this.ctx.strokeStyle = '#000';
-    this.ctx.lineWidth = 0.2;
+    this.ctx.lineWidth = 0.1;
 
     this.drawHorizontalLines();
     this.drawVerticalLines();
+    this.drawAxisX();
   }
 
   drawHorizontalLines() {
@@ -102,6 +103,30 @@ class Chart {
       this.ctx.moveTo(x, this.paddingTop);
       this.ctx.lineTo(x, this.canvas.height - this.paddingBottom + 10);
       this.ctx.stroke();
+    }
+  }
+
+  drawAxisX() {
+    console.log(
+      this.canvas.height,
+      this.paddingBottom / 2,
+      this.canvas.height - this.paddingBottom / 2
+    );
+    for (let i = 0; i < this.labels.length; i++) {
+      const x = i * this.sectionWidth + this.paddingLeft;
+
+      const label = this.labels[i];
+      const barCenterX = x + this.sectionWidth / 2;
+
+      this.ctx.fillStyle = 'rgb(62, 62, 62)';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'top';
+      this.ctx.font = '12px sans-serif';
+      this.ctx.fillText(
+        label,
+        barCenterX,
+        this.canvas.height - this.paddingBottom / 2
+      );
     }
   }
 }
