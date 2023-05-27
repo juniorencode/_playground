@@ -12,8 +12,8 @@ class Chart {
     this.range = 0;
     this.calculateStadistic();
 
-    this.paddingLeft = 40;
-    this.paddingTop = 50;
+    this.paddingLeft = 32;
+    this.paddingTop = 42;
     this.paddingBottom = 24;
     this.paddingSection = 12;
 
@@ -25,6 +25,13 @@ class Chart {
     this.chart = {
       width: this.canvas.width - this.paddingLeft,
       height: this.canvas.height - this.paddingTop - this.paddingBottom
+    };
+
+    // legend box
+    this.legendBox = {
+      with: 24,
+      height: 12,
+      margin: 4
     };
 
     // bar
@@ -68,6 +75,8 @@ class Chart {
   }
 
   drawGrid() {
+    this.drawLegend();
+
     this.ctx.strokeStyle = '#000';
     this.ctx.lineWidth = 0.1;
 
@@ -77,6 +86,41 @@ class Chart {
     this.drawAxisY();
 
     this.drawBars();
+  }
+
+  drawLegend() {
+    this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
+    this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
+    this.ctx.lineWidth = 2;
+
+    const widthLengend =
+      this.ctx.measureText('# numbers of Votes').width +
+      this.legendBox.with +
+      this.legendBox.margin;
+    console.log(widthLengend);
+
+    this.ctx.fillRect(
+      this.canvas.width / 2 - widthLengend / 2,
+      this.paddingTop / 2 - this.legendBox.height / 2,
+      this.legendBox.with,
+      this.legendBox.height
+    );
+    this.ctx.strokeRect(
+      this.canvas.width / 2 - widthLengend / 2,
+      this.paddingTop / 2 - this.legendBox.height / 2,
+      this.legendBox.with,
+      this.legendBox.height
+    );
+
+    this.ctx.fillStyle = 'rgb(62, 62, 62)';
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'middle';
+    this.ctx.font = '12px sans-serif';
+    this.ctx.fillText(
+      '# numbers of Votes',
+      this.canvas.width / 2 + this.legendBox.with + this.legendBox.margin,
+      this.paddingTop / 2
+    );
   }
 
   drawHorizontalLines() {
