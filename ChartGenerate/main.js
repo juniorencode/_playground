@@ -57,6 +57,7 @@ class Chart {
 
     this.tooltipMargin = 8;
     this.tooltipHeight = this.textHeight + this.tooltipMargin * 2;
+    this.tooltipCornerRadius = 5;
     this.tooltipBox = this.textHeight;
     this.tooltipSizeArrow = 6;
 
@@ -335,11 +336,44 @@ class Chart {
 
     this.ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
     this.ctx.beginPath();
-    this.ctx.moveTo(tooltipX, tooltipY);
-    this.ctx.lineTo(tooltipX + tooltipWidth, tooltipY);
-    this.ctx.lineTo(tooltipX + tooltipWidth, tooltipY + this.tooltipHeight);
-    this.ctx.lineTo(tooltipX, tooltipY + this.tooltipHeight);
-    this.ctx.lineTo(tooltipX, tooltipY);
+    this.ctx.moveTo(tooltipX + this.tooltipCornerRadius, tooltipY);
+    this.ctx.lineTo(
+      tooltipX + tooltipWidth - this.tooltipCornerRadius,
+      tooltipY
+    );
+    this.ctx.quadraticCurveTo(
+      tooltipX + tooltipWidth,
+      tooltipY,
+      tooltipX + tooltipWidth,
+      tooltipY + this.tooltipCornerRadius
+    );
+    this.ctx.lineTo(
+      tooltipX + tooltipWidth,
+      tooltipY + this.tooltipHeight - this.tooltipCornerRadius
+    );
+    this.ctx.quadraticCurveTo(
+      tooltipX + tooltipWidth,
+      tooltipY + this.tooltipHeight,
+      tooltipX + tooltipWidth - this.tooltipCornerRadius,
+      tooltipY + this.tooltipHeight
+    );
+    this.ctx.lineTo(
+      tooltipX + this.tooltipCornerRadius,
+      tooltipY + this.tooltipHeight
+    );
+    this.ctx.quadraticCurveTo(
+      tooltipX,
+      tooltipY + this.tooltipHeight,
+      tooltipX,
+      tooltipY + this.tooltipHeight - this.tooltipCornerRadius
+    );
+    this.ctx.lineTo(tooltipX, tooltipY + this.tooltipCornerRadius);
+    this.ctx.quadraticCurveTo(
+      tooltipX,
+      tooltipY,
+      tooltipX + this.tooltipCornerRadius,
+      tooltipY
+    );
     this.ctx.closePath();
     this.ctx.fill();
 
