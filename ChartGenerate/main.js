@@ -14,6 +14,7 @@ class Chart {
     this.paddingSection = 12;
 
     // legend box
+    this.lengend = options.data.datasets[0].label;
     this.legendBox = {
       with: 24,
       height: 12,
@@ -151,10 +152,11 @@ class Chart {
     this.ctx.lineWidth = 2;
 
     const widthLengend =
-      this.ctx.measureText('# numbers of Votes').width +
+      this.ctx.measureText(this.lengend).width +
       this.legendBox.with +
       this.legendBox.margin;
 
+    // reference box
     this.ctx.fillRect(
       this.canvas.width / 2 - widthLengend / 2,
       this.paddingTop / 2 -
@@ -163,6 +165,7 @@ class Chart {
       this.legendBox.with,
       this.legendBox.height
     );
+
     this.ctx.strokeRect(
       this.canvas.width / 2 - widthLengend / 2,
       this.paddingTop / 2 -
@@ -174,7 +177,7 @@ class Chart {
 
     this.ctx.fillStyle = 'rgb(62, 62, 62)';
     this.ctx.fillText(
-      '# numbers of Votes',
+      this.lengend,
       this.canvas.width / 2 + this.legendBox.with / 2 + this.legendBox.margin,
       this.paddingTop / 2 + (this.title ? this.sizeTitle : 0)
     );
