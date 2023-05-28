@@ -169,6 +169,29 @@ class Chart {
     this.ctx.fillText(title, x, y);
   }
 
+  drawBox({ x, y, width, height, bottom, background }) {
+    if (background) {
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+      this.ctx.fillRect(x, y, width, height);
+    }
+
+    this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
+    this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
+    this.ctx.lineWidth = 2;
+
+    this.ctx.fillRect(x, y, width, height);
+    if (!bottom) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, y + height);
+      this.ctx.lineTo(x, y);
+      this.ctx.lineTo(x + width, y);
+      this.ctx.lineTo(x + width, y + height);
+      this.ctx.stroke();
+    } else {
+      this.ctx.strokeRect(x, y, width, height);
+    }
+  }
+
   drawTitle() {
     this.drawText({
       title: this.title,
@@ -185,23 +208,16 @@ class Chart {
       this.legendBox.margin;
 
     // reference box
-    this.ctx.fillRect(
-      this.canvas.width / 2 - widthLengend / 2,
-      this.paddingTop / 2 -
+    this.drawBox({
+      x: this.canvas.width / 2 - widthLengend / 2,
+      y:
+        this.paddingTop / 2 -
         this.legendBox.height / 2 +
         (this.title ? this.sizeTitle : 0),
-      this.legendBox.with,
-      this.legendBox.height
-    );
-
-    this.ctx.strokeRect(
-      this.canvas.width / 2 - widthLengend / 2,
-      this.paddingTop / 2 -
-        this.legendBox.height / 2 +
-        (this.title ? this.sizeTitle : 0),
-      this.legendBox.with,
-      this.legendBox.height
-    );
+      width: this.legendBox.with,
+      height: this.legendBox.height,
+      bottom: true
+    });
 
     this.drawText({
       title: this.lengend,
@@ -280,7 +296,7 @@ class Chart {
       this.drawText({
         title: value,
         x: this.paddingLeft - 15,
-        y: y,
+        y,
         align: 'right',
         baseline: 'middle'
       });
@@ -288,10 +304,6 @@ class Chart {
   }
 
   drawBars() {
-    this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
-    this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
-    this.ctx.lineWidth = 2;
-
     for (let i = 0; i < this.data.length; i++) {
       const value = this.data[i];
       const barheight = (value / this.roundedMax) * this.chart.height;
@@ -302,13 +314,7 @@ class Chart {
         this.paddingTop +
         (this.title ? this.sizeTitle : 0);
 
-      this.ctx.fillRect(x, y, this.barWidth, barheight);
-      this.ctx.beginPath();
-      this.ctx.moveTo(x, y + barheight);
-      this.ctx.lineTo(x, y);
-      this.ctx.lineTo(x + this.barWidth, y);
-      this.ctx.lineTo(x + this.barWidth, y + barheight);
-      this.ctx.stroke();
+      this.drawBox({ x, y, width: this.barWidth, height: barheight });
     }
   }
 
@@ -431,29 +437,14 @@ class Chart {
     this.ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
     this.ctx.fill();
 
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-    this.ctx.fillRect(
-      tooltipX + this.tooltipMargin,
-      tooltipY + this.tooltipMargin,
-      this.tooltipBox,
-      this.tooltipBox
-    );
-
-    this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
-    this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
-    this.ctx.lineWidth = 1;
-    this.ctx.fillRect(
-      tooltipX + this.tooltipMargin,
-      tooltipY + this.tooltipMargin,
-      this.tooltipBox,
-      this.tooltipBox
-    );
-    this.ctx.strokeRect(
-      tooltipX + this.tooltipMargin,
-      tooltipY + this.tooltipMargin,
-      this.tooltipBox,
-      this.tooltipBox
-    );
+    this.drawBox({
+      x: tooltipX + this.tooltipMargin,
+      y: tooltipY + this.tooltipMargin,
+      width: this.tooltipBox,
+      height: this.tooltipBox,
+      bottom: true,
+      background: true
+    });
 
     this.drawText({
       title: label + ': ' + value,
