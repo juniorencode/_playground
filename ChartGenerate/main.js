@@ -49,10 +49,15 @@ class Chart {
     this.paddingSection = 12;
     this.angleLabels = 0;
 
-    this.tooltipMargin = 16;
-    this.tooltipWidth = 80;
-    this.tooltipHeight = 30 + this.tooltipMargin;
-    this.tooltipCornerRadius = 0;
+    this.ctx.font = '12px sans-serif';
+    const textMetrics = this.ctx.measureText('Ag');
+    this.textHeight =
+      textMetrics.actualBoundingBoxAscent +
+      textMetrics.actualBoundingBoxDescent;
+
+    this.tooltipMargin = 8;
+    this.tooltipHeight = this.textHeight + this.tooltipMargin * 2;
+    this.tooltipBox = this.textHeight;
 
     // Responsive values
     if (this.canvas.width < 450) {
@@ -129,9 +134,6 @@ class Chart {
 
     if (this.title) this.drawTitle();
 
-    this.ctx.font = '12px sans-serif';
-    this.ctx.textAlign = 'center';
-    this.ctx.textBaseline = 'middle';
     this.drawLegend();
 
     this.ctx.strokeStyle = '#000';
@@ -185,10 +187,16 @@ class Chart {
     );
 
     this.ctx.fillStyle = 'rgb(62, 62, 62)';
+    this.ctx.font = '12px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'top';
+
     this.ctx.fillText(
       this.lengend,
       this.canvas.width / 2 + this.legendBox.with / 2 + this.legendBox.margin,
-      this.paddingTop / 2 + (this.title ? this.sizeTitle : 0)
+      (this.title ? this.sizeTitle : 0) +
+        this.paddingTop / 2 -
+        Math.floor(this.textHeight / 2)
     );
   }
 
@@ -298,6 +306,8 @@ class Chart {
 
     const label = this.labels[this.hoveredLabelIndex];
     const value = this.data[this.hoveredLabelIndex];
+    const widthText = this.ctx.measureText(label + ': ' + value).width;
+    const tooltipWidth = this.tooltipMargin * 3 + this.tooltipBox + widthText;
     const barHeight = (value / this.roundedMax) * this.chart.height;
     const x =
       this.hoveredLabelIndex * this.sectionWidth +
@@ -309,21 +319,60 @@ class Chart {
       this.paddingTop +
       (this.title ? this.sizeTitle : 0);
 
-    const tooltipX = x;
-    const tooltipY = Math.max(this.tooltipMargin, y - this.tooltipHeight / 2);
+    let tooltipX;
+
+    if (this.hoveredLabelIndex < Math.floor(this.labels.length / 2)) {
+      tooltipX = x + this.barWidth - this.barWidth / 2;
+    } else {
+      tooltipX = x - tooltipWidth + this.barWidth / 2;
+    }
+
+    const tooltipY = y - this.tooltipHeight / 2;
 
     this.ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
     this.ctx.beginPath();
-    this.ctx.moveTo(tooltipX + this.tooltipCornerRadius, tooltipY);
-    this.ctx.lineTo(tooltipX + this.tooltipWidth, tooltipY);
-    this.ctx.lineTo(
-      tooltipX + this.tooltipWidth,
-      tooltipY + this.tooltipHeight
-    );
+    this.ctx.moveTo(tooltipX, tooltipY);
+    this.ctx.lineTo(tooltipX + tooltipWidth, tooltipY);
+    this.ctx.lineTo(tooltipX + tooltipWidth, tooltipY + this.tooltipHeight);
     this.ctx.lineTo(tooltipX, tooltipY + this.tooltipHeight);
     this.ctx.lineTo(tooltipX, tooltipY);
     this.ctx.closePath();
     this.ctx.fill();
+
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+    this.ctx.fillRect(
+      tooltipX + this.tooltipMargin,
+      tooltipY + this.tooltipMargin,
+      this.tooltipBox,
+      this.tooltipBox
+    );
+
+    this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
+    this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
+    this.ctx.lineWidth = 1;
+    this.ctx.fillRect(
+      tooltipX + this.tooltipMargin,
+      tooltipY + this.tooltipMargin,
+      this.tooltipBox,
+      this.tooltipBox
+    );
+    this.ctx.strokeRect(
+      tooltipX + this.tooltipMargin,
+      tooltipY + this.tooltipMargin,
+      this.tooltipBox,
+      this.tooltipBox
+    );
+
+    this.ctx.fillStyle = '#fff';
+    this.ctx.textAlign = 'left';
+    this.ctx.textBaseline = 'top';
+    this.ctx.font = '12px sans-serif';
+
+    this.ctx.fillText(
+      label + ': ' + value,
+      tooltipX + this.tooltipMargin * 2 + this.tooltipBox,
+      tooltipY + this.tooltipHeight / 2 - Math.floor(this.textHeight / 2)
+    );
   }
 
   resize() {
