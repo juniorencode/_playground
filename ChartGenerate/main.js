@@ -9,11 +9,6 @@ class Chart {
 
     // legend box
     this.lengend = options.data.datasets[0].label;
-    this.legendBox = {
-      with: 24,
-      height: 12,
-      margin: 4
-    };
 
     // variables for mouse handling
     this.tooltipVisible = false;
@@ -75,6 +70,12 @@ class Chart {
     this.sectionWidth = Math.floor(this.chart.width / this.data.length);
     this.paddingSection = Math.ceil(this.sectionWidth / 8);
     this.barWidth = this.sectionWidth - this.paddingSection * 2;
+
+    this.legendBox = {
+      with: this.textHeight * 2,
+      height: this.textHeight,
+      margin: Math.floor(this.textHeight / 2)
+    };
 
     // values
     this.numLabels = 10;
