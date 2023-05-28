@@ -6,12 +6,6 @@ class Chart {
     this.labels = options.data.labels;
     this.data = options.data.datasets[0].data;
 
-    this.maxValue = Math.max(...this.data);
-    this.minValue = Math.min(...this.data);
-    this.numLabels = 10;
-    this.range = 0;
-    this.calculateStadistic();
-
     this.paddingLeft = 32;
     this.paddingTop = 42;
     this.paddingBottom = 24;
@@ -50,6 +44,18 @@ class Chart {
     // bar
     this.sectionWidth = Math.floor(this.chart.width / this.data.length);
     this.barWidth = this.sectionWidth - this.paddingSection * 2;
+
+    // values
+    this.numLabels = 10;
+
+    while (this.chart.height / this.numLabels < 20) {
+      this.numLabels--;
+    }
+
+    this.maxValue = Math.max(...this.data);
+    this.minValue = Math.min(...this.data);
+    this.range = 0;
+    this.calculateStadistic();
   }
 
   calculateStadistic() {
