@@ -21,12 +21,15 @@ class Chart {
       margin: 4
     };
 
+    // variables for mouse handling
+    this.tooltipVisible = false;
+    this.hoveredMonthIndex = -1;
+
     this.initial();
     this.draw();
 
-    window.addEventListener('resize', () => {
-      this.resize();
-    });
+    window.addEventListener('resize', () => this.resize());
+    canvas.addEventListener('mousemove', e => this.handleMouseMove(e));
   }
 
   initial() {
@@ -81,8 +84,6 @@ class Chart {
     this.minValue = Math.min(...this.data);
     this.range = 0;
     this.calculateStadistic();
-
-    // console.log(this.chart.width);
   }
 
   calculateStadistic() {
@@ -119,6 +120,8 @@ class Chart {
   }
 
   draw() {
+    this.clearCanvas();
+
     if (this.title) this.drawTitle();
 
     this.ctx.font = '12px sans-serif';
@@ -135,6 +138,7 @@ class Chart {
     this.drawAxisY();
 
     this.drawBars();
+    this.drawTooltip();
   }
 
   drawTitle() {
@@ -284,9 +288,12 @@ class Chart {
     }
   }
 
-  resize() {
-    this.cleanCanvas();
+  drawTooltip() {
+    if (!this.tooltipVisible || this.hoveredMonthIndex === -1) return;
+    console.log(this.hoveredMonthIndex);
+  }
 
+  resize() {
     const ratio = window.devicePixelRatio;
 
     if (this.auxRatio !== ratio) {
@@ -301,7 +308,47 @@ class Chart {
     this.draw();
   }
 
-  cleanCanvas() {
+  clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  handleMouseMove(e) {
+    const mousePos = this.getMousePos(e);
+
+    // check if the mouse pointer is over a bar
+    for (let i = 0; i < this.data.length; i++) {
+      const value = this.data[i];
+      const barHeight = (value / this.roundedMax) * this.chart.height;
+      const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
+      const y =
+        this.chart.height -
+        barHeight +
+        this.paddingTop +
+        (this.title ? this.sizeTitle : 0);
+
+      if (
+        mousePos.x >= x &&
+        mousePos.x <= x + this.barWidth &&
+        mousePos.y >= y &&
+        mousePos.y <= y + barHeight
+      ) {
+        this.hoveredMonthIndex = i;
+        this.tooltipVisible = true;
+      } else if (this.hoveredMonthIndex === i) {
+        this.hoveredMonthIndex = -1;
+        this.tooltipVisible = false;
+      }
+    }
+
+    this.draw();
+  }
+
+  // get the coordinates of the mouse relative to the canvas
+  getMousePos(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    };
   }
 }
