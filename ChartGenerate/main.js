@@ -1,8 +1,8 @@
 class Chart {
   constructor(canvas, options) {
+    this.parent = canvas.parentNode;
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');
-    this.ratio = { w: 2, h: 1 };
     this.labels = options.data.labels;
     this.data = options.data.datasets[0].data;
 
@@ -17,16 +17,6 @@ class Chart {
     this.paddingBottom = 24;
     this.paddingSection = 12;
 
-    // normalize size
-    this.canvas.width = this.canvas.parentNode.clientWidth;
-    this.canvas.height = this.canvas.width / 2;
-
-    // chart
-    this.chart = {
-      width: this.canvas.width - this.paddingLeft,
-      height: this.canvas.height - this.paddingTop - this.paddingBottom
-    };
-
     // legend box
     this.legendBox = {
       with: 24,
@@ -34,11 +24,32 @@ class Chart {
       margin: 4
     };
 
+    this.initial();
+    this.draw();
+
+    window.addEventListener('resize', () => {
+      this.resize();
+    });
+  }
+
+  initial() {
+    // normalize size
+    this.canvas.width = this.canvas.clientWidth;
+    this.canvas.height = this.canvas.width / 2;
+
+    this.rect = this.canvas.getBoundingClientRect();
+    this.ratio = window.devicePixelRatio;
+    this.auxRatio = this.ratio;
+
+    // chart
+    this.chart = {
+      width: this.canvas.width - this.paddingLeft,
+      height: this.canvas.height - this.paddingTop - this.paddingBottom
+    };
+
     // bar
     this.sectionWidth = Math.floor(this.chart.width / this.data.length);
     this.barWidth = this.sectionWidth - this.paddingSection * 2;
-
-    this.drawGrid();
   }
 
   calculateStadistic() {
@@ -74,7 +85,10 @@ class Chart {
     return powerOfTen;
   }
 
-  drawGrid() {
+  draw() {
+    this.ctx.font = '12px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'middle';
     this.drawLegend();
 
     this.ctx.strokeStyle = '#000';
@@ -112,12 +126,9 @@ class Chart {
     );
 
     this.ctx.fillStyle = 'rgb(62, 62, 62)';
-    this.ctx.textAlign = 'center';
-    this.ctx.textBaseline = 'middle';
-    this.ctx.font = '12px sans-serif';
     this.ctx.fillText(
       '# numbers of Votes',
-      this.canvas.width / 2 + this.legendBox.with + this.legendBox.margin,
+      this.canvas.width / 2 + this.legendBox.with / 2 + this.legendBox.margin,
       this.paddingTop / 2
     );
   }
@@ -211,5 +222,26 @@ class Chart {
       this.ctx.lineTo(x + this.barWidth, y + barheight);
       this.ctx.stroke();
     }
+  }
+
+  resize() {
+    this.cleanCanvas();
+
+    const ratio = window.devicePixelRatio;
+
+    if (this.auxRatio !== ratio) {
+      this.canvas.style.width = this.rect.width / ratio + 'px';
+      this.canvas.style.height = this.rect.height / ratio + 'px';
+      this.auxRatio = ratio;
+    } else {
+      this.canvas.removeAttribute('style');
+      this.initial();
+    }
+
+    this.draw();
+  }
+
+  cleanCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }

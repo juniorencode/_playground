@@ -3,12 +3,12 @@
   padding: 0;
 }
 
-body {
-  width: 100vw;
-  min-height: 100vh;
+.container {
+  /* width: 600px; */
+  width: 100%;
+  /* outline: solid 1px #ccc; */
 }
 
-.container {
-  width: 600px;
-  border: solid 1px #ccc;
+canvas {
+  width: 100%;
 }
