@@ -23,7 +23,7 @@ class Chart {
 
     // variables for mouse handling
     this.tooltipVisible = false;
-    this.hoveredMonthIndex = -1;
+    this.hoveredLabelIndex = -1;
 
     this.initial();
     this.draw();
@@ -289,8 +289,8 @@ class Chart {
   }
 
   drawTooltip() {
-    if (!this.tooltipVisible || this.hoveredMonthIndex === -1) return;
-    console.log(this.hoveredMonthIndex);
+    if (!this.tooltipVisible || this.hoveredLabelIndex === -1) return;
+    console.log(this.hoveredLabelIndex);
   }
 
   resize() {
@@ -332,10 +332,10 @@ class Chart {
         mousePos.y >= y &&
         mousePos.y <= y + barHeight
       ) {
-        this.hoveredMonthIndex = i;
+        this.hoveredLabelIndex = i;
         this.tooltipVisible = true;
-      } else if (this.hoveredMonthIndex === i) {
-        this.hoveredMonthIndex = -1;
+      } else if (this.hoveredLabelIndex === i) {
+        this.hoveredLabelIndex = -1;
         this.tooltipVisible = false;
       }
     }
