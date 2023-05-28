@@ -140,36 +140,45 @@ class Chart {
   draw() {
     this.clearCanvas();
 
-    if (this.title) this.drawTitle();
-
-    this.drawLegend();
-
     this.ctx.strokeStyle = '#000';
     this.ctx.lineWidth = 0.1;
-
     this.drawHorizontalLines();
     this.drawVerticalLines();
+
     this.drawAxisX();
     this.drawAxisY();
 
+    if (this.title) this.drawTitle();
+
     this.drawBars();
+    this.drawLegend();
+
     this.drawTooltip();
   }
 
-  drawTitle() {
-    this.ctx.fillStyle = 'rgb(62, 62, 62)';
-    this.ctx.font = 'bold 12px sans-serif';
-    this.ctx.textAlign = 'center';
-    this.ctx.textBaseline = 'top';
+  drawText({ title, x, y, bold, align, baseline, color }) {
+    bold = !!bold;
+    align = align || 'center';
+    baseline = baseline || 'top';
+    color = color || 'rgb(62, 62, 62)';
+    this.ctx.fillStyle = color;
+    this.ctx.font = (bold && 'bold ') + this.fontSize + 'px ' + this.fontFamily;
+    this.ctx.textAlign = align;
+    this.ctx.textBaseline = baseline;
 
-    this.ctx.fillText(this.title, this.canvas.width / 2, this.sizeTitle / 2);
+    this.ctx.fillText(title, x, y);
+  }
+
+  drawTitle() {
+    this.drawText({
+      title: this.title,
+      x: this.canvas.width / 2,
+      y: this.sizeTitle / 2,
+      bold: true
+    });
   }
 
   drawLegend() {
-    this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
-    this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
-    this.ctx.lineWidth = 2;
-
     const widthLengend =
       this.ctx.measureText(this.lengend).width +
       this.legendBox.with +
@@ -194,18 +203,15 @@ class Chart {
       this.legendBox.height
     );
 
-    this.ctx.fillStyle = 'rgb(62, 62, 62)';
-    this.ctx.font = '12px sans-serif';
-    this.ctx.textAlign = 'center';
-    this.ctx.textBaseline = 'top';
-
-    this.ctx.fillText(
-      this.lengend,
-      this.canvas.width / 2 + this.legendBox.with / 2 + this.legendBox.margin,
-      (this.title ? this.sizeTitle : 0) +
+    this.drawText({
+      title: this.lengend,
+      x:
+        this.canvas.width / 2 + this.legendBox.with / 2 + this.legendBox.margin,
+      y:
+        (this.title ? this.sizeTitle : 0) +
         this.paddingTop / 2 -
         Math.floor(this.textHeight / 2)
-    );
+    });
   }
 
   drawHorizontalLines() {
@@ -247,16 +253,12 @@ class Chart {
       const sectionCenterX = x + this.sectionWidth / 2;
 
       this.ctx.save();
-      this.ctx.fillStyle = 'rgb(62, 62, 62)';
-      this.ctx.textAlign = 'center';
-      this.ctx.textBaseline = 'top';
-      this.ctx.font = '12px sans-serif';
       this.ctx.translate(
         sectionCenterX,
         this.canvas.height - this.paddingBottom / 2
       );
       this.ctx.rotate(-this.angleLabels);
-      this.ctx.fillText(label, 0, 0);
+      this.drawText({ title: label, x: 0, y: 0 });
       this.ctx.rotate(this.angleLabels);
       this.ctx.restore();
     }
@@ -275,12 +277,13 @@ class Chart {
         this.paddingTop +
         (this.title ? this.sizeTitle : 0);
 
-      this.ctx.fillStyle = 'rgb(62, 62, 62)';
-      this.ctx.textAlign = 'right';
-      this.ctx.textBaseline = 'middle';
-      this.ctx.font = '12px sans-serif';
-
-      this.ctx.fillText(value, this.paddingLeft - 15, y);
+      this.drawText({
+        title: value,
+        x: this.paddingLeft - 15,
+        y: y,
+        align: 'right',
+        baseline: 'middle'
+      });
     }
   }
 
@@ -452,16 +455,13 @@ class Chart {
       this.tooltipBox
     );
 
-    this.ctx.fillStyle = '#fff';
-    this.ctx.textAlign = 'left';
-    this.ctx.textBaseline = 'top';
-    this.ctx.font = '12px sans-serif';
-
-    this.ctx.fillText(
-      label + ': ' + value,
-      tooltipX + this.tooltipMargin * 2 + this.tooltipBox,
-      tooltipY + this.tooltipHeight / 2 - Math.floor(this.textHeight / 2)
-    );
+    this.drawText({
+      title: label + ': ' + value,
+      x: tooltipX + this.tooltipMargin * 2 + this.tooltipBox,
+      y: tooltipY + this.tooltipHeight / 2 - Math.floor(this.textHeight / 2),
+      align: 'left',
+      color: '#fff'
+    });
   }
 
   resize() {
