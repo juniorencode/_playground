@@ -49,6 +49,11 @@ class Chart {
     this.paddingSection = 12;
     this.angleLabels = 0;
 
+    this.tooltipMargin = 16;
+    this.tooltipWidth = 80;
+    this.tooltipHeight = 30 + this.tooltipMargin;
+    this.tooltipCornerRadius = 0;
+
     // Responsive values
     if (this.canvas.width < 450) {
       this.sizeTitle = 12;
@@ -290,7 +295,35 @@ class Chart {
 
   drawTooltip() {
     if (!this.tooltipVisible || this.hoveredLabelIndex === -1) return;
-    console.log(this.hoveredLabelIndex);
+
+    const label = this.labels[this.hoveredLabelIndex];
+    const value = this.data[this.hoveredLabelIndex];
+    const barHeight = (value / this.roundedMax) * this.chart.height;
+    const x =
+      this.hoveredLabelIndex * this.sectionWidth +
+      this.paddingSection +
+      this.paddingLeft;
+    const y =
+      this.chart.height -
+      barHeight +
+      this.paddingTop +
+      (this.title ? this.sizeTitle : 0);
+
+    const tooltipX = x;
+    const tooltipY = Math.max(this.tooltipMargin, y - this.tooltipHeight / 2);
+
+    this.ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
+    this.ctx.beginPath();
+    this.ctx.moveTo(tooltipX + this.tooltipCornerRadius, tooltipY);
+    this.ctx.lineTo(tooltipX + this.tooltipWidth, tooltipY);
+    this.ctx.lineTo(
+      tooltipX + this.tooltipWidth,
+      tooltipY + this.tooltipHeight
+    );
+    this.ctx.lineTo(tooltipX, tooltipY + this.tooltipHeight);
+    this.ctx.lineTo(tooltipX, tooltipY);
+    this.ctx.closePath();
+    this.ctx.fill();
   }
 
   resize() {
