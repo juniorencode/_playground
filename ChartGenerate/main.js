@@ -55,6 +55,7 @@ class Chart {
     this.numLabels = 10;
 
     while (this.chart.height / this.numLabels < 20) {
+      if (this.chart.height / this.numLabels < 2) return;
       this.numLabels--;
     }
 
@@ -62,6 +63,8 @@ class Chart {
     this.minValue = Math.min(...this.data);
     this.range = 0;
     this.calculateStadistic();
+
+    console.log(window.innerWidth);
   }
 
   calculateStadistic() {
