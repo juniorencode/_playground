@@ -7,12 +7,6 @@ class Chart {
     this.labels = options.data.labels;
     this.data = options.data.datasets[0].data;
 
-    this.sizeTitle = 24;
-    this.paddingTop = 42;
-    this.paddingBottom = 24;
-    this.paddingLeft = 36;
-    this.paddingSection = 12;
-
     // legend box
     this.lengend = options.data.datasets[0].label;
     this.legendBox = {
@@ -42,32 +36,29 @@ class Chart {
     this.auxRatio = this.ratio;
 
     // Default values
-    this.sizeTitle = 24;
-    this.paddingTop = 42;
-    this.paddingBottom = 24;
-    this.paddingLeft = 36;
-    this.paddingSection = 12;
-    this.angleLabels = 0;
+    this.fontSize = 12;
+    this.fontFamily = 'sans-serif';
+    this.textHeight = this.calculateTextSize();
 
-    this.ctx.font = '12px sans-serif';
-    const textMetrics = this.ctx.measureText('Ag');
-    this.textHeight =
-      textMetrics.actualBoundingBoxAscent +
-      textMetrics.actualBoundingBoxDescent;
+    this.padding = 10;
 
-    this.tooltipMargin = 8;
+    this.sizeTitle = this.textHeight + this.padding * 2;
+    this.paddingTop = this.textHeight + this.padding * 2;
+    this.paddingBottom = this.textHeight + this.padding * 2;
+    this.paddingLeft = this.calculateWidthAxisY() + this.padding * 2;
+
+    this.tooltipMargin = this.padding;
     this.tooltipHeight = this.textHeight + this.tooltipMargin * 2;
-    this.tooltipCornerRadius = 5;
+    this.tooltipCornerRadius = this.padding / 2;
     this.tooltipBox = this.textHeight;
-    this.tooltipSizeArrow = 6;
+    this.tooltipSizeArrow = Math.floor(this.tooltipHeight / 4);
+
+    this.angleLabels = 0;
 
     // Responsive values
     if (this.canvas.width < 450) {
-      this.sizeTitle = 12;
-      this.paddingTop = 32;
-      this.paddingBottom = 42;
-      this.paddingSection = 6;
       this.angleLabels = Math.PI / 4;
+      this.paddingBottom = this.paddingBottom * 2;
     }
 
     // chart
@@ -82,6 +73,7 @@ class Chart {
 
     // bar
     this.sectionWidth = Math.floor(this.chart.width / this.data.length);
+    this.paddingSection = Math.ceil(this.sectionWidth / 8);
     this.barWidth = this.sectionWidth - this.paddingSection * 2;
 
     // values
@@ -96,6 +88,19 @@ class Chart {
     this.minValue = Math.min(...this.data);
     this.range = 0;
     this.calculateStadistic();
+  }
+
+  calculateTextSize() {
+    this.ctx.font = this.fontSize + 'px ' + this.fontFamily;
+    const textMetrics = this.ctx.measureText('Ag');
+    return (
+      textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent
+    );
+  }
+
+  calculateWidthAxisY() {
+    this.ctx.font = this.fontSize + 'px ' + this.fontFamily;
+    return this.ctx.measureText(Math.max(...this.data.map(Math.abs))).width;
   }
 
   calculateStadistic() {
