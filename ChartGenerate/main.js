@@ -63,8 +63,6 @@ class Chart {
     this.minValue = Math.min(...this.data);
     this.range = 0;
     this.calculateStadistic();
-
-    console.log(window.innerWidth);
   }
 
   calculateStadistic() {
