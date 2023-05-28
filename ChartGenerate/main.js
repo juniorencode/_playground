@@ -58,6 +58,7 @@ class Chart {
     this.tooltipMargin = 8;
     this.tooltipHeight = this.textHeight + this.tooltipMargin * 2;
     this.tooltipBox = this.textHeight;
+    this.tooltipSizeArrow = 6;
 
     // Responsive values
     if (this.canvas.width < 450) {
@@ -320,11 +321,14 @@ class Chart {
       (this.title ? this.sizeTitle : 0);
 
     let tooltipX;
+    let arrowDirection;
 
     if (this.hoveredLabelIndex < Math.floor(this.labels.length / 2)) {
-      tooltipX = x + this.barWidth - this.barWidth / 2;
+      tooltipX = x + this.barWidth - this.barWidth / 2 + this.tooltipSizeArrow;
+      arrowDirection = 'left';
     } else {
       tooltipX = x - tooltipWidth + this.barWidth / 2;
+      arrowDirection = 'right';
     }
 
     const tooltipY = y - this.tooltipHeight / 2;
@@ -337,6 +341,51 @@ class Chart {
     this.ctx.lineTo(tooltipX, tooltipY + this.tooltipHeight);
     this.ctx.lineTo(tooltipX, tooltipY);
     this.ctx.closePath();
+    this.ctx.fill();
+
+    // draw info arrow
+    this.ctx.beginPath();
+    if (arrowDirection === 'left') {
+      this.ctx.moveTo(
+        tooltipX,
+        tooltipY +
+          this.tooltipHeight / 2 -
+          this.tooltipSizeArrow / 2 -
+          this.tooltipSizeArrow / 2
+      );
+      this.ctx.lineTo(
+        tooltipX - this.tooltipSizeArrow,
+        tooltipY + this.tooltipHeight / 2
+      );
+      this.ctx.lineTo(
+        tooltipX,
+        tooltipY +
+          this.tooltipHeight / 2 +
+          this.tooltipSizeArrow / 2 +
+          this.tooltipSizeArrow / 2
+      );
+    } else {
+      this.ctx.moveTo(
+        tooltipX + tooltipWidth,
+        tooltipY +
+          this.tooltipHeight / 2 -
+          this.tooltipSizeArrow / 2 -
+          this.tooltipSizeArrow / 2
+      );
+      this.ctx.lineTo(
+        tooltipX + tooltipWidth + this.tooltipSizeArrow,
+        tooltipY + this.tooltipHeight / 2
+      );
+      this.ctx.lineTo(
+        tooltipX + tooltipWidth,
+        tooltipY +
+          this.tooltipHeight / 2 +
+          this.tooltipSizeArrow / 2 +
+          this.tooltipSizeArrow / 2
+      );
+    }
+    this.ctx.closePath();
+    this.ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
     this.ctx.fill();
 
     this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
