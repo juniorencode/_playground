@@ -45,13 +45,13 @@ class Chart {
     // adjust the minimum value if it is less than zero
     const adjustedMin = Math.min(0, this.minValue);
 
-    // // calculate the range of values
+    // calculate the range of values
     this.range = this.maxValue - adjustedMin;
 
-    // // calculate the width of each interval
+    // calculate the width of each interval
     this.calculateIntervalWidth();
 
-    // // round the range limits down and up
+    // round the range limits down and up
     this.roundedMin =
       Math.floor(adjustedMin / this.intervalWidth) * this.intervalWidth;
     this.roundedMax =
@@ -97,7 +97,6 @@ class Chart {
       this.ctx.measureText('# numbers of Votes').width +
       this.legendBox.with +
       this.legendBox.margin;
-    console.log(widthLengend);
 
     this.ctx.fillRect(
       this.canvas.width / 2 - widthLengend / 2,
