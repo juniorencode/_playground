@@ -10,7 +10,7 @@ class Chart {
     this.sizeTitle = 24;
     this.paddingTop = 42;
     this.paddingBottom = 24;
-    this.paddingLeft = 32;
+    this.paddingLeft = 36;
     this.paddingSection = 12;
 
     // legend box
@@ -36,6 +36,23 @@ class Chart {
     this.rect = this.canvas.getBoundingClientRect();
     this.ratio = window.devicePixelRatio;
     this.auxRatio = this.ratio;
+
+    // Default values
+    this.sizeTitle = 24;
+    this.paddingTop = 42;
+    this.paddingBottom = 24;
+    this.paddingLeft = 36;
+    this.paddingSection = 12;
+    this.angleLabels = 0;
+
+    // Responsive values
+    if (this.canvas.width < 450) {
+      this.sizeTitle = 12;
+      this.paddingTop = 32;
+      this.paddingBottom = 42;
+      this.paddingSection = 6;
+      this.angleLabels = Math.PI / 4;
+    }
 
     // chart
     this.chart = {
@@ -63,6 +80,8 @@ class Chart {
     this.minValue = Math.min(...this.data);
     this.range = 0;
     this.calculateStadistic();
+
+    // console.log(this.chart.width);
   }
 
   calculateStadistic() {
@@ -199,15 +218,19 @@ class Chart {
       const label = this.labels[i];
       const sectionCenterX = x + this.sectionWidth / 2;
 
+      this.ctx.save();
       this.ctx.fillStyle = 'rgb(62, 62, 62)';
       this.ctx.textAlign = 'center';
       this.ctx.textBaseline = 'top';
       this.ctx.font = '12px sans-serif';
-      this.ctx.fillText(
-        label,
+      this.ctx.translate(
         sectionCenterX,
         this.canvas.height - this.paddingBottom / 2
       );
+      this.ctx.rotate(-this.angleLabels);
+      this.ctx.fillText(label, 0, 0);
+      this.ctx.rotate(this.angleLabels);
+      this.ctx.restore();
     }
   }
 
