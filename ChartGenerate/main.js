@@ -3,12 +3,14 @@ class Chart {
     this.parent = canvas.parentNode;
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d');
+    this.title = options.title || '';
     this.labels = options.data.labels;
     this.data = options.data.datasets[0].data;
 
-    this.paddingLeft = 32;
+    this.sizeTitle = 24;
     this.paddingTop = 42;
     this.paddingBottom = 24;
+    this.paddingLeft = 32;
     this.paddingSection = 12;
 
     // legend box
@@ -38,7 +40,11 @@ class Chart {
     // chart
     this.chart = {
       width: this.canvas.width - this.paddingLeft,
-      height: this.canvas.height - this.paddingTop - this.paddingBottom
+      height:
+        this.canvas.height -
+        this.paddingTop -
+        this.paddingBottom -
+        (this.title ? this.sizeTitle : 0)
     };
 
     // bar
@@ -92,6 +98,8 @@ class Chart {
   }
 
   draw() {
+    if (this.title) this.drawTitle();
+
     this.ctx.font = '12px sans-serif';
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
@@ -108,6 +116,15 @@ class Chart {
     this.drawBars();
   }
 
+  drawTitle() {
+    this.ctx.fillStyle = 'rgb(62, 62, 62)';
+    this.ctx.font = 'bold 12px sans-serif';
+    this.ctx.textAlign = 'center';
+    this.ctx.textBaseline = 'top';
+
+    this.ctx.fillText(this.title, this.canvas.width / 2, this.sizeTitle / 2);
+  }
+
   drawLegend() {
     this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
     this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
@@ -120,13 +137,17 @@ class Chart {
 
     this.ctx.fillRect(
       this.canvas.width / 2 - widthLengend / 2,
-      this.paddingTop / 2 - this.legendBox.height / 2,
+      this.paddingTop / 2 -
+        this.legendBox.height / 2 +
+        (this.title ? this.sizeTitle : 0),
       this.legendBox.with,
       this.legendBox.height
     );
     this.ctx.strokeRect(
       this.canvas.width / 2 - widthLengend / 2,
-      this.paddingTop / 2 - this.legendBox.height / 2,
+      this.paddingTop / 2 -
+        this.legendBox.height / 2 +
+        (this.title ? this.sizeTitle : 0),
       this.legendBox.with,
       this.legendBox.height
     );
@@ -135,7 +156,7 @@ class Chart {
     this.ctx.fillText(
       '# numbers of Votes',
       this.canvas.width / 2 + this.legendBox.with / 2 + this.legendBox.margin,
-      this.paddingTop / 2
+      this.paddingTop / 2 + (this.title ? this.sizeTitle : 0)
     );
   }
 
@@ -149,7 +170,8 @@ class Chart {
         this.chart.height -
         ((value - this.roundedMin) / (this.roundedMax - this.roundedMin)) *
           this.chart.height +
-        this.paddingTop;
+        this.paddingTop +
+        (this.title ? this.sizeTitle : 0);
 
       this.ctx.beginPath();
       this.ctx.moveTo(this.paddingLeft - 10, y);
@@ -163,7 +185,7 @@ class Chart {
       const x = i * this.sectionWidth + this.paddingLeft;
 
       this.ctx.beginPath();
-      this.ctx.moveTo(x, this.paddingTop);
+      this.ctx.moveTo(x, this.paddingTop + (this.title ? this.sizeTitle : 0));
       this.ctx.lineTo(x, this.canvas.height - this.paddingBottom + 10);
       this.ctx.stroke();
     }
@@ -198,7 +220,8 @@ class Chart {
         this.chart.height -
         ((value - this.roundedMin) / (this.roundedMax - this.roundedMin)) *
           this.chart.height +
-        this.paddingTop;
+        this.paddingTop +
+        (this.title ? this.sizeTitle : 0);
 
       this.ctx.fillStyle = 'rgb(62, 62, 62)';
       this.ctx.textAlign = 'right';
@@ -218,7 +241,11 @@ class Chart {
       const value = this.data[i];
       const barheight = (value / this.roundedMax) * this.chart.height;
       const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
-      const y = this.chart.height - barheight + this.paddingTop;
+      const y =
+        this.chart.height -
+        barheight +
+        this.paddingTop +
+        (this.title ? this.sizeTitle : 0);
 
       this.ctx.fillRect(x, y, this.barWidth, barheight);
       this.ctx.beginPath();
