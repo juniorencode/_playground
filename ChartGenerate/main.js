@@ -460,11 +460,11 @@ class Chart {
     // check if the mouse pointer is over a bar
     for (let i = 0; i < this.data.length; i++) {
       const value = this.data[i];
-      const origin = this.roundedMax * (this.chart.height / this.range);
+      const origin = this.roundedMax * (this.chart.height / this.roundedRange);
       const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
-      let barHeight =
-        (value / this.range) * this.chart.height * (value < 0 ? -1 : 1);
-      let y =
+      const barHeight =
+        value * (this.chart.height / this.roundedRange) * (value < 0 ? -1 : 1);
+      const y =
         (this.title ? this.sizeTitle : 0) +
         this.paddingTop +
         origin -
