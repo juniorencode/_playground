@@ -7,6 +7,14 @@ class Chart {
     this.labels = options.data.labels;
     this.data = options.data.datasets[0].data;
 
+    this.backgroundColor =
+      options.data.datasets[0].backgroundColor || 'rgba(132, 132, 132, 0.2)';
+    this.borderColor = options.data.datasets[0].borderColor
+      ? options.data.datasets[0].borderColor
+      : options.data.datasets[0].backgroundColor
+      ? undefined
+      : 'rgba(132, 132, 132, 1)';
+
     // legend box
     this.lengend = options.data.datasets[0].label;
 
@@ -177,11 +185,13 @@ class Chart {
       this.ctx.fillRect(x, y, width, height);
     }
 
-    this.ctx.fillStyle = 'rgba(132, 132, 132, 0.2)';
-    this.ctx.strokeStyle = 'rgba(132, 132, 132, 1)';
+    this.ctx.fillStyle = this.backgroundColor;
+    this.ctx.strokeStyle = this.borderColor;
     this.ctx.lineWidth = 2;
 
     this.ctx.fillRect(x, y, width, height);
+
+    if (!this.borderColor) return;
     if (!bottom) {
       this.ctx.beginPath();
       this.ctx.moveTo(x, y + height);
