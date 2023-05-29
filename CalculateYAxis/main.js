@@ -5,9 +5,10 @@ const labels = [];
 const generateLabels = elem => {
   // adjust the minimum value if it is less than zero
   const adjustedMin = Math.min(0, elem.minValue);
+  const adjustedMax = Math.max(0, elem.maxValue);
 
   // calculate the range of values
-  elem.range = elem.maxValue - adjustedMin;
+  elem.range = adjustedMax - adjustedMin;
 
   // calculate the width of each interval
   elem.intervalWidth = calculateIntervalWidth(elem.range, elem.numLabels - 1);
@@ -16,7 +17,7 @@ const generateLabels = elem => {
   elem.roundedMin =
     Math.floor(adjustedMin / elem.intervalWidth) * elem.intervalWidth;
   elem.roundedMax =
-    Math.ceil(elem.maxValue / elem.intervalWidth) * elem.intervalWidth;
+    Math.ceil(adjustedMax / elem.intervalWidth) * elem.intervalWidth;
 
   // generate the labels
   for (let i = elem.roundedMin; i <= elem.roundedMax; i += elem.intervalWidth) {
@@ -79,6 +80,7 @@ const createCard = (minValue, maxValue, numLabels) => {
   });
 };
 
+createCard(-89, -43, 5);
 createCard(1, 1, 5);
 createCard(1, 2, 5);
 createCard(2, 3, 5);
