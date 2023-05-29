@@ -368,8 +368,7 @@ class Chart {
   drawBars() {
     for (let i = 0; i < this.data.length; i++) {
       const value = this.data[i];
-      const origin =
-        Math.max(this.roundedMax, 0) * (this.chart.height / this.roundedRange);
+      const origin = this.roundedMax * (this.chart.height / this.roundedRange);
       const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
       const barHeight = value * (this.chart.height / this.roundedRange);
       const y =
