@@ -120,6 +120,7 @@ class Chart {
       Math.floor(adjustedMin / this.intervalWidth) * this.intervalWidth;
     this.roundedMax =
       Math.ceil(adjustedMax / this.intervalWidth) * this.intervalWidth;
+    this.roundedRange = this.roundedMax - this.roundedMin;
   }
 
   calculateIntervalWidth() {
@@ -368,9 +369,9 @@ class Chart {
     for (let i = 0; i < this.data.length; i++) {
       const value = this.data[i];
       const origin =
-        Math.max(this.maxValue, 0) * (this.chart.height / this.range);
+        Math.max(this.roundedMax, 0) * (this.chart.height / this.roundedRange);
       const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
-      const barHeight = (value / this.range) * this.chart.height;
+      const barHeight = value * (this.chart.height / this.roundedRange);
       const y =
         (this.title ? this.sizeTitle : 0) +
         this.paddingTop +
