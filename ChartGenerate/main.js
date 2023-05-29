@@ -107,9 +107,10 @@ class Chart {
   calculateStadistic() {
     // adjust the minimum value if it is less than zero
     const adjustedMin = Math.min(0, this.minValue);
+    const adjustedMax = Math.max(0, this.maxValue);
 
     // calculate the range of values
-    this.range = this.maxValue - adjustedMin;
+    this.range = adjustedMax - adjustedMin;
 
     // calculate the width of each interval
     this.calculateIntervalWidth();
@@ -118,7 +119,7 @@ class Chart {
     this.roundedMin =
       Math.floor(adjustedMin / this.intervalWidth) * this.intervalWidth;
     this.roundedMax =
-      Math.ceil(this.maxValue / this.intervalWidth) * this.intervalWidth;
+      Math.ceil(adjustedMax / this.intervalWidth) * this.intervalWidth;
   }
 
   calculateIntervalWidth() {
