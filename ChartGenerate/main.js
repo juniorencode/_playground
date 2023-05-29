@@ -460,17 +460,13 @@ class Chart {
       const value = this.data[i];
       const origin = this.roundedMax * (this.chart.height / this.range);
       const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
-      let barHeight = (value / this.range) * this.chart.height;
+      let barHeight =
+        (value / this.range) * this.chart.height * (value < 0 ? -1 : 1);
       let y =
         (this.title ? this.sizeTitle : 0) +
         this.paddingTop +
         origin -
-        barHeight;
-
-      if (value < 0) {
-        y = y + barHeight;
-        barHeight = -barHeight;
-      }
+        (value < 0 ? 0 : barHeight);
 
       if (
         mousePos.x >= x &&
