@@ -192,6 +192,66 @@ class Chart {
     }
   }
 
+  drawCloud(x, y, width, direction) {
+    this.ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
+    this.ctx.beginPath();
+    this.ctx.moveTo(x + this.tooltipCornerRadius, y);
+    this.ctx.lineTo(x + width - this.tooltipCornerRadius, y);
+    this.ctx.quadraticCurveTo(
+      x + width,
+      y,
+      x + width,
+      y + this.tooltipCornerRadius
+    );
+    this.ctx.lineTo(
+      x + width,
+      y + this.tooltipHeight - this.tooltipCornerRadius
+    );
+    this.ctx.quadraticCurveTo(
+      x + width,
+      y + this.tooltipHeight,
+      x + width - this.tooltipCornerRadius,
+      y + this.tooltipHeight
+    );
+    this.ctx.lineTo(x + this.tooltipCornerRadius, y + this.tooltipHeight);
+    this.ctx.quadraticCurveTo(
+      x,
+      y + this.tooltipHeight,
+      x,
+      y + this.tooltipHeight - this.tooltipCornerRadius
+    );
+    this.ctx.lineTo(x, y + this.tooltipCornerRadius);
+    this.ctx.quadraticCurveTo(x, y, x + this.tooltipCornerRadius, y);
+    this.ctx.closePath();
+    this.ctx.fill();
+
+    // draw info arrow
+    this.ctx.beginPath();
+    this.ctx.moveTo(
+      x + (direction === 'right' ? width : 0),
+      y +
+        this.tooltipHeight / 2 -
+        this.tooltipSizeArrow / 2 -
+        this.tooltipSizeArrow / 2
+    );
+    this.ctx.lineTo(
+      x +
+        (direction === 'right'
+          ? width + this.tooltipSizeArrow
+          : -this.tooltipSizeArrow),
+      y + this.tooltipHeight / 2
+    );
+    this.ctx.lineTo(
+      x + (direction === 'right' ? width : 0),
+      y +
+        this.tooltipHeight / 2 +
+        this.tooltipSizeArrow / 2 +
+        this.tooltipSizeArrow / 2
+    );
+    this.ctx.closePath();
+    this.ctx.fill();
+  }
+
   drawTitle() {
     this.drawText({
       title: this.title,
@@ -306,15 +366,19 @@ class Chart {
   drawBars() {
     for (let i = 0; i < this.data.length; i++) {
       const value = this.data[i];
-      const barheight = (value / this.roundedMax) * this.chart.height;
+      const origin = (0 + 12) * (this.chart.height / this.range);
       const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
-      const y =
-        this.chart.height -
-        barheight +
-        this.paddingTop +
-        (this.title ? this.sizeTitle : 0);
+      let barHeight;
+      let y;
 
-      this.drawBox({ x, y, width: this.barWidth, height: barheight });
+      barHeight = (value / this.range) * this.chart.height;
+      y =
+        (this.title ? this.sizeTitle : 0) +
+        this.paddingTop +
+        origin -
+        barHeight;
+
+      this.drawBox({ x, y, width: this.barWidth, height: barHeight });
     }
   }
 
@@ -349,93 +413,12 @@ class Chart {
 
     const tooltipY = y - this.tooltipHeight / 2;
 
-    this.ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
-    this.ctx.beginPath();
-    this.ctx.moveTo(tooltipX + this.tooltipCornerRadius, tooltipY);
-    this.ctx.lineTo(
-      tooltipX + tooltipWidth - this.tooltipCornerRadius,
-      tooltipY
+    this.drawCloud(
+      Math.ceil(tooltipX),
+      Math.ceil(tooltipY),
+      Math.ceil(tooltipWidth),
+      arrowDirection
     );
-    this.ctx.quadraticCurveTo(
-      tooltipX + tooltipWidth,
-      tooltipY,
-      tooltipX + tooltipWidth,
-      tooltipY + this.tooltipCornerRadius
-    );
-    this.ctx.lineTo(
-      tooltipX + tooltipWidth,
-      tooltipY + this.tooltipHeight - this.tooltipCornerRadius
-    );
-    this.ctx.quadraticCurveTo(
-      tooltipX + tooltipWidth,
-      tooltipY + this.tooltipHeight,
-      tooltipX + tooltipWidth - this.tooltipCornerRadius,
-      tooltipY + this.tooltipHeight
-    );
-    this.ctx.lineTo(
-      tooltipX + this.tooltipCornerRadius,
-      tooltipY + this.tooltipHeight
-    );
-    this.ctx.quadraticCurveTo(
-      tooltipX,
-      tooltipY + this.tooltipHeight,
-      tooltipX,
-      tooltipY + this.tooltipHeight - this.tooltipCornerRadius
-    );
-    this.ctx.lineTo(tooltipX, tooltipY + this.tooltipCornerRadius);
-    this.ctx.quadraticCurveTo(
-      tooltipX,
-      tooltipY,
-      tooltipX + this.tooltipCornerRadius,
-      tooltipY
-    );
-    this.ctx.closePath();
-    this.ctx.fill();
-
-    // draw info arrow
-    this.ctx.beginPath();
-    if (arrowDirection === 'left') {
-      this.ctx.moveTo(
-        tooltipX,
-        tooltipY +
-          this.tooltipHeight / 2 -
-          this.tooltipSizeArrow / 2 -
-          this.tooltipSizeArrow / 2
-      );
-      this.ctx.lineTo(
-        tooltipX - this.tooltipSizeArrow,
-        tooltipY + this.tooltipHeight / 2
-      );
-      this.ctx.lineTo(
-        tooltipX,
-        tooltipY +
-          this.tooltipHeight / 2 +
-          this.tooltipSizeArrow / 2 +
-          this.tooltipSizeArrow / 2
-      );
-    } else {
-      this.ctx.moveTo(
-        tooltipX + tooltipWidth,
-        tooltipY +
-          this.tooltipHeight / 2 -
-          this.tooltipSizeArrow / 2 -
-          this.tooltipSizeArrow / 2
-      );
-      this.ctx.lineTo(
-        tooltipX + tooltipWidth + this.tooltipSizeArrow,
-        tooltipY + this.tooltipHeight / 2
-      );
-      this.ctx.lineTo(
-        tooltipX + tooltipWidth,
-        tooltipY +
-          this.tooltipHeight / 2 +
-          this.tooltipSizeArrow / 2 +
-          this.tooltipSizeArrow / 2
-      );
-    }
-    this.ctx.closePath();
-    this.ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
-    this.ctx.fill();
 
     this.drawBox({
       x: tooltipX + this.tooltipMargin,
