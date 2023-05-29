@@ -386,14 +386,14 @@ class Chart {
 
     const label = this.labels[this.hoveredLabelIndex];
     const value = this.data[this.hoveredLabelIndex];
-    const origin = this.roundedMax * (this.chart.height / this.range);
+    const origin = this.roundedMax * (this.chart.height / this.roundedRange);
     const widthText = this.ctx.measureText(label + ': ' + value).width;
     const tooltipWidth = this.tooltipMargin * 3 + this.tooltipBox + widthText;
     const x =
       this.hoveredLabelIndex * this.sectionWidth +
       this.paddingSection +
       this.paddingLeft;
-    const barHeight = (value / this.range) * this.chart.height;
+    const barHeight = value * (this.chart.height / this.roundedRange);
     const y =
       (this.title ? this.sizeTitle : 0) + this.paddingTop + origin - barHeight;
 
