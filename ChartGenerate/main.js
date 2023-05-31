@@ -1,4 +1,3 @@
-// save version
 class Chart {
   constructor(canvas, options) {
     this.parent = canvas.parentNode;
