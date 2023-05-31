@@ -5,6 +5,7 @@ class Chart {
     this.ctx = this.canvas.getContext('2d');
     this.title = options.title || '';
     this.labels = options.data.labels;
+    this.datasets = options.data.datasets;
     this.data = options.data.datasets[0].data;
 
     this.backgroundColor =
@@ -27,21 +28,6 @@ class Chart {
 
     window.addEventListener('resize', () => this.resize());
     canvas.addEventListener('mousemove', e => this.handleMouseMove(e));
-  }
-
-  setArchitecture() {
-    // datasets
-    //   label
-    //   data
-    //   backgroundColor
-    //   borderColor
-    //   borderWidth
-    // maxValue
-    // minValue
-    // range
-    // roundedMin
-    // roundedMax
-    // roundedRange
   }
 
   initial() {
@@ -90,7 +76,10 @@ class Chart {
     };
 
     // bar
-    this.sectionWidth = Math.floor(this.chart.width / this.data.length);
+    this.sectionWidth = Math.floor(
+      this.chart.width /
+        this.datasets.reduce((acc, set) => acc + set.data.length, 0)
+    );
     this.paddingSection = Math.ceil(this.sectionWidth / 8);
     this.barWidth = this.sectionWidth - this.paddingSection * 2;
 
@@ -108,8 +97,9 @@ class Chart {
       this.numLabels--;
     }
 
-    this.maxValue = Math.max(...this.data);
-    this.minValue = Math.min(...this.data);
+    const data = this.datasets.reduce((acc, set) => [...acc, ...set.data], []);
+    this.maxValue = Math.max(...data);
+    this.minValue = Math.min(...data);
     this.range = 0;
     this.calculateStadistic();
   }
