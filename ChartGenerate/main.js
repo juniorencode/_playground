@@ -77,11 +77,13 @@ class Chart {
 
     // bar
     this.sectionWidth = Math.floor(
-      this.chart.width /
-        this.datasets.reduce((acc, set) => acc + set.data.length, 0)
+      this.chart.width / this.datasets[0].data.length
     );
-    this.paddingSection = Math.ceil(this.sectionWidth / 8);
-    this.barWidth = this.sectionWidth - this.paddingSection * 2;
+    const divider = this.datasets.length * 6 + this.datasets.length - 1 + 2;
+    this.paddingSection = Math.ceil(this.sectionWidth / divider);
+    this.barWidth =
+      (this.sectionWidth - this.paddingSection * (this.datasets.length + 1)) /
+      this.datasets.length;
 
     this.legendBox = {
       with: this.textHeight * 2,
@@ -329,7 +331,7 @@ class Chart {
 
   drawVerticalLines() {
     for (let i = 0; i < this.labels.length; i++) {
-      const x = i * this.datasets.length * this.sectionWidth + this.paddingLeft;
+      const x = i * this.sectionWidth + this.paddingLeft;
 
       this.ctx.beginPath();
       this.ctx.moveTo(x, this.paddingTop + (this.title ? this.sizeTitle : 0));
