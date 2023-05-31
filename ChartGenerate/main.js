@@ -383,19 +383,26 @@ class Chart {
   }
 
   drawBars() {
-    for (let i = 0; i < this.data.length; i++) {
-      const value = this.data[i];
-      const origin = this.roundedMax * (this.chart.height / this.roundedRange);
-      const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
-      const barHeight = value * (this.chart.height / this.roundedRange);
-      const y =
-        (this.title ? this.sizeTitle : 0) +
-        this.paddingTop +
-        origin -
-        barHeight;
+    this.datasets.map((set, i) => {
+      set.data.map((data, j) => {
+        const value = data;
+        const origin =
+          this.roundedMax * (this.chart.height / this.roundedRange);
+        const x =
+          j * this.sectionWidth +
+          this.paddingSection +
+          this.paddingLeft +
+          i * (this.paddingSection + this.barWidth);
+        const barHeight = value * (this.chart.height / this.roundedRange);
+        const y =
+          (this.title ? this.sizeTitle : 0) +
+          this.paddingTop +
+          origin -
+          barHeight;
 
-      this.drawBox({ x, y, width: this.barWidth, height: barHeight });
-    }
+        this.drawBox({ x, y, width: this.barWidth, height: barHeight });
+      });
+    });
   }
 
   drawTooltip() {
