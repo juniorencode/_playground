@@ -36,12 +36,12 @@ class Chart {
     //   backgroundColor
     //   borderColor
     //   borderWidth
-    //   maxValue
-    //   minValue
-    //   range
-    //   roundedMin
-    //   roundedMax
-    //   roundedRange
+    // maxValue
+    // minValue
+    // range
+    // roundedMin
+    // roundedMax
+    // roundedRange
   }
 
   initial() {
