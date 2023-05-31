@@ -186,15 +186,15 @@ class Chart {
     this.ctx.fillText(title, x, y);
   }
 
-  drawBox({ x, y, width, height, bottom, background }) {
+  drawBox({ index, x, y, width, height, bottom, background }) {
     if (background) {
       this.ctx.fillStyle = 'rgba(255, 255, 255, 1)';
       this.ctx.fillRect(x, y, width, height);
     }
 
-    this.ctx.fillStyle = this.backgroundColor;
-    this.ctx.strokeStyle = this.borderColor;
-    this.ctx.lineWidth = 2;
+    this.ctx.fillStyle = this.datasets[index].backgroundColor;
+    this.ctx.strokeStyle = this.datasets[index].borderColor;
+    this.ctx.lineWidth = this.datasets[index].borderWidth;
 
     this.ctx.fillRect(x, y, width, height);
 
@@ -288,6 +288,7 @@ class Chart {
 
     // reference box
     this.drawBox({
+      index: 0,
       x: this.canvas.width / 2 - widthLengend / 2,
       y:
         this.paddingTop / 2 -
@@ -400,7 +401,13 @@ class Chart {
           origin -
           barHeight;
 
-        this.drawBox({ x, y, width: this.barWidth, height: barHeight });
+        this.drawBox({
+          index: i,
+          x,
+          y,
+          width: this.barWidth,
+          height: barHeight
+        });
       });
     });
   }
