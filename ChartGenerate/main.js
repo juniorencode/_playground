@@ -21,6 +21,7 @@ class Chart {
 
     // variables for mouse handling
     this.tooltipVisible = false;
+    this.hoveredDatasetIndex = -1;
     this.hoveredLabelIndex = -1;
 
     this.initial();
@@ -463,6 +464,7 @@ class Chart {
     );
 
     this.drawBox({
+      index: 0,
       x: tooltipX + this.tooltipMargin,
       y: tooltipY + this.tooltipMargin,
       width: this.tooltipBox,
@@ -503,31 +505,45 @@ class Chart {
     const mousePos = this.getMousePos(e);
 
     // check if the mouse pointer is over a bar
-    for (let i = 0; i < this.data.length; i++) {
-      const value = this.data[i];
-      const origin = this.roundedMax * (this.chart.height / this.roundedRange);
-      const x = i * this.sectionWidth + this.paddingSection + this.paddingLeft;
-      const barHeight =
-        value * (this.chart.height / this.roundedRange) * (value < 0 ? -1 : 1);
-      const y =
-        (this.title ? this.sizeTitle : 0) +
-        this.paddingTop +
-        origin -
-        (value < 0 ? 0 : barHeight);
+    this.datasets.map((set, i) => {
+      set.data.map((value, j) => {
+        const origin =
+          this.roundedMax * (this.chart.height / this.roundedRange);
+        const x =
+          j * this.sectionWidth +
+          this.paddingSection +
+          this.paddingLeft +
+          i * (this.paddingSection + this.barWidth);
+        const barHeight =
+          value *
+          (this.chart.height / this.roundedRange) *
+          (value < 0 ? -1 : 1);
+        const y =
+          (this.title ? this.sizeTitle : 0) +
+          this.paddingTop +
+          origin -
+          (value < 0 ? 0 : barHeight);
 
-      if (
-        mousePos.x >= x &&
-        mousePos.x <= x + this.barWidth &&
-        mousePos.y >= y &&
-        mousePos.y <= y + barHeight
-      ) {
-        this.hoveredLabelIndex = i;
-        this.tooltipVisible = true;
-      } else if (this.hoveredLabelIndex === i) {
-        this.hoveredLabelIndex = -1;
-        this.tooltipVisible = false;
-      }
-    }
+        if (
+          mousePos.x >= x &&
+          mousePos.x <= x + this.barWidth &&
+          mousePos.y >= y &&
+          mousePos.y <= y + barHeight
+        ) {
+          this.hoveredDatasetIndex = i;
+          this.hoveredLabelIndex = j;
+          this.tooltipVisible = true;
+          console.log(i, j);
+        } else if (
+          this.hoveredDatasetIndex === i &&
+          this.hoveredLabelIndex === j
+        ) {
+          this.hoveredDatasetIndex = -1;
+          this.hoveredLabelIndex = -1;
+          this.tooltipVisible = false;
+        }
+      });
+    });
 
     this.draw();
   }
