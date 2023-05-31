@@ -428,17 +428,24 @@ class Chart {
   }
 
   drawTooltip() {
-    if (!this.tooltipVisible || this.hoveredLabelIndex === -1) return;
+    if (
+      !this.tooltipVisible ||
+      this.hoveredDatasetIndex === -1 ||
+      this.hoveredLabelIndex === -1
+    )
+      return;
 
     const label = this.labels[this.hoveredLabelIndex];
-    const value = this.data[this.hoveredLabelIndex];
+    const value =
+      this.datasets[this.hoveredDatasetIndex].data[this.hoveredLabelIndex];
     const origin = this.roundedMax * (this.chart.height / this.roundedRange);
     const widthText = this.ctx.measureText(label + ': ' + value).width;
     const tooltipWidth = this.tooltipMargin * 3 + this.tooltipBox + widthText;
     const x =
       this.hoveredLabelIndex * this.sectionWidth +
       this.paddingSection +
-      this.paddingLeft;
+      this.paddingLeft +
+      this.hoveredDatasetIndex * (this.paddingSection + this.barWidth);
     const barHeight = value * (this.chart.height / this.roundedRange);
     const y =
       (this.title ? this.sizeTitle : 0) + this.paddingTop + origin - barHeight;
@@ -464,7 +471,7 @@ class Chart {
     );
 
     this.drawBox({
-      index: 0,
+      index: this.hoveredDatasetIndex,
       x: tooltipX + this.tooltipMargin,
       y: tooltipY + this.tooltipMargin,
       width: this.tooltipBox,
@@ -533,7 +540,6 @@ class Chart {
           this.hoveredDatasetIndex = i;
           this.hoveredLabelIndex = j;
           this.tooltipVisible = true;
-          console.log(i, j);
         } else if (
           this.hoveredDatasetIndex === i &&
           this.hoveredLabelIndex === j
