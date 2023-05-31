@@ -29,6 +29,21 @@ class Chart {
     canvas.addEventListener('mousemove', e => this.handleMouseMove(e));
   }
 
+  setArchitecture() {
+    // datasets
+    //   label
+    //   data
+    //   backgroundColor
+    //   borderColor
+    //   borderWidth
+    //   maxValue
+    //   minValue
+    //   range
+    //   roundedMin
+    //   roundedMax
+    //   roundedRange
+  }
+
   initial() {
     // normalize size
     this.canvas.width = this.canvas.clientWidth;
