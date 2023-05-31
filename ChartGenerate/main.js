@@ -88,7 +88,7 @@ class Chart {
     this.legendBox = {
       with: this.textHeight * 2,
       height: this.textHeight,
-      margin: Math.floor(this.textHeight / 2)
+      gap: Math.floor(this.textHeight / 2)
     };
 
     // values
@@ -281,32 +281,46 @@ class Chart {
   }
 
   drawLegend() {
-    const widthLengend =
-      this.ctx.measureText(this.lengend).width +
-      this.legendBox.with +
-      this.legendBox.margin;
+    const fullWidthLengend = this.datasets.reduce(
+      (acc, set) =>
+        acc +
+        this.ctx.measureText(set.label).width +
+        this.legendBox.with +
+        this.legendBox.gap,
+      0
+    );
+    let x = this.canvas.width / 2 - fullWidthLengend / 2;
 
-    // reference box
-    this.drawBox({
-      index: 0,
-      x: this.canvas.width / 2 - widthLengend / 2,
-      y:
-        this.paddingTop / 2 -
-        this.legendBox.height / 2 +
-        (this.title ? this.sizeTitle : 0),
-      width: this.legendBox.with,
-      height: this.legendBox.height,
-      bottom: true
-    });
+    this.datasets.map((set, index) => {
+      const widthLengend =
+        this.ctx.measureText(set.label).width +
+        this.legendBox.with +
+        this.legendBox.gap;
 
-    this.drawText({
-      title: this.lengend,
-      x:
-        this.canvas.width / 2 + this.legendBox.with / 2 + this.legendBox.margin,
-      y:
-        (this.title ? this.sizeTitle : 0) +
-        this.paddingTop / 2 -
-        Math.floor(this.textHeight / 2)
+      // reference box
+      this.drawBox({
+        index,
+        x,
+        y:
+          this.paddingTop / 2 -
+          this.legendBox.height / 2 +
+          (this.title ? this.sizeTitle : 0),
+        width: this.legendBox.with,
+        height: this.legendBox.height,
+        bottom: true
+      });
+
+      this.drawText({
+        title: set.label,
+        x: x + this.legendBox.with + this.legendBox.gap,
+        y:
+          (this.title ? this.sizeTitle : 0) +
+          this.paddingTop / 2 -
+          Math.floor(this.textHeight / 2),
+        align: 'left'
+      });
+
+      x += widthLengend;
     });
   }
 
