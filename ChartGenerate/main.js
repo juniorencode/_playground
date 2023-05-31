@@ -329,7 +329,7 @@ class Chart {
 
   drawVerticalLines() {
     for (let i = 0; i < this.labels.length; i++) {
-      const x = i * this.sectionWidth + this.paddingLeft;
+      const x = i * this.datasets.length * this.sectionWidth + this.paddingLeft;
 
       this.ctx.beginPath();
       this.ctx.moveTo(x, this.paddingTop + (this.title ? this.sizeTitle : 0));
