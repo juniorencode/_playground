@@ -282,9 +282,11 @@ class Chart {
   }
 
   drawLegend() {
+    const gap = this.legendBox.height;
     const fullWidthLengend = this.datasets.reduce(
       (acc, set) =>
         acc +
+        gap +
         this.ctx.measureText(set.label).width +
         this.legendBox.with +
         this.legendBox.gap,
@@ -321,7 +323,7 @@ class Chart {
         align: 'left'
       });
 
-      x += widthLengend;
+      x += widthLengend + gap;
     });
   }
 
