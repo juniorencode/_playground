@@ -276,23 +276,23 @@ class Chart {
   }
 
   drawLegend() {
-    const gap = this.legendBox.height;
+    this.ctx.font = this.fontSize + 'px ' + this.fontFamily;
     const fullWidthLengend = this.datasets.reduce(
       (acc, set) =>
         acc +
-        gap +
-        this.ctx.measureText(set.label).width +
         this.legendBox.with +
-        this.legendBox.gap,
-      0
+        this.legendBox.gap +
+        this.ctx.measureText(set.label).width +
+        this.legendBox.gap * 2,
+      0 - this.legendBox.gap * 2
     );
-    let x = this.canvas.width / 2 - fullWidthLengend / 2;
+    let x = (this.canvas.width - fullWidthLengend) / 2;
 
     this.datasets.map((set, index) => {
       const widthLengend =
-        this.ctx.measureText(set.label).width +
         this.legendBox.with +
-        this.legendBox.gap;
+        this.legendBox.gap +
+        this.ctx.measureText(set.label).width;
 
       // reference box
       this.drawBox({
@@ -317,7 +317,7 @@ class Chart {
         align: 'left'
       });
 
-      x += widthLengend + gap;
+      x += widthLengend + this.legendBox.gap * 2;
     });
   }
 
