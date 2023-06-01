@@ -6,18 +6,6 @@ class Chart {
     this.title = options.title || '';
     this.labels = options.data.labels;
     this.datasets = options.data.datasets;
-    this.data = options.data.datasets[0].data;
-
-    this.backgroundColor =
-      options.data.datasets[0].backgroundColor || 'rgba(132, 132, 132, 0.2)';
-    this.borderColor = options.data.datasets[0].borderColor
-      ? options.data.datasets[0].borderColor
-      : options.data.datasets[0].backgroundColor
-      ? undefined
-      : 'rgba(132, 132, 132, 1)';
-
-    // legend box
-    this.lengend = options.data.datasets[0].label;
 
     // variables for mouse handling
     this.tooltipVisible = false;
@@ -117,7 +105,14 @@ class Chart {
 
   calculateWidthAxisY() {
     this.ctx.font = this.fontSize + 'px ' + this.fontFamily;
-    return this.ctx.measureText(Math.max(...this.data.map(Math.abs))).width;
+    return this.ctx.measureText(
+      Math.max(
+        ...this.datasets.reduce(
+          (acc, set) => [...acc, ...set.data.map(Math.abs)],
+          []
+        )
+      )
+    ).width;
   }
 
   calculateStadistic() {
@@ -199,7 +194,6 @@ class Chart {
 
     this.ctx.fillRect(x, y, width, height);
 
-    if (!this.borderColor) return;
     if (!bottom) {
       this.ctx.beginPath();
       this.ctx.moveTo(x, y + height);
