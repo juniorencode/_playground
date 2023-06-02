@@ -16,3 +16,19 @@ file.addEventListener('input', e => {
     };
   }
 });
+
+button.addEventListener('click', () => {
+  const link = document.createElement('a');
+  const file = new Blob([minifyCode()], {
+    type: 'text/javascript'
+  });
+
+  link.href = URL.createObjectURL(file);
+  link.download = 'main.min.js';
+
+  document.body.appendChild(link);
+  link.click();
+
+  document.body.removeChild(link);
+  URL.revokeObjectURL(link.href);
+});
