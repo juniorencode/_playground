@@ -14,6 +14,9 @@ const minifyCode = () => {
   // remove extra whitespace
   code = code.replace(/\s+/g, ' ');
 
+  // remove whitespace between letters and symbols
+  code = code.replace(/\s*([(),;{}])\s*/g, '$1');
+
   // removes whitespace from both ends
   code = code.trim();
 
