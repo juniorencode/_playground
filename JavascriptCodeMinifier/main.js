@@ -2,7 +2,17 @@ const file = document.querySelector('#file');
 const textarea = document.querySelector('#code');
 const button = document.querySelector('#button');
 
-const minifyCode = () => {};
+const minifyCode = () => {
+  let code = textarea.value;
+
+  // remove single line comments (//)
+  code = code.replace(/\/\/.*$/gm, '');
+
+  // removes whitespace from both ends
+  code = code.trim();
+
+  return code;
+};
 
 file.addEventListener('input', e => {
   const uploadedFile = e.target.files[0];
