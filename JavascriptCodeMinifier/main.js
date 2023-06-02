@@ -17,6 +17,9 @@ const minifyCode = () => {
   // remove whitespace between letters and symbols
   code = code.replace(/\s*([(),;{}])\s*/g, '$1');
 
+  // remove spaces around the addition operator
+  code = code.replace(/\s*\+\s*/g, '+');
+
   // removes whitespace from both ends
   code = code.trim();
 
