@@ -20,6 +20,9 @@ const minifyCode = () => {
   // remove spaces around the addition operator
   code = code.replace(/\s*\+\s*/g, '+');
 
+  // remove spaces around the assignment operator
+  code = code.replace(/\s*=\s*/g, '=');
+
   // removes whitespace from both ends
   code = code.trim();
 
