@@ -8,8 +8,11 @@ const minifyCode = () => {
   // remove single line comments (//)
   code = code.replace(/\/\/.*$/gm, '');
 
-  // Remove block comments (/* */)
+  // remove block comments (/* */)
   code = code.replace(/\/\*[\s\S]*?\*\//g, '');
+
+  // remove extra whitespace
+  code = code.replace(/\s+/g, ' ');
 
   // removes whitespace from both ends
   code = code.trim();
