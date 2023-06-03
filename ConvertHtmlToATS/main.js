@@ -116,11 +116,6 @@ const parseNode = html => {
     }
   }
 
-  if (currentNode) {
-    currentNode.loc.end.line = line; // Asignamos el valor de la última línea conocida al objeto end
-    currentNode.loc.end.column = column; // Asignamos el valor de la última columna conocida al objeto end
-  }
-
   // returns the first node of the parse tree
   return matchStack;
 };
