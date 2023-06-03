@@ -15,16 +15,16 @@ const parseHTML = html => {
   return {
     type: 'Program',
     value: html,
-    // loc: {
-    //   start: {
-    //     line: 1,
-    //     column: 0
-    //   },
-    //   end: {
-    //     line: null,
-    //     column: null
-    //   }
-    // },
+    loc: {
+      start: {
+        line: 1,
+        column: 0
+      },
+      end: {
+        line: null,
+        column: null
+      }
+    },
     templateNodes: children,
     range: [0, html.length]
   };
@@ -75,6 +75,7 @@ const parseNode = html => {
     if (closingTag) {
       const children = currentNode.children;
       const endNode = children[children.length - 1].range[1] + value.length;
+      currentNode.loc.end.line = line;
       currentNode.range[1] = endNode;
       currentNode = parentStack.pop();
       column += closingTag.length + 3;
@@ -93,6 +94,10 @@ const parseNode = html => {
           start: {
             line,
             column
+          },
+          end: {
+            line: null,
+            column: null
           }
         },
         range: [index, null]
@@ -109,6 +114,11 @@ const parseNode = html => {
       // set the new node as the current node
       currentNode = node;
     }
+  }
+
+  if (currentNode) {
+    currentNode.loc.end.line = line; // Asignamos el valor de la última línea conocida al objeto end
+    currentNode.loc.end.column = column; // Asignamos el valor de la última columna conocida al objeto end
   }
 
   // returns the first node of the parse tree
@@ -130,9 +140,15 @@ const parseAttributes = (attributes, index, line, column) => {
       name: match[1],
       value: match[2],
       type: 'TextAttribute',
-      start: {
-        line,
-        column: column + match.index
+      loc: {
+        start: {
+          line,
+          column: column + match.index
+        },
+        end: {
+          line: null,
+          column: null
+        }
       },
       range: [localIndex, localIndex + match[0].length]
     };
@@ -152,6 +168,10 @@ const parseText = (text, index, line, column) => {
       start: {
         line,
         column
+      },
+      end: {
+        line: null,
+        column: null
       }
     },
     range: [index - text.length, index]
