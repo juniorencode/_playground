@@ -110,7 +110,7 @@ const parseNode = html => {
         matchStack.push(node);
       }
 
-      column += tag.length + 2 + attributes.length;
+      column += value.length;
       // set the new node as the current node
       currentNode = node;
     }
@@ -141,7 +141,7 @@ const parseAttributes = (attributes, index, line, column) => {
           column: column + match.index
         },
         end: {
-          line: null,
+          line,
           column: null
         }
       },
@@ -165,7 +165,7 @@ const parseText = (text, index, line, column) => {
         column
       },
       end: {
-        line: null,
+        line,
         column: null
       }
     },
