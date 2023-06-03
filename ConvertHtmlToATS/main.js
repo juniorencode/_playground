@@ -36,17 +36,18 @@ const parseNode = html => {
 
   const matchStack = []; // stack of matching nodes
   let currentNode = null; // current node in the parsing process
-  let parentStack = []; // stack of parent nodes
   let match;
 
   while ((match = tagRegex.exec(html))) {
     const tag = match[1]; // HTML tag name
+    const attributes = match[2]; // HTML tag attributes
 
     if (!tag) continue;
 
     const node = {
       type: 'element',
       name: tag,
+      attributes: parseAttributes(attributes),
       children: []
     };
 
@@ -60,8 +61,30 @@ const parseNode = html => {
     currentNode = node;
   }
 
-  // Returns the first node of the parse tree
+  // returns the first node of the parse tree
   return matchStack[0];
+};
+
+const parseAttributes = attributes => {
+  // regular expression to find attributes
+  const attributeRegex = /([a-zA-Z0-9\-]+)\s*=\s*"([^"]*)"/g;
+
+  const attrs = [];
+  let match;
+
+  // iterates over the attribute matches and adds them to the attribute object
+  while ((match = attributeRegex.exec(attributes))) {
+    const attribute = {
+      name: match[1],
+      value: match[2],
+      type: 'TextAttribute'
+    };
+
+    attrs.push(attribute);
+  }
+
+  // returns the attributes object
+  return attrs;
 };
 
 const init = () => {
