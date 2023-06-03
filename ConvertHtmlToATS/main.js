@@ -38,6 +38,7 @@ const parseNode = html => {
   const parentStack = []; // stack of parent nodes
   let currentNode = null; // current node in the parsing process
   let lastIndex = 0; // last hit index in the HTML
+  let line = 1; // current line number
   let match;
 
   while ((match = tagRegex.exec(html))) {
@@ -51,7 +52,10 @@ const parseNode = html => {
     lastIndex = index + match[0].length; // update the last match index
 
     if (text.length > 0) {
+      const linebreakRegex = /[\n]/g;
       const textNode = parseText(text, index);
+
+      if (text.match(linebreakRegex)) line++;
 
       if (currentNode && currentNode.children) {
         currentNode.children.push(textNode);
@@ -69,7 +73,7 @@ const parseNode = html => {
       const node = {
         type: 'Element',
         name: tag,
-        attributes: parseAttributes(attributes, index + tag.length + 1),
+        attributes: parseAttributes(attributes, index + tag.length + 1, line),
         children: [],
         range: [index, null]
       };
@@ -90,7 +94,7 @@ const parseNode = html => {
   return matchStack;
 };
 
-const parseAttributes = (attributes, index) => {
+const parseAttributes = (attributes, index, line) => {
   // regular expression to find attributes
   const attributeRegex = /([a-zA-Z0-9\-]+)\s*=\s*"([^"]*)"/g;
 
@@ -105,6 +109,9 @@ const parseAttributes = (attributes, index) => {
       name: match[1],
       value: match[2],
       type: 'TextAttribute',
+      start: {
+        line
+      },
       range: [localIndex, localIndex + match[0].length]
     };
 
