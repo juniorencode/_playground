@@ -39,6 +39,7 @@ const parseNode = html => {
   let currentNode = null; // current node in the parsing process
   let lastIndex = 0; // last hit index in the HTML
   let line = 1; // current line number
+  let column = 0;
   let match;
 
   while ((match = tagRegex.exec(html))) {
@@ -51,20 +52,15 @@ const parseNode = html => {
     const text = html.substring(lastIndex, index); // text between tags
     lastIndex = index + match[0].length; // update the last match index
 
+    // regular expression to find line breaks
     const linebreakRegex = /[\n]/g;
-    if (value.match(linebreakRegex)) {
-      line += value.match(linebreakRegex).length;
+
+    if (text?.match(linebreakRegex)) {
+      line += text.match(linebreakRegex).length;
+      column = 0;
     }
 
-    if (text.length > 0) {
-      const textNode = parseText(text, index);
-
-      if (currentNode && currentNode.children) {
-        currentNode.children.push(textNode);
-      } else {
-        matchStack.push(textNode);
-      }
-    }
+    column += tag ? tag.length + 1 : 0;
 
     if (closingTag) {
       const children = currentNode.children;
@@ -75,7 +71,12 @@ const parseNode = html => {
       const node = {
         type: 'Element',
         name: tag,
-        attributes: parseAttributes(attributes, index + tag.length + 1, line),
+        attributes: parseAttributes(
+          attributes,
+          index + tag.length + 1,
+          line,
+          column
+        ),
         children: [],
         range: [index, null]
       };
@@ -90,13 +91,23 @@ const parseNode = html => {
       // set the new node as the current node
       currentNode = node;
     }
+
+    if (text.length > 0) {
+      const textNode = parseText(text, index, line, column);
+
+      if (currentNode && currentNode.children) {
+        currentNode.children.push(textNode);
+      } else {
+        matchStack.push(textNode);
+      }
+    }
   }
 
   // returns the first node of the parse tree
   return matchStack;
 };
 
-const parseAttributes = (attributes, index, line) => {
+const parseAttributes = (attributes, index, line, column) => {
   // regular expression to find attributes
   const attributeRegex = /([a-zA-Z0-9\-]+)\s*=\s*"([^"]*)"/g;
 
@@ -113,7 +124,7 @@ const parseAttributes = (attributes, index, line) => {
       type: 'TextAttribute',
       start: {
         line,
-        column: localIndex
+        column: column + match.index
       },
       range: [localIndex, localIndex + match[0].length]
     };
@@ -125,10 +136,15 @@ const parseAttributes = (attributes, index, line) => {
   return attrs;
 };
 
-const parseText = (text, index) => {
+const parseText = (text, index, line) => {
   const textNode = {
     type: 'Text',
     value: text,
+    loc: {
+      start: {
+        line
+      }
+    },
     range: [index - text.length, index]
   };
 
