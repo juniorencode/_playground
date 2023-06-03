@@ -68,7 +68,7 @@ class HtmlToATS {
       const index = match.index; // match index in the HTML
       const text = this.html.substring(this.lastIndex, index); // text between tags
 
-      this.lastIndex = index + match[0].length; // update the last match index
+      this.lastIndex = index + base.length; // update the last match index
 
       if (text.length > 0) {
         const textNode = this.parseText(text, index);
@@ -82,8 +82,6 @@ class HtmlToATS {
 
       if (!closingTag) {
         const nodeElement = this.parserElement(openingTag, attributes, index);
-
-        // this.addColumn(base.length);
 
         if (this.currentNode && this.currentNode.children) {
           this.currentNode.children.push(nodeElement);
@@ -141,7 +139,7 @@ class HtmlToATS {
     const nodeElement = {
       type: 'Element',
       name: tag,
-      attributes: this.parseAttributes(tag, attributes, index + tagColumnSize),
+      attributes: this.parseAttributes(attributes, index + tagColumnSize),
       children: [],
       loc: {
         start: {
@@ -161,7 +159,7 @@ class HtmlToATS {
     return nodeElement;
   }
 
-  parseAttributes(tag, attributes, index) {
+  parseAttributes(attributes, index) {
     const attrs = [];
     let lastIndex = 0;
     let match;
