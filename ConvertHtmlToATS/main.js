@@ -147,7 +147,7 @@ const parseAttributes = (attributes, index, line, column) => {
         },
         end: {
           line,
-          column: null
+          column: column + match.index + match[0].length
         }
       },
       range: [localIndex, localIndex + match[0].length]
