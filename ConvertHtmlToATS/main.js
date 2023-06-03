@@ -15,17 +15,17 @@ const parseHTML = html => {
   return {
     type: 'Program',
     value: html,
-    range: [0, html.length],
-    loc: {
-      start: {
-        line: 1,
-        column: 0
-      },
-      end: {
-        line: null,
-        column: null
-      }
-    },
+    // range: [0, html.length],
+    // loc: {
+    //   start: {
+    //     line: 1,
+    //     column: 0
+    //   },
+    //   end: {
+    //     line: null,
+    //     column: null
+    //   }
+    // },
     templateNodes: children
   };
 };
@@ -35,30 +35,35 @@ const parseNode = html => {
   const tagRegex = /<([a-zA-Z0-9\-]+)([^>]*)>|<\/([a-zA-Z0-9\-]+)>/g;
 
   const matchStack = []; // stack of matching nodes
+  const parentStack = []; // stack of parent nodes
   let currentNode = null; // current node in the parsing process
   let match;
 
   while ((match = tagRegex.exec(html))) {
     const tag = match[1]; // HTML tag name
     const attributes = match[2]; // HTML tag attributes
+    const closingTag = match[3]; // Etiqueta de cierre
 
-    if (!tag) continue;
-
-    const node = {
-      type: 'element',
-      name: tag,
-      attributes: parseAttributes(attributes),
-      children: []
-    };
-
-    if (currentNode && currentNode.children) {
-      currentNode.children.push(node);
+    if (closingTag) {
+      currentNode = parentStack.pop();
     } else {
-      matchStack.push(node);
-    }
+      const node = {
+        type: 'element',
+        name: tag,
+        attributes: parseAttributes(attributes),
+        children: []
+      };
 
-    // set the new node as the current node
-    currentNode = node;
+      if (currentNode && currentNode.children) {
+        currentNode.children.push(node);
+        parentStack.push(currentNode);
+      } else {
+        matchStack.push(node);
+      }
+
+      // set the new node as the current node
+      currentNode = node;
+    }
   }
 
   // returns the first node of the parse tree
