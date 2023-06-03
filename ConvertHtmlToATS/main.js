@@ -110,7 +110,8 @@ const parseAttributes = (attributes, index, line) => {
       value: match[2],
       type: 'TextAttribute',
       start: {
-        line
+        line,
+        column: localIndex
       },
       range: [localIndex, localIndex + match[0].length]
     };
