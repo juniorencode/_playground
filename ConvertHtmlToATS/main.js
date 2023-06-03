@@ -37,6 +37,7 @@ const parseNode = html => {
   const matchStack = []; // stack of matching nodes
   const parentStack = []; // stack of parent nodes
   let currentNode = null; // current node in the parsing process
+  let lastIndex = 0; // last hit index in the HTML
   let match;
 
   while ((match = tagRegex.exec(html))) {
@@ -44,11 +45,25 @@ const parseNode = html => {
     const attributes = match[2]; // HTML tag attributes
     const closingTag = match[3]; // Etiqueta de cierre
 
+    const index = match.index; // match index in the HTML
+    const text = html.substring(lastIndex, index); // text between tags
+    lastIndex = index + match[0].length; // update the last match index
+
+    if (text.length > 0) {
+      const textNode = parseText(text);
+
+      if (currentNode && currentNode.children) {
+        currentNode.children.push(textNode);
+      } else {
+        matchStack.push(textNode);
+      }
+    }
+
     if (closingTag) {
       currentNode = parentStack.pop();
     } else {
       const node = {
-        type: 'element',
+        type: 'Element',
         name: tag,
         attributes: parseAttributes(attributes),
         children: []
@@ -90,6 +105,15 @@ const parseAttributes = attributes => {
 
   // returns the attributes object
   return attrs;
+};
+
+const parseText = text => {
+  const textNode = {
+    type: 'Text',
+    value: text
+  };
+
+  return textNode;
 };
 
 const init = () => {
