@@ -171,7 +171,7 @@ const parseText = (text, index, line, column) => {
       },
       end: {
         line,
-        column: null
+        column: column + text.length
       }
     },
     range: [index - text.length, index]
