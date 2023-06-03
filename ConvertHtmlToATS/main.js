@@ -60,13 +60,29 @@ const parseNode = html => {
       column = 0;
     }
 
-    column += tag ? tag.length + 1 : 0;
+    if (text.length > 0) {
+      const textNode = parseText(text, index, line);
+
+      if (currentNode && currentNode.children) {
+        currentNode.children.push(textNode);
+      } else {
+        matchStack.push(textNode);
+      }
+
+      column += text.replace(/\n/g, '').length;
+    }
+    console.log(column);
+
+    // console.log(text.replace(/\n/g, '').length);
+
+    // column += tag ? tag.length + 1 : 0;
 
     if (closingTag) {
       const children = currentNode.children;
       const endNode = children[children.length - 1].range[1] + value.length;
       currentNode.range[1] = endNode;
       currentNode = parentStack.pop();
+      column += closingTag.length + 3;
     } else {
       const node = {
         type: 'Element',
@@ -75,9 +91,15 @@ const parseNode = html => {
           attributes,
           index + tag.length + 1,
           line,
-          column
+          column + tag.length + 1
         ),
         children: [],
+        loc: {
+          start: {
+            line,
+            column
+          }
+        },
         range: [index, null]
       };
 
@@ -88,18 +110,9 @@ const parseNode = html => {
         matchStack.push(node);
       }
 
+      column += tag.length + 2 + attributes.length;
       // set the new node as the current node
       currentNode = node;
-    }
-
-    if (text.length > 0) {
-      const textNode = parseText(text, index, line, column);
-
-      if (currentNode && currentNode.children) {
-        currentNode.children.push(textNode);
-      } else {
-        matchStack.push(textNode);
-      }
     }
   }
 
