@@ -1,3 +1,4 @@
+// stable version
 const input = document.querySelector('#code');
 const output = document.querySelector('#tree');
 
