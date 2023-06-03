@@ -82,7 +82,7 @@ const parseNode = html => {
   }
 
   // returns the first node of the parse tree
-  return matchStack[0];
+  return matchStack;
 };
 
 const parseAttributes = attributes => {
