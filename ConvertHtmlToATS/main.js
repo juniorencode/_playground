@@ -74,8 +74,13 @@ const parseNode = html => {
 
     if (closingTag) {
       const children = currentNode.children;
-      const endNode = children[children.length - 1].range[1] + value.length;
+      const lastChildren = children[children.length - 1];
+      const endNode = lastChildren.range[1] + value.length;
       currentNode.loc.end.line = line;
+      currentNode.loc.end.column =
+        lastChildren.loc.start.column +
+        lastChildren.value.length +
+        value.length;
       currentNode.range[1] = endNode;
       currentNode = parentStack.pop();
       column += closingTag.length + 3;
