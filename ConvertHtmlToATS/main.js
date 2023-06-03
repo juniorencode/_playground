@@ -15,7 +15,6 @@ const parseHTML = html => {
   return {
     type: 'Program',
     value: html,
-    // range: [0, html.length],
     // loc: {
     //   start: {
     //     line: 1,
@@ -26,7 +25,8 @@ const parseHTML = html => {
     //     column: null
     //   }
     // },
-    templateNodes: children
+    templateNodes: children,
+    range: [0, html.length]
   };
 };
 
@@ -50,7 +50,7 @@ const parseNode = html => {
     lastIndex = index + match[0].length; // update the last match index
 
     if (text.length > 0) {
-      const textNode = parseText(text);
+      const textNode = parseText(text, index);
 
       if (currentNode && currentNode.children) {
         currentNode.children.push(textNode);
@@ -66,7 +66,8 @@ const parseNode = html => {
         type: 'Element',
         name: tag,
         attributes: parseAttributes(attributes),
-        children: []
+        children: [],
+        range: [index, null]
       };
 
       if (currentNode && currentNode.children) {
@@ -107,10 +108,11 @@ const parseAttributes = attributes => {
   return attrs;
 };
 
-const parseText = text => {
+const parseText = (text, index) => {
   const textNode = {
     type: 'Text',
-    value: text
+    value: text,
+    range: [index - text.length, index]
   };
 
   return textNode;
