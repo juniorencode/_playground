@@ -5,6 +5,7 @@ class HtmlToATS {
     this.html = this.input.value;
 
     this.tagRegex = /<([a-zA-Z0-9\-]+)([^>]*)>|<\/([a-zA-Z0-9\-]+)>/g; // regular expression to find HTML tags
+    this.attributeRegex = /([a-zA-Z0-9\-]+)\s*=\s*"([^"]*)"/g; // regular expression to find attributes
     this.linebreakRegex = /[\n]/g; // regular expression to find line breaks
 
     this.input.addEventListener('input', () => {
@@ -63,7 +64,7 @@ class HtmlToATS {
     let match;
 
     while ((match = this.tagRegex.exec(this.html))) {
-      const [value, openingTag, attributes, closingTag] = match;
+      const [base, openingTag, attributes, closingTag] = match;
       const index = match.index; // match index in the HTML
       const text = this.html.substring(this.lastIndex, index); // text between tags
 
@@ -80,9 +81,9 @@ class HtmlToATS {
       }
 
       if (!closingTag) {
-        const nodeElement = this.parserElement(openingTag, index);
+        const nodeElement = this.parserElement(openingTag, attributes, index);
 
-        this.addColumn(value.length);
+        // this.addColumn(base.length);
 
         if (this.currentNode && this.currentNode.children) {
           this.currentNode.children.push(nodeElement);
@@ -94,11 +95,7 @@ class HtmlToATS {
         // set the new node as the current node
         this.currentNode = nodeElement;
       } else {
-        const children = this.currentNode.children;
-        const lastChildren = children[children.length - 1];
-        const endNode = lastChildren.range[1] + value.length;
-
-        this.addColumn(value.length);
+        this.addColumn(base.length);
         this.currentNode.loc.end.line = this.currentLine;
         this.currentNode.loc.end.column = this.currentColumn;
 
@@ -111,7 +108,7 @@ class HtmlToATS {
   }
 
   parseText(text, index) {
-    const linebreaks = text.match(this.linebreakRegex).length;
+    const linebreaks = text.match(this.linebreakRegex)?.length || 0;
     const lastLine = text.split('\n').pop();
     const tempColumn = this.currentColumn;
 
@@ -135,16 +132,21 @@ class HtmlToATS {
     };
   }
 
-  parserElement(tag, index) {
-    return {
+  parserElement(tag, attributes, index) {
+    const tempColumn = this.currentColumn;
+    const tagColumnSize = tag.length + 1;
+
+    this.addColumn(tagColumnSize);
+
+    const nodeElement = {
       type: 'Element',
       name: tag,
-      attributes: [],
+      attributes: this.parseAttributes(tag, attributes, index + tagColumnSize),
       children: [],
       loc: {
         start: {
           line: this.currentLine,
-          column: this.currentColumn
+          column: tempColumn
         },
         end: {
           line: null,
@@ -153,11 +155,72 @@ class HtmlToATS {
       },
       range: [index, null]
     };
+
+    this.addColumn();
+
+    return nodeElement;
+  }
+
+  parseAttributes(tag, attributes, index) {
+    const attrs = [];
+    let lastIndex = 0;
+    let match;
+
+    // iterates over the attribute matches and adds them to the attribute object
+    while ((match = this.attributeRegex.exec(attributes))) {
+      const [base, name, value] = match;
+      const blank = attributes.slice(lastIndex, match.index);
+      const linebreaksBlank = blank.match(this.linebreakRegex)?.length || 0;
+      const lastLineBlank = blank.split('\n').pop().length;
+
+      const linebreaks = value.match(this.linebreakRegex)?.length || 0;
+      const lastLine = value.split('\n').pop().length + 1;
+      const localIndex = index + match.index;
+
+      if (linebreaksBlank) {
+        this.addLine(linebreaksBlank);
+        this.addColumn(lastLineBlank);
+      } else {
+        this.addColumn(blank.length);
+      }
+
+      const startLine = this.currentLine;
+      const startColumn = this.currentColumn;
+
+      if (linebreaks) {
+        this.addLine(linebreaks);
+        this.addColumn(lastLine);
+      } else {
+        this.addColumn(base.length);
+      }
+
+      const attribute = {
+        name,
+        value,
+        type: 'TextAttribute',
+        loc: {
+          start: {
+            line: startLine,
+            column: startColumn
+          },
+          end: {
+            line: this.currentLine,
+            column: this.currentColumn
+          }
+        },
+        range: [localIndex, localIndex + base.length]
+      };
+
+      lastIndex += match.index + base.length;
+      attrs.push(attribute);
+    }
+
+    return attrs;
   }
 
   addLine(number = 1) {
     this.currentLine += number;
-    this.currentColumn = 0;
+    if (number > 0) this.currentColumn = 0;
   }
 
   addColumn(number = 1) {
