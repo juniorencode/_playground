@@ -10,6 +10,8 @@ input.addEventListener('input', () => {
 });
 
 const parseHTML = html => {
+  const children = parseNode(html);
+
   return {
     type: 'Program',
     value: html,
@@ -24,8 +26,42 @@ const parseHTML = html => {
         column: null
       }
     },
-    templateNodes: []
+    templateNodes: children
   };
+};
+
+const parseNode = html => {
+  // regular expression to find HTML tags
+  const tagRegex = /<([a-zA-Z0-9\-]+)([^>]*)>|<\/([a-zA-Z0-9\-]+)>/g;
+
+  const matchStack = []; // stack of matching nodes
+  let currentNode = null; // current node in the parsing process
+  let parentStack = []; // stack of parent nodes
+  let match;
+
+  while ((match = tagRegex.exec(html))) {
+    const tag = match[1]; // HTML tag name
+
+    if (!tag) continue;
+
+    const node = {
+      type: 'element',
+      name: tag,
+      children: []
+    };
+
+    if (currentNode && currentNode.children) {
+      currentNode.children.push(node);
+    } else {
+      matchStack.push(node);
+    }
+
+    // set the new node as the current node
+    currentNode = node;
+  }
+
+  // Returns the first node of the parse tree
+  return matchStack[0];
 };
 
 const init = () => {
