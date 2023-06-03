@@ -61,7 +61,7 @@ const parseNode = html => {
     }
 
     if (text.length > 0) {
-      const textNode = parseText(text, index, line);
+      const textNode = parseText(text, index, line, column);
 
       if (currentNode && currentNode.children) {
         currentNode.children.push(textNode);
@@ -71,11 +71,6 @@ const parseNode = html => {
 
       column += text.replace(/\n/g, '').length;
     }
-    console.log(column);
-
-    // console.log(text.replace(/\n/g, '').length);
-
-    // column += tag ? tag.length + 1 : 0;
 
     if (closingTag) {
       const children = currentNode.children;
@@ -149,13 +144,14 @@ const parseAttributes = (attributes, index, line, column) => {
   return attrs;
 };
 
-const parseText = (text, index, line) => {
+const parseText = (text, index, line, column) => {
   const textNode = {
     type: 'Text',
     value: text,
     loc: {
       start: {
-        line
+        line,
+        column
       }
     },
     range: [index - text.length, index]
