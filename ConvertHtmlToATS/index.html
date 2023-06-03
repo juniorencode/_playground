@@ -13,5 +13,13 @@
       <pre id="tree" class="tree"></pre>
     </section>
     <script src="./main.js"></script>
+    <script>
+      const input = document.querySelector('.code');
+      const output = document.querySelector('.tree');
+      const ats = new HtmlToATS(input, output);
+      ats.insert(`<p class="blink">
+  <span>Hello</span> <span>World</span>
+</p>`);
+    </script>
   </body>
 </html>
