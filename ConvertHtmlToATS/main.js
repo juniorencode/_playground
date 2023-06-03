@@ -51,11 +51,13 @@ const parseNode = html => {
     const text = html.substring(lastIndex, index); // text between tags
     lastIndex = index + match[0].length; // update the last match index
 
-    if (text.length > 0) {
-      const linebreakRegex = /[\n]/g;
-      const textNode = parseText(text, index);
+    const linebreakRegex = /[\n]/g;
+    if (value.match(linebreakRegex)) {
+      line += value.match(linebreakRegex).length;
+    }
 
-      if (text.match(linebreakRegex)) line++;
+    if (text.length > 0) {
+      const textNode = parseText(text, index);
 
       if (currentNode && currentNode.children) {
         currentNode.children.push(textNode);
