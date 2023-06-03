@@ -41,6 +41,7 @@ const parseNode = html => {
   let match;
 
   while ((match = tagRegex.exec(html))) {
+    const value = match[0]; // original label
     const tag = match[1]; // HTML tag name
     const attributes = match[2]; // HTML tag attributes
     const closingTag = match[3]; // Etiqueta de cierre
@@ -60,12 +61,15 @@ const parseNode = html => {
     }
 
     if (closingTag) {
+      const children = currentNode.children;
+      const endNode = children[children.length - 1].range[1] + value.length;
+      currentNode.range[1] = endNode;
       currentNode = parentStack.pop();
     } else {
       const node = {
         type: 'Element',
         name: tag,
-        attributes: parseAttributes(attributes),
+        attributes: parseAttributes(attributes, index + tag.length + 1),
         children: [],
         range: [index, null]
       };
@@ -86,7 +90,7 @@ const parseNode = html => {
   return matchStack;
 };
 
-const parseAttributes = attributes => {
+const parseAttributes = (attributes, index) => {
   // regular expression to find attributes
   const attributeRegex = /([a-zA-Z0-9\-]+)\s*=\s*"([^"]*)"/g;
 
@@ -95,10 +99,13 @@ const parseAttributes = attributes => {
 
   // iterates over the attribute matches and adds them to the attribute object
   while ((match = attributeRegex.exec(attributes))) {
+    const localIndex = index + match.index;
+
     const attribute = {
       name: match[1],
       value: match[2],
-      type: 'TextAttribute'
+      type: 'TextAttribute',
+      range: [localIndex, localIndex + match[0].length]
     };
 
     attrs.push(attribute);
