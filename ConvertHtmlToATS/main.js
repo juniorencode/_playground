@@ -4,7 +4,7 @@ class HtmlToATS {
     this.output = output;
     this.html = this.input.value;
 
-    this.tagRegex = /<([a-zA-Z0-9\-]+)([^>]*)>|<\/([a-zA-Z0-9\-]+)>/g; // regular expression to find HTML tags
+    this.tagRegex = /<([a-zA-Z0-9\-]+)([^>]*)\/?>|<\/([a-zA-Z0-9\-]+)>/g; // regular expression to find HTML tags
     this.attributeRegex = /([a-zA-Z0-9\-]+)\s*=\s*"([^"]*)"/g; // regular expression to find attributes
     this.linebreakRegex = /[\n]/g; // regular expression to find line breaks
 
@@ -85,18 +85,23 @@ class HtmlToATS {
 
         if (this.currentNode && this.currentNode.children) {
           this.currentNode.children.push(nodeElement);
-          this.parentStack.push(this.currentNode);
+          !base.endsWith('/>') && this.parentStack.push(this.currentNode);
         } else {
           this.matchStack.push(nodeElement);
         }
 
         // set the new node as the current node
-        this.currentNode = nodeElement;
+        if (base.endsWith('/>')) {
+          this.addColumn(2);
+          nodeElement.loc.end.line = this.currentLine;
+          nodeElement.loc.end.column = this.currentColumn;
+        } else {
+          this.currentNode = nodeElement;
+        }
       } else {
         this.addColumn(base.length);
         this.currentNode.loc.end.line = this.currentLine;
         this.currentNode.loc.end.column = this.currentColumn;
-
         this.currentNode = this.parentStack.pop();
       }
     }
