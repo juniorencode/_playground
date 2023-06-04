@@ -23,6 +23,16 @@ body {
   padding: 4px 0;
 }
 
+.JsonFormatter__collapsible {
+  position: relative;
+}
+
+.JsonFormatter__collapsible::before {
+  content: '-';
+  position: absolute;
+  left: -14px;
+}
+
 .JsonFormatter__body {
   margin-left: 24px;
 }
