@@ -95,13 +95,19 @@ class HtmlToATS {
           this.addColumn(2);
           nodeElement.loc.end.line = this.currentLine;
           nodeElement.loc.end.column = this.currentColumn;
+          nodeElement.range[1] = nodeElement.range[0] + base.length;
         } else {
           this.currentNode = nodeElement;
         }
       } else {
+        const children = this.currentNode.children;
+        const lastChildren = children[children.length - 1];
+        const endNode = lastChildren.range[1] + base.length;
+
         this.addColumn(base.length);
         this.currentNode.loc.end.line = this.currentLine;
         this.currentNode.loc.end.column = this.currentColumn;
+        this.currentNode.range[1] = endNode;
         this.currentNode = this.parentStack.pop();
       }
     }
