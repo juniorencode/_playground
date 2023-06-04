@@ -8,6 +8,172 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <div class="JsonFormatter">
+      <div class="JsonFormatter__entry">
+        <span class="JsonFormatter__value">
+          <span class="JsonFormatter__name">Object</span>
+          <span class="JsonFormatter__details">{name, age, alive, ... +2}</span>
+        </span>
+        <div class="JsonFormatter__body">
+          <div class="JsonFormatter__entry">
+            <span class="JsonFormatter__key">
+              <span class="JsonFormatter__name">name:</span>
+            </span>
+            <span class="JsonFormatter__value">
+              <span class="JsonFormatter__name">"John"</span>
+            </span>
+          </div>
+          <div class="JsonFormatter__entry">
+            <span class="JsonFormatter__key">
+              <span class="JsonFormatter__name">age:</span>
+            </span>
+            <span class="JsonFormatter__value">
+              <span class="JsonFormatter__name">30</span>
+            </span>
+          </div>
+          <div class="JsonFormatter__entry">
+            <span class="JsonFormatter__key">
+              <span class="JsonFormatter__name">alive:</span>
+            </span>
+            <span class="JsonFormatter__value">
+              <span class="JsonFormatter__name">true</span>
+            </span>
+          </div>
+          <div class="JsonFormatter__entry">
+            <span class="JsonFormatter__key">
+              <span class="JsonFormatter__name">address:</span>
+              <span class="JsonFormatter__details"
+                >{city, street, current}</span
+              >
+            </span>
+            <div class="JsonFormatter__body">
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__key">
+                  <span class="JsonFormatter__name">city:</span>
+                </span>
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">"New York"</span>
+                </span>
+              </div>
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__key">
+                  <span class="JsonFormatter__name">street:</span>
+                </span>
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">123</span>
+                </span>
+              </div>
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__key">
+                  <span class="JsonFormatter__name">current:</span>
+                </span>
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">true</span>
+                </span>
+              </div>
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">references:</span>
+                  <span class="JsonFormatter__details">[1 element]</span>
+                </span>
+                <div class="JsonFormatter__body">
+                  <div class="JsonFormatter__entry">
+                    <span class="JsonFormatter__value">
+                      <span class="JsonFormatter__name">"Square Park"</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">details:</span>
+                  <span class="JsonFormatter__details">{owner}</span>
+                </span>
+                <div class="JsonFormatter__body">
+                  <div class="JsonFormatter__entry">
+                    <span class="JsonFormatter__key">
+                      <span class="JsonFormatter__name">owner:</span>
+                    </span>
+                    <span class="JsonFormatter__value">
+                      <span class="JsonFormatter__name">true</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="JsonFormatter__entry">
+            <span class="JsonFormatter__key">
+              <span class="JsonFormatter__name">hobbies:</span>
+              <span class="JsonFormatter__details">[4 elements]</span>
+            </span>
+            <div class="JsonFormatter__body">
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">"reading"</span>
+                </span>
+              </div>
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">18</span>
+                </span>
+              </div>
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">false</span>
+                </span>
+              </div>
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">Array</span>
+                  <span class="JsonFormatter__details">[1 element]</span>
+                </span>
+                <div class="JsonFormatter__body">
+                  <div class="JsonFormatter__entry">
+                    <span class="JsonFormatter__value">
+                      <span class="JsonFormatter__name">"paintball"</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="JsonFormatter__entry">
+                <span class="JsonFormatter__value">
+                  <span class="JsonFormatter__name">Object</span>
+                  <span class="JsonFormatter__details">{coding}</span>
+                </span>
+                <div class="JsonFormatter__body">
+                  <div class="JsonFormatter__entry">
+                    <span class="JsonFormatter__key">
+                      <span class="JsonFormatter__name">coding:</span>
+                    </span>
+                    <span class="JsonFormatter__value">
+                      <span class="JsonFormatter__name">"JavaScript"</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const object = {
+        name: 'John',
+        age: 30,
+        alive: true,
+        address: {
+          city: 'New York',
+          street: 123,
+          current: true,
+          references: ['Square Park'],
+          details: {
+            owner: true
+          }
+        },
+        hobbies: ['reading', 18, false, ['paintball'], { coding: 'JavaScript' }]
+      };
+    </script>
     <script src="./main.js"></script>
   </body>
 </html>
