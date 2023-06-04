@@ -23,21 +23,32 @@ body {
   padding: 6px 0;
 }
 
-.JsonFormatter__collapsible {
+.JsonFormatter__entry--toggable {
   position: relative;
 }
 
-.JsonFormatter__collapsible::before {
+.JsonFormatter__entry--toggable > .JsonFormatter__key span,
+.JsonFormatter__entry--toggable > .JsonFormatter__value span {
+  cursor: pointer;
+}
+
+.JsonFormatter__entry--toggable > .JsonFormatter__key span:hover,
+.JsonFormatter__entry--toggable > .JsonFormatter__value span:hover {
+  text-decoration: underline;
+}
+
+.JsonFormatter__entry--toggable::before {
   content: '+';
   position: absolute;
   left: -14px;
 }
 
-.JsonFormatter__collapsed > .JsonFormatter__value .JsonFormatter__details {
+.JsonFormatter__entry--open > .JsonFormatter__key .JsonFormatter__details,
+.JsonFormatter__entry--open > .JsonFormatter__value .JsonFormatter__details {
   display: none;
 }
 
-.JsonFormatter__collapsed.JsonFormatter__collapsible::before {
+.JsonFormatter__entry--open.JsonFormatter__entry--toggable::before {
   content: '-';
 }
 
@@ -46,6 +57,6 @@ body {
   display: none;
 }
 
-.JsonFormatter__collapsed > .JsonFormatter__body {
+.JsonFormatter__entry--open > .JsonFormatter__body {
   display: block;
 }
