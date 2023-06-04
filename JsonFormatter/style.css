@@ -33,6 +33,14 @@ body {
   left: -14px;
 }
 
+.JsonFormatter__collapsed .JsonFormatter__details {
+  display: none;
+}
+
+.JsonFormatter__collapsed.JsonFormatter__collapsible::before {
+  content: '+';
+}
+
 .JsonFormatter__body {
   margin-left: 24px;
 }
