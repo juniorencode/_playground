@@ -20,7 +20,7 @@ body {
 }
 
 .JsonFormatter__entry {
-  padding: 4px 0;
+  padding: 6px 0;
 }
 
 .JsonFormatter__collapsible {
@@ -28,19 +28,24 @@ body {
 }
 
 .JsonFormatter__collapsible::before {
-  content: '-';
+  content: '+';
   position: absolute;
   left: -14px;
 }
 
-.JsonFormatter__collapsed .JsonFormatter__details {
+.JsonFormatter__collapsed > .JsonFormatter__value .JsonFormatter__details {
   display: none;
 }
 
 .JsonFormatter__collapsed.JsonFormatter__collapsible::before {
-  content: '+';
+  content: '-';
 }
 
 .JsonFormatter__body {
   margin-left: 24px;
+  display: none;
+}
+
+.JsonFormatter__collapsed > .JsonFormatter__body {
+  display: block;
 }
