@@ -32,9 +32,17 @@ body {
   content: '{';
 }
 
+.JFormat__entry--object.JFormat__entry--open::after {
+  content: '}';
+}
+
 .JFormat__entry--array.JFormat__entry--open > .JFormat__key::after,
 .JFormat__entry--array.JFormat__entry--open > .JFormat__value::after {
   content: '[';
+}
+
+.JFormat__entry--array.JFormat__entry--open::after {
+  content: ']';
 }
 
 .JFormat__entry--toggleable > .JFormat__key span,
