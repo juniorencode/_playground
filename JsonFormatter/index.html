@@ -4,122 +4,120 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JsonFormatter</title>
+    <title>JFormat</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="JsonFormatter">
+    <div class="JFormat">
       <div
-        class="JsonFormatter__entry JsonFormatter__entry--toggleable JsonFormatter__entry--open"
+        class="JFormat__entry JFormat__entry--object JFormat__entry--toggleable JFormat__entry--open"
       >
-        <span class="JsonFormatter__value">
-          <span class="JsonFormatter__name">Object</span>
-          <span class="JsonFormatter__details">{name, age, alive, ... +2}</span>
+        <span class="JFormat__value">
+          <span class="JFormat__name">Object</span>
+          <span class="JFormat__details">{name, age, alive, ... +2}</span>
         </span>
-        <div class="JsonFormatter__body">
-          <div class="JsonFormatter__entry">
-            <span class="JsonFormatter__key">
-              <span class="JsonFormatter__name">name:</span>
+        <div class="JFormat__body">
+          <div class="JFormat__entry">
+            <span class="JFormat__key">
+              <span class="JFormat__name">name:</span>
             </span>
-            <span class="JsonFormatter__value">
-              <span class="JsonFormatter__name">"John"</span>
-            </span>
-          </div>
-          <div class="JsonFormatter__entry">
-            <span class="JsonFormatter__key">
-              <span class="JsonFormatter__name">age:</span>
-            </span>
-            <span class="JsonFormatter__value">
-              <span class="JsonFormatter__name">30</span>
+            <span class="JFormat__value">
+              <span class="JFormat__name">"John"</span>
             </span>
           </div>
-          <div class="JsonFormatter__entry">
-            <span class="JsonFormatter__key">
-              <span class="JsonFormatter__name">alive:</span>
+          <div class="JFormat__entry">
+            <span class="JFormat__key">
+              <span class="JFormat__name">age:</span>
             </span>
-            <span class="JsonFormatter__value">
-              <span class="JsonFormatter__name">true</span>
-            </span>
-          </div>
-          <div class="JsonFormatter__entry">
-            <span class="JsonFormatter__key">
-              <span class="JsonFormatter__name">record:</span>
-            </span>
-            <span class="JsonFormatter__value">
-              <span class="JsonFormatter__name">[ ]</span>
+            <span class="JFormat__value">
+              <span class="JFormat__name">30</span>
             </span>
           </div>
-          <div class="JsonFormatter__entry">
-            <span class="JsonFormatter__key">
-              <span class="JsonFormatter__name">meta:</span>
+          <div class="JFormat__entry">
+            <span class="JFormat__key">
+              <span class="JFormat__name">alive:</span>
             </span>
-            <span class="JsonFormatter__value">
-              <span class="JsonFormatter__name">{ }</span>
+            <span class="JFormat__value">
+              <span class="JFormat__name">true</span>
+            </span>
+          </div>
+          <div class="JFormat__entry">
+            <span class="JFormat__key">
+              <span class="JFormat__name">record:</span>
+            </span>
+            <span class="JFormat__value">
+              <span class="JFormat__name">[ ]</span>
+            </span>
+          </div>
+          <div class="JFormat__entry">
+            <span class="JFormat__key">
+              <span class="JFormat__name">meta:</span>
+            </span>
+            <span class="JFormat__value">
+              <span class="JFormat__name">{ }</span>
             </span>
           </div>
           <div
-            class="JsonFormatter__entry JsonFormatter__entry--toggleable JsonFormatter__entry--open"
+            class="JFormat__entry JFormat__entry--object JFormat__entry--toggleable JFormat__entry--open"
           >
-            <span class="JsonFormatter__key">
-              <span class="JsonFormatter__name">address:</span>
-              <span class="JsonFormatter__details"
-                >{city, street, current}</span
-              >
+            <span class="JFormat__key">
+              <span class="JFormat__name">address:</span>
+              <span class="JFormat__details">{city, street, current}</span>
             </span>
-            <div class="JsonFormatter__body">
-              <div class="JsonFormatter__entry">
-                <span class="JsonFormatter__key">
-                  <span class="JsonFormatter__name">city:</span>
+            <div class="JFormat__body">
+              <div class="JFormat__entry">
+                <span class="JFormat__key">
+                  <span class="JFormat__name">city:</span>
                 </span>
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">"New York"</span>
-                </span>
-              </div>
-              <div class="JsonFormatter__entry">
-                <span class="JsonFormatter__key">
-                  <span class="JsonFormatter__name">street:</span>
-                </span>
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">123</span>
+                <span class="JFormat__value">
+                  <span class="JFormat__name">"New York"</span>
                 </span>
               </div>
-              <div class="JsonFormatter__entry">
-                <span class="JsonFormatter__key">
-                  <span class="JsonFormatter__name">current:</span>
+              <div class="JFormat__entry">
+                <span class="JFormat__key">
+                  <span class="JFormat__name">street:</span>
                 </span>
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">true</span>
+                <span class="JFormat__value">
+                  <span class="JFormat__name">123</span>
+                </span>
+              </div>
+              <div class="JFormat__entry">
+                <span class="JFormat__key">
+                  <span class="JFormat__name">current:</span>
+                </span>
+                <span class="JFormat__value">
+                  <span class="JFormat__name">true</span>
                 </span>
               </div>
               <div
-                class="JsonFormatter__entry JsonFormatter__entry--toggleable JsonFormatter__entry--open"
+                class="JFormat__entry JFormat__entry--array JFormat__entry--toggleable JFormat__entry--open"
               >
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">references:</span>
-                  <span class="JsonFormatter__details">[1 element]</span>
+                <span class="JFormat__value">
+                  <span class="JFormat__name">references:</span>
+                  <span class="JFormat__details">[1 element]</span>
                 </span>
-                <div class="JsonFormatter__body">
-                  <div class="JsonFormatter__entry">
-                    <span class="JsonFormatter__value">
-                      <span class="JsonFormatter__name">"Square Park"</span>
+                <div class="JFormat__body">
+                  <div class="JFormat__entry">
+                    <span class="JFormat__value">
+                      <span class="JFormat__name">"Square Park"</span>
                     </span>
                   </div>
                 </div>
               </div>
               <div
-                class="JsonFormatter__entry JsonFormatter__entry--toggleable JsonFormatter__entry--open"
+                class="JFormat__entry JFormat__entry--object JFormat__entry--toggleable JFormat__entry--open"
               >
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">details:</span>
-                  <span class="JsonFormatter__details">{owner}</span>
+                <span class="JFormat__value">
+                  <span class="JFormat__name">details:</span>
+                  <span class="JFormat__details">{owner}</span>
                 </span>
-                <div class="JsonFormatter__body">
-                  <div class="JsonFormatter__entry">
-                    <span class="JsonFormatter__key">
-                      <span class="JsonFormatter__name">owner:</span>
+                <div class="JFormat__body">
+                  <div class="JFormat__entry">
+                    <span class="JFormat__key">
+                      <span class="JFormat__name">owner:</span>
                     </span>
-                    <span class="JsonFormatter__value">
-                      <span class="JsonFormatter__name">true</span>
+                    <span class="JFormat__value">
+                      <span class="JFormat__name">true</span>
                     </span>
                   </div>
                 </div>
@@ -127,57 +125,57 @@
             </div>
           </div>
           <div
-            class="JsonFormatter__entry JsonFormatter__entry--toggleable JsonFormatter__entry--open"
+            class="JFormat__entry JFormat__entry--array JFormat__entry--toggleable JFormat__entry--open"
           >
-            <span class="JsonFormatter__key">
-              <span class="JsonFormatter__name">hobbies:</span>
-              <span class="JsonFormatter__details">[4 elements]</span>
+            <span class="JFormat__key">
+              <span class="JFormat__name">hobbies:</span>
+              <span class="JFormat__details">[4 elements]</span>
             </span>
-            <div class="JsonFormatter__body">
-              <div class="JsonFormatter__entry">
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">"reading"</span>
+            <div class="JFormat__body">
+              <div class="JFormat__entry">
+                <span class="JFormat__value">
+                  <span class="JFormat__name">"reading"</span>
                 </span>
               </div>
-              <div class="JsonFormatter__entry">
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">18</span>
+              <div class="JFormat__entry">
+                <span class="JFormat__value">
+                  <span class="JFormat__name">18</span>
                 </span>
               </div>
-              <div class="JsonFormatter__entry">
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">false</span>
+              <div class="JFormat__entry">
+                <span class="JFormat__value">
+                  <span class="JFormat__name">false</span>
                 </span>
               </div>
               <div
-                class="JsonFormatter__entry JsonFormatter__entry--toggleable JsonFormatter__entry--open"
+                class="JFormat__entry JFormat__entry--array JFormat__entry--toggleable JFormat__entry--open"
               >
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">Array</span>
-                  <span class="JsonFormatter__details">[1 element]</span>
+                <span class="JFormat__value">
+                  <span class="JFormat__name">Array</span>
+                  <span class="JFormat__details">[1 element]</span>
                 </span>
-                <div class="JsonFormatter__body">
-                  <div class="JsonFormatter__entry">
-                    <span class="JsonFormatter__value">
-                      <span class="JsonFormatter__name">"paintball"</span>
+                <div class="JFormat__body">
+                  <div class="JFormat__entry">
+                    <span class="JFormat__value">
+                      <span class="JFormat__name">"paintball"</span>
                     </span>
                   </div>
                 </div>
               </div>
               <div
-                class="JsonFormatter__entry JsonFormatter__entry--toggleable JsonFormatter__entry--open"
+                class="JFormat__entry JFormat__entry--object JFormat__entry--toggleable JFormat__entry--open"
               >
-                <span class="JsonFormatter__value">
-                  <span class="JsonFormatter__name">Object</span>
-                  <span class="JsonFormatter__details">{coding}</span>
+                <span class="JFormat__value">
+                  <span class="JFormat__name">Object</span>
+                  <span class="JFormat__details">{coding}</span>
                 </span>
-                <div class="JsonFormatter__body">
-                  <div class="JsonFormatter__entry">
-                    <span class="JsonFormatter__key">
-                      <span class="JsonFormatter__name">coding:</span>
+                <div class="JFormat__body">
+                  <div class="JFormat__entry">
+                    <span class="JFormat__key">
+                      <span class="JFormat__name">coding:</span>
                     </span>
-                    <span class="JsonFormatter__value">
-                      <span class="JsonFormatter__name">"JavaScript"</span>
+                    <span class="JFormat__value">
+                      <span class="JFormat__name">"JavaScript"</span>
                     </span>
                   </div>
                 </div>
