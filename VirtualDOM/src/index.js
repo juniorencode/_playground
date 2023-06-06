@@ -23,10 +23,10 @@ const render = node => {
 
 const applyClass = (element, node) => {
   if (node.props.class) {
-    element.setAttribute('class', node.props.className);
+    element.setAttribute('class', node.props.class);
   }
 };
 
-const title = <h1 className="title">Hello world..!!</h1>;
+const title = <h1 class="title">Hello world..!!</h1>;
 document.body.append(render(title));
 console.log(title);
