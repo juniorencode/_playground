@@ -14,13 +14,17 @@ const render = node => {
   const children = document.createTextNode(node.children);
 
   if (node.props) {
-    if (node.props.className) {
-      element.setAttribute('class', node.props.className);
-    }
+    applyClass(element, node);
   }
 
   element.append(children);
   return element;
+};
+
+const applyClass = (element, node) => {
+  if (node.props.class) {
+    element.setAttribute('class', node.props.className);
+  }
 };
 
 const title = <h1 className="title">Hello world..!!</h1>;
