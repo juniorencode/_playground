@@ -15,6 +15,9 @@ const render = node => {
 
   if (node.props) {
     applyClass(element, node);
+    Object.keys(node.props).map(key => {
+      element.setAttribute(key, node.props[key]);
+    });
   }
 
   element.append(children);
@@ -27,6 +30,10 @@ const applyClass = (element, node) => {
   }
 };
 
-const title = <h1 class="title">Hello world..!!</h1>;
+const title = (
+  <h1 class="title" style="text-decoration: underline;">
+    Hello world..!!
+  </h1>
+);
 document.body.append(render(title));
 console.log(title);
