@@ -3,7 +3,9 @@ const createStore = (reducer, initialState) => {
 
   const getState = () => state;
 
-  const dispatch = () => {};
+  const dispatch = action => {
+    state = reducer(state, action);
+  };
 
   const subscribe = () => {};
 
@@ -14,9 +16,11 @@ const createStore = (reducer, initialState) => {
   };
 };
 
-const reducer = () => {};
+const reducer = (state, action) => action;
 
 const store = createStore(reducer, 'initial state');
 // store.getState
 // store.dispatch
 // store.subscribe
+
+store.dispatch('new state');
