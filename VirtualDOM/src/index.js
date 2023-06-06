@@ -16,7 +16,7 @@ const render = node => {
   }
 
   const element = document.createElement(node.type);
-  const children = document.createTextNode(node.children);
+  let children = null;
 
   if (node.props) {
     Object.keys(node.props).map(key => {
@@ -24,7 +24,16 @@ const render = node => {
     });
   }
 
-  element.append(children);
+  node.children.map(child => {
+    if (typeof child === 'string') {
+      children = document.createTextNode(child);
+    } else {
+      children = render(child);
+    }
+
+    element.append(children);
+  });
+
   return element;
 };
 
@@ -34,8 +43,16 @@ const title = (
   </h1>
 );
 const SubTitle = ({ title }) => <h2>{title}</h2>;
+const Menu = ({ one, two, three }) => (
+  <ul>
+    <li>{one}</li>
+    <li>{two}</li>
+    <li>{three}</li>
+  </ul>
+);
 
 document.body.append(render(title));
 document.body.append(
   render(<SubTitle title="testing functional components" />)
 );
+document.body.append(render(<Menu one="HTML" two="CSS" three="JavaScript" />));
