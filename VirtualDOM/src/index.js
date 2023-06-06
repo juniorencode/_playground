@@ -14,7 +14,6 @@ const render = node => {
   const children = document.createTextNode(node.children);
 
   if (node.props) {
-    applyClass(element, node);
     Object.keys(node.props).map(key => {
       element.setAttribute(key, node.props[key]);
     });
@@ -22,12 +21,6 @@ const render = node => {
 
   element.append(children);
   return element;
-};
-
-const applyClass = (element, node) => {
-  if (node.props.class) {
-    element.setAttribute('class', node.props.class);
-  }
 };
 
 const title = (
