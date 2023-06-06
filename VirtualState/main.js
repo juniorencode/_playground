@@ -1,5 +1,7 @@
 const createStore = (reducer, initialState) => {
-  const getState = () => {};
+  let state = initialState;
+
+  const getState = () => state;
 
   const dispatch = () => {};
 
