@@ -10,6 +10,11 @@ const virtualDOM = (type, props, ...args) => {
 };
 
 const render = node => {
+  if (typeof node.type === 'function') {
+    const result = node.type(node.props);
+    return render(result);
+  }
+
   const element = document.createElement(node.type);
   const children = document.createTextNode(node.children);
 
@@ -28,5 +33,9 @@ const title = (
     Hello world..!!
   </h1>
 );
+const SubTitle = ({ title }) => <h2>{title}</h2>;
+
 document.body.append(render(title));
-console.log(title);
+document.body.append(
+  render(<SubTitle title="testing functional components" />)
+);
