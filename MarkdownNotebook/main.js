@@ -43,16 +43,18 @@ notebook.addEventListener('keydown', e => {
       e.preventDefault();
     }
   } else if (e.keyCode === ARROWDOWN) {
-    const nextNote = currentNote.nextElementSibling;
-    if (!nextNote) return;
+    if (isLastLine(currentNote)) {
+      const nextNote = currentNote.nextElementSibling;
+      if (!nextNote) return;
 
-    const currentInput = currentNote.querySelector('.Notebook__input');
-    const nextInput = nextNote.querySelector('.Notebook__input');
-    const caretPosition = getCaretPosition(currentInput);
+      const currentInput = currentNote.querySelector('.Notebook__input');
+      const nextInput = nextNote.querySelector('.Notebook__input');
+      const caretPosition = getCaretPosition(currentInput);
 
-    nextInput.focus();
-    setCaretPosition(nextInput, caretPosition);
-    e.preventDefault();
+      nextInput.focus();
+      setCaretPosition(nextInput, caretPosition);
+      e.preventDefault();
+    }
   }
 });
 
@@ -107,6 +109,15 @@ const isFirstLine = element => {
   const position = getCaretPosition(content);
 
   return position <= firstLineSize;
+};
+
+const isLastLine = element => {
+  const content = element.querySelector('.Notebook__input');
+  const listLines = content.innerText.split('\n');
+  const lastLineSize = content.innerText.length - listLines.pop().length;
+  const position = getCaretPosition(content);
+
+  return position >= lastLineSize;
 };
 
 notebook.append(createNote());
