@@ -3,6 +3,7 @@ const notebook = document.querySelector('.Notebook');
 const regTitle = /^#+/;
 
 const SPACEBAR = 32;
+const ENTER = 13;
 
 notebook.addEventListener('keydown', e => {
   if (!e.target.matches('.Notebook__input')) return;
@@ -16,9 +17,15 @@ notebook.addEventListener('keydown', e => {
 
     if (titleLevel > 3) return;
 
-    e.preventDefault();
     noteInput.innerText = titleContent;
-    noteInput.classList.add('Notebook__input--header' + titleLevel);
+    noteInput.classList.add('Notebook__input--heading' + titleLevel);
+    e.preventDefault();
+  } else if (e.keyCode === ENTER && !e.shiftKey) {
+    const newNote = createNote();
+
+    currentNote.after(newNote);
+    newNote.querySelector('.Notebook__input').focus();
+    e.preventDefault();
   }
 
   // console.log(currentNote);
