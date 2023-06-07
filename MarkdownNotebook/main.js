@@ -32,13 +32,15 @@ notebook.addEventListener('keydown', e => {
   } else if (isSingleLineInput) {
     if (e.keyCode === ARROWUP) {
       const previousNote = currentNote.previousElementSibling;
-
-      console.log(getCaretPosition(currentNote));
       if (!previousNote) return;
 
+      const currentInput = currentNote.querySelector('.Notebook__input');
       const previousInput = previousNote.querySelector('.Notebook__input');
+      const caretPosition = getCaretPosition(currentInput);
 
       previousInput.focus();
+      setCaretPosition(previousInput, caretPosition);
+
       e.preventDefault();
     }
   }
@@ -71,6 +73,15 @@ const getCaretPosition = element => {
   }
 
   return 0;
+};
+
+const setCaretPosition = (element, position) => {
+  const range = document.createRange();
+  const selection = window.getSelection();
+  range.setStart(element.childNodes[0], position);
+  range.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(range);
 };
 
 notebook.append(createNote());
