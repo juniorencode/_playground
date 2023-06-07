@@ -25,9 +25,26 @@ body {
   border: none;
   background-color: transparent;
   width: 100%;
-  font-size: 18px;
 }
 
 .Notebook__input:focus {
   outline: none;
+}
+
+.Notebook__input--header1,
+.Notebook__input--header2,
+.Notebook__input--header3 {
+  font-weight: 600;
+}
+
+.Notebook__input--header1 {
+  font-size: 2em;
+}
+
+.Notebook__input--header2 {
+  font-size: 1.6em;
+}
+
+.Notebook__input--header3 {
+  font-size: 1.2em;
 }

@@ -1,11 +1,27 @@
 const notebook = document.querySelector('.Notebook');
 
+const regTitle = /^#+/;
+
+const SPACEBAR = 32;
+
 notebook.addEventListener('keydown', e => {
   if (!e.target.matches('.Notebook__input')) return;
 
   const currentNote = e.target.closest('.Notebook__note');
 
-  console.log(currentNote);
+  if (e.keyCode === SPACEBAR && e.target.innerText.startsWith('#')) {
+    const noteInput = e.target;
+    const titleLevel = noteInput.innerText.match(regTitle)[0].length;
+    const titleContent = noteInput.innerText.replace(regTitle, '').trim();
+
+    if (titleLevel > 3) return;
+
+    e.preventDefault();
+    noteInput.innerText = titleContent;
+    noteInput.classList.add('Notebook__input--header' + titleLevel);
+  }
+
+  // console.log(currentNote);
 });
 
 const createNote = () => {
