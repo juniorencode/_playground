@@ -8,6 +8,8 @@ const BACKSPACE = 8;
 const ENTER = 13;
 const ARROWUP = 38;
 const ARROWDOWN = 40;
+const ARROWLEFT = 37;
+const ARROWRIGHT = 39;
 
 notebook.addEventListener('keydown', e => {
   if (!e.target.matches('.Notebook__input')) return;
@@ -56,6 +58,18 @@ notebook.addEventListener('keydown', e => {
       setDefaultPosition(nextInput, caretPosition);
       e.preventDefault();
     }
+  } else if (e.keyCode === ARROWLEFT) {
+    if (getCaretPosition(currentInput) !== 0) return;
+    const previousNote = currentNote.previousElementSibling;
+    if (!previousNote) return;
+
+    const previousInput = previousNote.querySelector('.Notebook__input');
+
+    previousInput.focus();
+    setEndPosition(previousInput);
+    e.preventDefault();
+  } else if (e.keyCode === ARROWRIGHT) {
+    console.log('right');
   }
 });
 
