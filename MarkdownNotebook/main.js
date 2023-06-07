@@ -130,7 +130,7 @@ const setCaretPosition = (element, position) => {
 
   if (!currentNode) {
     const lastChild = element.lastChild;
-    range.setStart(lastChild, lastChild.length);
+    range.setStart(lastChild, lastChild?.length);
   }
 
   range.collapse(true);
@@ -141,6 +141,10 @@ const setCaretPosition = (element, position) => {
 const setDefaultPosition = (element, position) => {
   const firstChild = element.childNodes[0];
   setCaretPosition(element, Math.min(position, firstChild.length));
+};
+
+const setEndPosition = element => {
+  setCaretPosition(element, element.innerText.length);
 };
 
 const isFirstLine = element => {
@@ -165,6 +169,7 @@ const normalizeInput = element => {
 
   if (numBr === 1) {
     element.innerHTML = element.innerHTML.slice(0, -4);
+    setEndPosition(element);
   }
 };
 
