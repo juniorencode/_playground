@@ -1,8 +1,10 @@
 const notebook = document.querySelector('.Notebook');
 
 const regTitle = /^#+/;
+const regBreakline = /(<br>\s*)+$/gi;
 
 const SPACEBAR = 32;
+const BACKSPACE = 8;
 const ENTER = 13;
 const ARROWUP = 38;
 const ARROWDOWN = 40;
@@ -31,6 +33,8 @@ notebook.addEventListener('keydown', e => {
     newNote.querySelector('.Notebook__input').focus();
     e.preventDefault();
   } else if (e.keyCode === ARROWUP) {
+    // normalizeInput(currentInput);
+
     if (isSingleLineInput || isFirstLine(currentInput)) {
       const previousNote = currentNote.previousElementSibling;
       if (!previousNote) return;
@@ -43,6 +47,8 @@ notebook.addEventListener('keydown', e => {
       e.preventDefault();
     }
   } else if (e.keyCode === ARROWDOWN) {
+    // normalizeInput(currentInput);
+
     if (isSingleLineInput || isLastLine(currentInput)) {
       const nextNote = currentNote.nextElementSibling;
       if (!nextNote) return;
@@ -54,6 +60,18 @@ notebook.addEventListener('keydown', e => {
       setCaretPosition(nextInput, caretPosition);
       e.preventDefault();
     }
+  }
+});
+
+notebook.addEventListener('keyup', e => {
+  if (!e.target.matches('.Notebook__input')) return;
+
+  const currentNote = e.target.closest('.Notebook__note');
+  const currentInput = currentNote?.querySelector('.Notebook__input');
+
+  if (e.keyCode === BACKSPACE) {
+    normalizeInput(currentInput);
+    e.preventDefault();
   }
 });
 
@@ -115,6 +133,16 @@ const isLastLine = element => {
   const position = getCaretPosition(element);
 
   return position >= lastLineSize;
+};
+
+const normalizeInput = element => {
+  const endLine = element.innerHTML.match(regBreakline);
+  const numBr = endLine ? endLine[0].match(/<br>/g).length : 0;
+
+  if (numBr === 1) {
+    element.innerHTML = element.innerHTML.slice(0, -4);
+    console.log(element.innerText.length);
+  }
 };
 
 notebook.append(createNote());
