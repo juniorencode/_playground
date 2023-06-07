@@ -4,11 +4,14 @@ const regTitle = /^#+/;
 
 const SPACEBAR = 32;
 const ENTER = 13;
+const ARROWUP = 38;
+const ARROWDOWN = 40;
 
 notebook.addEventListener('keydown', e => {
   if (!e.target.matches('.Notebook__input')) return;
 
   const currentNote = e.target.closest('.Notebook__note');
+  const isSingleLineInput = !e.target.innerText.includes('\n');
 
   if (e.keyCode === SPACEBAR && e.target.innerText.startsWith('#')) {
     const noteInput = e.target;
@@ -26,6 +29,17 @@ notebook.addEventListener('keydown', e => {
     currentNote.after(newNote);
     newNote.querySelector('.Notebook__input').focus();
     e.preventDefault();
+  } else if (isSingleLineInput) {
+    if (e.keyCode === ARROWUP) {
+      const previousNote = currentNote.previousElementSibling;
+
+      if (!previousNote) return;
+
+      const previousInput = previousNote.querySelector('.Notebook__input');
+
+      previousInput.focus();
+      e.preventDefault();
+    }
   }
 
   // console.log(currentNote);
