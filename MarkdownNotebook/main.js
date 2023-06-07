@@ -40,12 +40,20 @@ notebook.addEventListener('keydown', e => {
 
       previousInput.focus();
       setCaretPosition(previousInput, caretPosition);
+      e.preventDefault();
+    } else if (e.keyCode === ARROWDOWN) {
+      const nextNote = currentNote.nextElementSibling;
+      if (!nextNote) return;
 
+      const currentInput = currentNote.querySelector('.Notebook__input');
+      const nextInput = nextNote.querySelector('.Notebook__input');
+      const caretPosition = getCaretPosition(currentInput);
+
+      nextInput.focus();
+      setCaretPosition(nextInput, caretPosition);
       e.preventDefault();
     }
   }
-
-  // console.log(currentNote);
 });
 
 const createNote = () => {
