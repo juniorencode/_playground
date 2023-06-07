@@ -33,6 +33,7 @@ notebook.addEventListener('keydown', e => {
     if (e.keyCode === ARROWUP) {
       const previousNote = currentNote.previousElementSibling;
 
+      console.log(getCaretPosition(currentNote));
       if (!previousNote) return;
 
       const previousInput = previousNote.querySelector('.Notebook__input');
@@ -55,6 +56,21 @@ const createNote = () => {
   box.append(input);
 
   return box;
+};
+
+const getCaretPosition = element => {
+  const selection = window.getSelection();
+
+  if (selection.rangeCount > 0) {
+    const range = selection.getRangeAt(0);
+    const preCaretRange = range.cloneRange();
+    preCaretRange.selectNodeContents(element);
+    preCaretRange.setEnd(range.endContainer, range.endOffset);
+
+    return preCaretRange.toString().length;
+  }
+
+  return 0;
 };
 
 notebook.append(createNote());
