@@ -11,6 +11,7 @@ notebook.addEventListener('keydown', e => {
   if (!e.target.matches('.Notebook__input')) return;
 
   const currentNote = e.target.closest('.Notebook__note');
+  const currentInput = currentNote?.querySelector('.Notebook__input');
   const isSingleLineInput = !e.target.innerHTML.includes('<br>');
 
   if (e.keyCode === SPACEBAR && e.target.innerText.startsWith('#')) {
@@ -30,11 +31,10 @@ notebook.addEventListener('keydown', e => {
     newNote.querySelector('.Notebook__input').focus();
     e.preventDefault();
   } else if (e.keyCode === ARROWUP) {
-    if (isSingleLineInput || isFirstLine(currentNote)) {
+    if (isSingleLineInput || isFirstLine(currentInput)) {
       const previousNote = currentNote.previousElementSibling;
       if (!previousNote) return;
 
-      const currentInput = currentNote.querySelector('.Notebook__input');
       const previousInput = previousNote.querySelector('.Notebook__input');
       const caretPosition = getCaretPosition(currentInput);
 
@@ -43,11 +43,10 @@ notebook.addEventListener('keydown', e => {
       e.preventDefault();
     }
   } else if (e.keyCode === ARROWDOWN) {
-    if (isSingleLineInput || isLastLine(currentNote)) {
+    if (isSingleLineInput || isLastLine(currentInput)) {
       const nextNote = currentNote.nextElementSibling;
       if (!nextNote) return;
 
-      const currentInput = currentNote.querySelector('.Notebook__input');
       const nextInput = nextNote.querySelector('.Notebook__input');
       const caretPosition = getCaretPosition(currentInput);
 
@@ -103,19 +102,17 @@ const setCaretPosition = (element, position) => {
 };
 
 const isFirstLine = element => {
-  const content = element.querySelector('.Notebook__input');
-  const listLines = content.innerText.split('\n');
+  const listLines = element.innerText.split('\n');
   const firstLineSize = listLines[0].length;
-  const position = getCaretPosition(content);
+  const position = getCaretPosition(element);
 
   return position <= firstLineSize;
 };
 
 const isLastLine = element => {
-  const content = element.querySelector('.Notebook__input');
-  const listLines = content.innerText.split('\n');
-  const lastLineSize = content.innerText.length - listLines.pop().length;
-  const position = getCaretPosition(content);
+  const listLines = element.innerText.split('\n');
+  const lastLineSize = element.innerText.length - listLines.pop().length;
+  const position = getCaretPosition(element);
 
   return position >= lastLineSize;
 };
