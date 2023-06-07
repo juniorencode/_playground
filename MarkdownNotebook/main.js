@@ -38,10 +38,10 @@ notebook.addEventListener('keydown', e => {
       if (!previousNote) return;
 
       const previousInput = previousNote.querySelector('.Notebook__input');
-      const caretPosition = getCaretPosition(currentInput);
+      const caretPosition = getRelativePosition(currentInput);
 
       previousInput.focus();
-      setDefaultPosition(previousInput, caretPosition);
+      setLastLinePosition(previousInput, caretPosition);
       e.preventDefault();
     }
   } else if (e.keyCode === ARROWDOWN) {
@@ -53,7 +53,6 @@ notebook.addEventListener('keydown', e => {
       const caretPosition = getRelativePosition(currentInput);
 
       nextInput.focus();
-      console.log(caretPosition);
       setDefaultPosition(nextInput, caretPosition);
       e.preventDefault();
     }
@@ -154,6 +153,17 @@ const setDefaultPosition = (element, position) => {
 
 const setEndPosition = element => {
   setCaretPosition(element, element.innerText.length);
+};
+
+const setLastLinePosition = (element, position) => {
+  const range = document.createRange();
+  const selection = window.getSelection();
+
+  range.setStart(element.lastChild, position);
+  range.collapse(true);
+
+  selection.removeAllRanges();
+  selection.addRange(range);
 };
 
 const isFirstLine = element => {
