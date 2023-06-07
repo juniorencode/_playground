@@ -50,9 +50,10 @@ notebook.addEventListener('keydown', e => {
       if (!nextNote) return;
 
       const nextInput = nextNote.querySelector('.Notebook__input');
-      const caretPosition = getCaretPosition(currentInput);
+      const caretPosition = getRelativePosition(currentInput);
 
       nextInput.focus();
+      console.log(caretPosition);
       setDefaultPosition(nextInput, caretPosition);
       e.preventDefault();
     }
@@ -83,14 +84,17 @@ const createNote = () => {
   return box;
 };
 
-const getCaretPosition = element => {
+const getCaretPosition = (element, relative = false) => {
   const selection = window.getSelection();
 
   if (selection.rangeCount > 0) {
     const range = selection.getRangeAt(0);
     const preCaretRange = range.cloneRange();
+
     preCaretRange.selectNodeContents(element);
     preCaretRange.setEnd(range.endContainer, range.endOffset);
+
+    if (relative) return preCaretRange.endOffset;
 
     const tempContainer = document.createElement('div');
     tempContainer.appendChild(preCaretRange.cloneContents());
@@ -99,10 +103,15 @@ const getCaretPosition = element => {
     const content = html.replace(/<br>/g, '');
     const lineBreaks = html.match(/<br>/g);
     const lineBreakCount = lineBreaks ? lineBreaks.length : 0;
+
     return content.length + lineBreakCount;
   }
 
   return 0;
+};
+
+const getRelativePosition = element => {
+  return getCaretPosition(element, true);
 };
 
 const setCaretPosition = (element, position) => {
