@@ -43,7 +43,7 @@ notebook.addEventListener('keydown', e => {
       const caretPosition = getCaretPosition(currentInput);
 
       previousInput.focus();
-      setCaretPosition(previousInput, caretPosition);
+      setDefaultPosition(previousInput, caretPosition);
       e.preventDefault();
     }
   } else if (e.keyCode === ARROWDOWN) {
@@ -57,7 +57,7 @@ notebook.addEventListener('keydown', e => {
       const caretPosition = getCaretPosition(currentInput);
 
       nextInput.focus();
-      setCaretPosition(nextInput, caretPosition);
+      setDefaultPosition(nextInput, caretPosition);
       e.preventDefault();
     }
   }
@@ -113,10 +113,15 @@ const setCaretPosition = (element, position) => {
   const range = document.createRange();
   const selection = window.getSelection();
   const firstChild = element.childNodes[0];
-  range.setStart(firstChild, Math.min(position, firstChild.length));
+  range.setStart(firstChild, position);
   range.collapse(true);
   selection.removeAllRanges();
   selection.addRange(range);
+};
+
+const setDefaultPosition = (element, position) => {
+  const firstChild = element.childNodes[0];
+  setCaretPosition(element, Math.min(position, firstChild.length));
 };
 
 const isFirstLine = element => {
