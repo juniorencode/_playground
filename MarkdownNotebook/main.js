@@ -11,7 +11,7 @@ notebook.addEventListener('keydown', e => {
   if (!e.target.matches('.Notebook__input')) return;
 
   const currentNote = e.target.closest('.Notebook__note');
-  const isSingleLineInput = !e.target.innerText.includes('\n');
+  const isSingleLineInput = !e.target.innerHTML.includes('<br>');
 
   if (e.keyCode === SPACEBAR && e.target.innerText.startsWith('#')) {
     const noteInput = e.target;
@@ -30,7 +30,7 @@ notebook.addEventListener('keydown', e => {
     newNote.querySelector('.Notebook__input').focus();
     e.preventDefault();
   } else if (e.keyCode === ARROWUP) {
-    if (isFirstLine(currentNote)) {
+    if (isSingleLineInput || isFirstLine(currentNote)) {
       const previousNote = currentNote.previousElementSibling;
       if (!previousNote) return;
 
@@ -43,7 +43,7 @@ notebook.addEventListener('keydown', e => {
       e.preventDefault();
     }
   } else if (e.keyCode === ARROWDOWN) {
-    if (isLastLine(currentNote)) {
+    if (isSingleLineInput || isLastLine(currentNote)) {
       const nextNote = currentNote.nextElementSibling;
       if (!nextNote) return;
 
