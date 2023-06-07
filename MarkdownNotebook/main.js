@@ -29,8 +29,8 @@ notebook.addEventListener('keydown', e => {
     currentNote.after(newNote);
     newNote.querySelector('.Notebook__input').focus();
     e.preventDefault();
-  } else if (isSingleLineInput) {
-    if (e.keyCode === ARROWUP) {
+  } else if (e.keyCode === ARROWUP) {
+    if (isFirstLine(currentNote)) {
       const previousNote = currentNote.previousElementSibling;
       if (!previousNote) return;
 
@@ -41,18 +41,18 @@ notebook.addEventListener('keydown', e => {
       previousInput.focus();
       setCaretPosition(previousInput, caretPosition);
       e.preventDefault();
-    } else if (e.keyCode === ARROWDOWN) {
-      const nextNote = currentNote.nextElementSibling;
-      if (!nextNote) return;
-
-      const currentInput = currentNote.querySelector('.Notebook__input');
-      const nextInput = nextNote.querySelector('.Notebook__input');
-      const caretPosition = getCaretPosition(currentInput);
-
-      nextInput.focus();
-      setCaretPosition(nextInput, caretPosition);
-      e.preventDefault();
     }
+  } else if (e.keyCode === ARROWDOWN) {
+    const nextNote = currentNote.nextElementSibling;
+    if (!nextNote) return;
+
+    const currentInput = currentNote.querySelector('.Notebook__input');
+    const nextInput = nextNote.querySelector('.Notebook__input');
+    const caretPosition = getCaretPosition(currentInput);
+
+    nextInput.focus();
+    setCaretPosition(nextInput, caretPosition);
+    e.preventDefault();
   }
 });
 
@@ -77,7 +77,14 @@ const getCaretPosition = element => {
     preCaretRange.selectNodeContents(element);
     preCaretRange.setEnd(range.endContainer, range.endOffset);
 
-    return preCaretRange.toString().length;
+    const tempContainer = document.createElement('div');
+    tempContainer.appendChild(preCaretRange.cloneContents());
+
+    const html = tempContainer.innerHTML;
+    const content = html.replace(/<br>/g, '');
+    const lineBreaks = html.match(/<br>/g);
+    const lineBreakCount = lineBreaks ? lineBreaks.length : 0;
+    return content.length + lineBreakCount;
   }
 
   return 0;
@@ -91,6 +98,15 @@ const setCaretPosition = (element, position) => {
   range.collapse(true);
   selection.removeAllRanges();
   selection.addRange(range);
+};
+
+const isFirstLine = element => {
+  const content = element.querySelector('.Notebook__input');
+  const listLines = content.innerText.split('\n');
+  const firstLineSize = listLines[0].length;
+  const position = getCaretPosition(content);
+
+  return position <= firstLineSize;
 };
 
 notebook.append(createNote());
