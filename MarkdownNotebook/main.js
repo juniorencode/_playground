@@ -69,7 +69,16 @@ notebook.addEventListener('keydown', e => {
     setEndPosition(previousInput);
     e.preventDefault();
   } else if (e.keyCode === ARROWRIGHT) {
-    console.log('right');
+    if (getCaretPosition(currentInput) !== currentInput.innerText.length)
+      return;
+    const nextNote = currentNote.nextElementSibling;
+    if (!nextNote) return;
+
+    const nextInput = nextNote.querySelector('.Notebook__input');
+
+    nextInput.focus();
+    setCaretPosition(nextInput, 0);
+    e.preventDefault();
   }
 });
 
