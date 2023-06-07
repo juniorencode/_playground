@@ -1,5 +1,13 @@
 const notebook = document.querySelector('.Notebook');
 
+notebook.addEventListener('keydown', e => {
+  if (!e.target.matches('.Notebook__input')) return;
+
+  const currentNote = e.target.closest('.Notebook__note');
+
+  console.log(currentNote);
+});
+
 const createNote = () => {
   const box = document.createElement('div');
   const input = document.createElement('div');
