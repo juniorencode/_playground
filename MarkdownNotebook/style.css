@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+}
+
+.Notebook {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Notebook__box {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.Notebook__input {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  font-size: 18px;
+}
+
+.Notebook__input:focus {
+  outline: none;
+}
