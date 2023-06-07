@@ -158,11 +158,9 @@ const setEndPosition = element => {
 const setLastLinePosition = (element, position) => {
   const range = document.createRange();
   const selection = window.getSelection();
+  const lastChild = element.lastChild;
 
-  range.setStart(
-    element.lastChild,
-    Math.min(position, element.lastChild.length)
-  );
+  range.setStart(lastChild, Math.min(position, lastChild.length));
   range.collapse(true);
 
   selection.removeAllRanges();
