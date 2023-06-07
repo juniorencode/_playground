@@ -33,8 +33,6 @@ notebook.addEventListener('keydown', e => {
     newNote.querySelector('.Notebook__input').focus();
     e.preventDefault();
   } else if (e.keyCode === ARROWUP) {
-    // normalizeInput(currentInput);
-
     if (isSingleLineInput || isFirstLine(currentInput)) {
       const previousNote = currentNote.previousElementSibling;
       if (!previousNote) return;
@@ -47,8 +45,6 @@ notebook.addEventListener('keydown', e => {
       e.preventDefault();
     }
   } else if (e.keyCode === ARROWDOWN) {
-    // normalizeInput(currentInput);
-
     if (isSingleLineInput || isLastLine(currentInput)) {
       const nextNote = currentNote.nextElementSibling;
       if (!nextNote) return;
@@ -112,8 +108,31 @@ const getCaretPosition = element => {
 const setCaretPosition = (element, position) => {
   const range = document.createRange();
   const selection = window.getSelection();
-  const firstChild = element.childNodes[0];
-  range.setStart(firstChild, position);
+
+  const treeWalker = document.createTreeWalker(
+    element,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false
+  );
+  let currentNode = treeWalker.nextNode();
+  let currentPosition = 0;
+
+  while (currentNode) {
+    const length = currentNode.textContent.length;
+    if (currentPosition + length >= position) {
+      range.setStart(currentNode, position - currentPosition);
+      break;
+    }
+    currentPosition += length;
+    currentNode = treeWalker.nextNode();
+  }
+
+  if (!currentNode) {
+    const lastChild = element.lastChild;
+    range.setStart(lastChild, lastChild.length);
+  }
+
   range.collapse(true);
   selection.removeAllRanges();
   selection.addRange(range);
@@ -146,7 +165,6 @@ const normalizeInput = element => {
 
   if (numBr === 1) {
     element.innerHTML = element.innerHTML.slice(0, -4);
-    console.log(element.innerText.length);
   }
 };
 
