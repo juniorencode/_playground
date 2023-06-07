@@ -78,7 +78,8 @@ const getCaretPosition = element => {
 const setCaretPosition = (element, position) => {
   const range = document.createRange();
   const selection = window.getSelection();
-  range.setStart(element.childNodes[0], position);
+  const firstChild = element.childNodes[0];
+  range.setStart(firstChild, Math.min(position, firstChild.length));
   range.collapse(true);
   selection.removeAllRanges();
   selection.addRange(range);
