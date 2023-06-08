@@ -11,7 +11,8 @@ const ARROWDOWN = 40;
 const ARROWLEFT = 37;
 const ARROWRIGHT = 39;
 
-notebook.addEventListener('keydown', e => {
+// Event handlers
+const handleNotebookKeydown = e => {
   if (!e.target.matches('.Notebook__input')) return;
 
   const currentNote = e.target.closest('.Notebook__note');
@@ -80,9 +81,9 @@ notebook.addEventListener('keydown', e => {
     setCaretPosition(nextInput, 0);
     e.preventDefault();
   }
-});
+};
 
-notebook.addEventListener('keyup', e => {
+const handleNotebookKeyup = e => {
   if (!e.target.matches('.Notebook__input')) return;
 
   const currentNote = e.target.closest('.Notebook__note');
@@ -92,8 +93,9 @@ notebook.addEventListener('keyup', e => {
     normalizeInput(currentInput);
     e.preventDefault();
   }
-});
+};
 
+// Helper functions
 const createNote = () => {
   const box = document.createElement('div');
   const input = document.createElement('div');
@@ -216,4 +218,9 @@ const normalizeInput = element => {
   }
 };
 
+// Event listeners
+notebook.addEventListener('keydown', handleNotebookKeydown);
+notebook.addEventListener('keyup', handleNotebookKeyup);
+
+// initialize notebook with a new note
 notebook.append(createNote());
