@@ -128,7 +128,7 @@ const normalizeInput = element => {
   const endLine = element.innerHTML.match(breaklineRegex);
   const numBr = endLine ? endLine[0].match(/<br>/g).length : 0;
 
-  if (numBr === 1) {
+  if (numBr === 1 && element.textContent.length > 0) {
     element.innerHTML = element.innerHTML.slice(0, -4);
     setEndPosition(element);
   }
