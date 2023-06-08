@@ -166,9 +166,10 @@ const handleNotebookKeydown = e => {
     const previousInput = previousNote.querySelector('.Notebook__input');
 
     previousInput.focus();
-    setEndPosition(previousInput);
     currentNote.remove();
     e.preventDefault();
+
+    if (previousInput.innerText.length > 0) setEndPosition(previousInput);
   } else if (e.keyCode === ARROWUP) {
     if (isSingleLineInput || isFirstLine(currentInput)) {
       const previousNote = currentNote.previousElementSibling;
@@ -178,8 +179,10 @@ const handleNotebookKeydown = e => {
       const caretPosition = getRelativePosition(currentInput);
 
       previousInput.focus();
-      setLastLinePosition(previousInput, caretPosition);
       e.preventDefault();
+
+      if (previousInput.innerText.length > 0)
+        setLastLinePosition(previousInput, caretPosition);
     }
   } else if (e.keyCode === ARROWDOWN) {
     if (isSingleLineInput || isLastLine(currentInput)) {
@@ -190,8 +193,10 @@ const handleNotebookKeydown = e => {
       const caretPosition = getRelativePosition(currentInput);
 
       nextInput.focus();
-      setDefaultPosition(nextInput, caretPosition);
       e.preventDefault();
+
+      if (nextInput.innerText.length > 0)
+        setDefaultPosition(nextInput, caretPosition);
     }
   } else if (e.keyCode === ARROWLEFT) {
     if (getCaretPosition(currentInput) !== 0) return;
@@ -201,8 +206,9 @@ const handleNotebookKeydown = e => {
     const previousInput = previousNote.querySelector('.Notebook__input');
 
     previousInput.focus();
-    setEndPosition(previousInput);
     e.preventDefault();
+
+    if (previousInput.innerText.length > 0) setEndPosition(previousInput);
   } else if (e.keyCode === ARROWRIGHT) {
     if (getCaretPosition(currentInput) !== currentInput.innerText.length)
       return;
@@ -212,8 +218,9 @@ const handleNotebookKeydown = e => {
     const nextInput = nextNote.querySelector('.Notebook__input');
 
     nextInput.focus();
-    setCaretPosition(nextInput, 0);
     e.preventDefault();
+
+    if (nextInput.innerText.length > 0) setCaretPosition(nextInput, 0);
   }
 };
 
