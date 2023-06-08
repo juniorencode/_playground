@@ -11,90 +11,6 @@ const ARROWDOWN = 40;
 const ARROWLEFT = 37;
 const ARROWRIGHT = 39;
 
-// Event handlers
-const handleNotebookKeydown = e => {
-  if (!e.target.matches('.Notebook__input')) return;
-
-  const currentNote = e.target.closest('.Notebook__note');
-  const currentInput = currentNote?.querySelector('.Notebook__input');
-  const isSingleLineInput = !e.target.innerHTML.includes('<br>');
-
-  if (e.keyCode === SPACEBAR && e.target.innerText.startsWith('#')) {
-    const noteInput = e.target;
-    const titleLevel = noteInput.innerText.match(regTitle)[0].length;
-    const titleContent = noteInput.innerText.replace(regTitle, '').trim();
-
-    if (titleLevel > 3) return;
-
-    noteInput.innerText = titleContent;
-    noteInput.classList.add('Notebook__input--heading' + titleLevel);
-    e.preventDefault();
-  } else if (e.keyCode === ENTER && !e.shiftKey) {
-    const newNote = createNote();
-
-    currentNote.after(newNote);
-    newNote.querySelector('.Notebook__input').focus();
-    e.preventDefault();
-  } else if (e.keyCode === ARROWUP) {
-    if (isSingleLineInput || isFirstLine(currentInput)) {
-      const previousNote = currentNote.previousElementSibling;
-      if (!previousNote) return;
-
-      const previousInput = previousNote.querySelector('.Notebook__input');
-      const caretPosition = getRelativePosition(currentInput);
-
-      previousInput.focus();
-      setLastLinePosition(previousInput, caretPosition);
-      e.preventDefault();
-    }
-  } else if (e.keyCode === ARROWDOWN) {
-    if (isSingleLineInput || isLastLine(currentInput)) {
-      const nextNote = currentNote.nextElementSibling;
-      if (!nextNote) return;
-
-      const nextInput = nextNote.querySelector('.Notebook__input');
-      const caretPosition = getRelativePosition(currentInput);
-
-      nextInput.focus();
-      setDefaultPosition(nextInput, caretPosition);
-      e.preventDefault();
-    }
-  } else if (e.keyCode === ARROWLEFT) {
-    if (getCaretPosition(currentInput) !== 0) return;
-    const previousNote = currentNote.previousElementSibling;
-    if (!previousNote) return;
-
-    const previousInput = previousNote.querySelector('.Notebook__input');
-
-    previousInput.focus();
-    setEndPosition(previousInput);
-    e.preventDefault();
-  } else if (e.keyCode === ARROWRIGHT) {
-    if (getCaretPosition(currentInput) !== currentInput.innerText.length)
-      return;
-    const nextNote = currentNote.nextElementSibling;
-    if (!nextNote) return;
-
-    const nextInput = nextNote.querySelector('.Notebook__input');
-
-    nextInput.focus();
-    setCaretPosition(nextInput, 0);
-    e.preventDefault();
-  }
-};
-
-const handleNotebookKeyup = e => {
-  if (!e.target.matches('.Notebook__input')) return;
-
-  const currentNote = e.target.closest('.Notebook__note');
-  const currentInput = currentNote?.querySelector('.Notebook__input');
-
-  if (e.keyCode === BACKSPACE) {
-    normalizeInput(currentInput);
-    e.preventDefault();
-  }
-};
-
 // Helper functions
 const createNote = () => {
   const box = document.createElement('div');
@@ -215,6 +131,100 @@ const normalizeInput = element => {
   if (numBr === 1) {
     element.innerHTML = element.innerHTML.slice(0, -4);
     setEndPosition(element);
+  }
+};
+
+// Event handlers
+const handleNotebookKeydown = e => {
+  if (!e.target.matches('.Notebook__input')) return;
+
+  const currentNote = e.target.closest('.Notebook__note');
+  const currentInput = currentNote?.querySelector('.Notebook__input');
+  const isSingleLineInput = !e.target.innerHTML.includes('<br>');
+
+  if (e.keyCode === SPACEBAR && e.target.innerText.startsWith('#')) {
+    const noteInput = e.target;
+    const titleLevel = noteInput.innerText.match(regTitle)[0].length;
+    const titleContent = noteInput.innerText.replace(regTitle, '').trim();
+
+    if (titleLevel > 3) return;
+
+    noteInput.innerText = titleContent;
+    noteInput.classList.add('Notebook__input--heading' + titleLevel);
+    e.preventDefault();
+  } else if (e.keyCode === ENTER && !e.shiftKey) {
+    const newNote = createNote();
+
+    currentNote.after(newNote);
+    newNote.querySelector('.Notebook__input').focus();
+    e.preventDefault();
+  } else if (e.keyCode === BACKSPACE) {
+    const previousNote = currentNote.previousElementSibling;
+
+    if (!previousNote || currentInput.innerText.length > 0) return;
+
+    const previousInput = previousNote.querySelector('.Notebook__input');
+
+    previousInput.focus();
+    setEndPosition(previousInput);
+    currentNote.remove();
+    e.preventDefault();
+  } else if (e.keyCode === ARROWUP) {
+    if (isSingleLineInput || isFirstLine(currentInput)) {
+      const previousNote = currentNote.previousElementSibling;
+      if (!previousNote) return;
+
+      const previousInput = previousNote.querySelector('.Notebook__input');
+      const caretPosition = getRelativePosition(currentInput);
+
+      previousInput.focus();
+      setLastLinePosition(previousInput, caretPosition);
+      e.preventDefault();
+    }
+  } else if (e.keyCode === ARROWDOWN) {
+    if (isSingleLineInput || isLastLine(currentInput)) {
+      const nextNote = currentNote.nextElementSibling;
+      if (!nextNote) return;
+
+      const nextInput = nextNote.querySelector('.Notebook__input');
+      const caretPosition = getRelativePosition(currentInput);
+
+      nextInput.focus();
+      setDefaultPosition(nextInput, caretPosition);
+      e.preventDefault();
+    }
+  } else if (e.keyCode === ARROWLEFT) {
+    if (getCaretPosition(currentInput) !== 0) return;
+    const previousNote = currentNote.previousElementSibling;
+    if (!previousNote) return;
+
+    const previousInput = previousNote.querySelector('.Notebook__input');
+
+    previousInput.focus();
+    setEndPosition(previousInput);
+    e.preventDefault();
+  } else if (e.keyCode === ARROWRIGHT) {
+    if (getCaretPosition(currentInput) !== currentInput.innerText.length)
+      return;
+    const nextNote = currentNote.nextElementSibling;
+    if (!nextNote) return;
+
+    const nextInput = nextNote.querySelector('.Notebook__input');
+
+    nextInput.focus();
+    setCaretPosition(nextInput, 0);
+    e.preventDefault();
+  }
+};
+
+const handleNotebookKeyup = e => {
+  if (!e.target.matches('.Notebook__input')) return;
+
+  const currentNote = e.target.closest('.Notebook__note');
+  const currentInput = currentNote?.querySelector('.Notebook__input');
+
+  if (e.keyCode === BACKSPACE) {
+    normalizeInput(currentInput);
   }
 };
 
