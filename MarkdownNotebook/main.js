@@ -1,7 +1,7 @@
 const notebook = document.querySelector('.Notebook');
 
-const regTitle = /^#+/;
-const regBreakline = /(<br>\s*)+$/gi;
+const titleRegex = /^#+/;
+const breaklineRegex = /(<br>\s*)+$/gi;
 
 const SPACEBAR = 32;
 const BACKSPACE = 8;
@@ -12,7 +12,7 @@ const ARROWLEFT = 37;
 const ARROWRIGHT = 39;
 
 // Helper functions
-const createNote = () => {
+const createNoteElement = () => {
   const box = document.createElement('div');
   const input = document.createElement('div');
 
@@ -108,7 +108,7 @@ const setLastLinePosition = (element, position) => {
   selection.addRange(range);
 };
 
-const isFirstLine = element => {
+const isFirstLineNote = element => {
   const listLines = element.innerText.split('\n');
   const firstLineSize = listLines[0].length;
   const position = getCaretPosition(element);
@@ -116,7 +116,7 @@ const isFirstLine = element => {
   return position <= firstLineSize;
 };
 
-const isLastLine = element => {
+const isLastLineNote = element => {
   const listLines = element.innerText.split('\n');
   const lastLineSize = element.innerText.length - listLines.pop().length;
   const position = getCaretPosition(element);
@@ -125,7 +125,7 @@ const isLastLine = element => {
 };
 
 const normalizeInput = element => {
-  const endLine = element.innerHTML.match(regBreakline);
+  const endLine = element.innerHTML.match(breaklineRegex);
   const numBr = endLine ? endLine[0].match(/<br>/g).length : 0;
 
   if (numBr === 1) {
@@ -144,8 +144,8 @@ const handleNotebookKeydown = e => {
 
   if (e.keyCode === SPACEBAR && e.target.innerText.startsWith('#')) {
     const noteInput = e.target;
-    const titleLevel = noteInput.innerText.match(regTitle)[0].length;
-    const titleContent = noteInput.innerText.replace(regTitle, '').trim();
+    const titleLevel = noteInput.innerText.match(titleRegex)[0].length;
+    const titleContent = noteInput.innerText.replace(titleRegex, '').trim();
 
     if (titleLevel > 3) return;
 
@@ -153,7 +153,7 @@ const handleNotebookKeydown = e => {
     noteInput.classList.add('Notebook__input--heading' + titleLevel);
     e.preventDefault();
   } else if (e.keyCode === ENTER && !e.shiftKey) {
-    const newNote = createNote();
+    const newNote = createNoteElement();
 
     currentNote.after(newNote);
     newNote.querySelector('.Notebook__input').focus();
@@ -171,7 +171,7 @@ const handleNotebookKeydown = e => {
 
     if (previousInput.innerText.length > 0) setEndPosition(previousInput);
   } else if (e.keyCode === ARROWUP) {
-    if (isSingleLineInput || isFirstLine(currentInput)) {
+    if (isSingleLineInput || isFirstLineNote(currentInput)) {
       const previousNote = currentNote.previousElementSibling;
       if (!previousNote) return;
 
@@ -185,7 +185,7 @@ const handleNotebookKeydown = e => {
         setLastLinePosition(previousInput, caretPosition);
     }
   } else if (e.keyCode === ARROWDOWN) {
-    if (isSingleLineInput || isLastLine(currentInput)) {
+    if (isSingleLineInput || isLastLineNote(currentInput)) {
       const nextNote = currentNote.nextElementSibling;
       if (!nextNote) return;
 
@@ -240,4 +240,4 @@ notebook.addEventListener('keydown', handleNotebookKeydown);
 notebook.addEventListener('keyup', handleNotebookKeyup);
 
 // initialize notebook with a new note
-notebook.append(createNote());
+notebook.append(createNoteElement());
