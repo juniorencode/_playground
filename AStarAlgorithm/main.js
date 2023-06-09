@@ -11,6 +11,8 @@ const widthTile = parseInt(canvas.width / columns);
 const heightTile = parseInt(canvas.height / rows);
 const bgFillTile = '#000';
 const bgEmptyTile = '#ccc';
+const bgOpenSetTile = '#2e7d32';
+const bgCloseSetTile = '#c62828';
 
 // route
 const openSet = [];
@@ -52,6 +54,26 @@ class Box {
       heightTile
     );
   }
+
+  drawOpenSet() {
+    ctx.fillStyle = bgOpenSetTile;
+    ctx.fillRect(
+      this.x * widthTile,
+      this.y * heightTile,
+      widthTile,
+      heightTile
+    );
+  }
+
+  drawCloseSet() {
+    ctx.fillStyle = bgCloseSetTile;
+    ctx.fillRect(
+      this.x * widthTile,
+      this.y * heightTile,
+      widthTile,
+      heightTile
+    );
+  }
 }
 
 // helper functions
@@ -82,10 +104,22 @@ const drawScene = () => {
       scene[i][j].draw();
     }
   }
+
+  for (let i = 0; i < openSet.length; i++) {
+    openSet[i].drawOpenSet();
+  }
+
+  for (let i = 0; i < closeSet.length; i++) {
+    closeSet[i].drawCloseSet();
+  }
 };
 
 const clearScene = () => {
   ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
+const algorithm = () => {
+  if (isOver) return;
 };
 
 // looping
