@@ -36,6 +36,9 @@ const handleKeydown = e => {
   if (e.key === 'Shift') return;
 
   switch (e.key) {
+    case 'ArrowLeft':
+      Cursor.left -= Typography.width;
+      break;
     case 'Backspace':
       Cursor.left -= Typography.width;
       break;
