@@ -18,6 +18,14 @@ body {
   background-color: #ddd;
   padding: 20px;
   border-radius: 10px;
+  position: relative;
+}
+
+.cursor {
+  margin: 3px 0;
+  width: 1;
+  background-color: #000;
+  position: absolute;
 }
 
 .textarea {

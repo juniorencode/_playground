@@ -1,9 +1,10 @@
 const textarea = document.querySelector('#textarea');
 const editor = document.querySelector('#editor');
 
-textarea.addEventListener('input', e => {
-  console.log(e.target);
+const handleInput = e => {
   const value = textarea.value;
 
   editor.innerHTML = value;
-});
+};
+
+textarea.addEventListener('input', handleInput);
