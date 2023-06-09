@@ -10,7 +10,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: sans-serif;
+  font-family: monospace;
+  font-size: 14px;
 }
 
 .container {
@@ -18,24 +19,40 @@ body {
   background-color: #ddd;
   padding: 20px;
   border-radius: 10px;
-  position: relative;
 }
 
 .cursor {
-  margin: 3px 0;
-  width: 1;
-  background-color: #000;
   position: absolute;
+  top: 0;
+  left: 0;
+  border-left: solid 1px #000;
+  animation: cursor-blink 1s infinite;
 }
 
 .textarea {
   width: 100%;
-  padding: 10px;
+  font-size: 14px;
+}
+
+.textarea:focus {
+  outline: none;
 }
 
 .editor {
   width: 100%;
   min-height: 40px;
-  padding: 10px;
   background-color: #fff;
+  font-size: 14px;
+}
+
+@keyframes cursor-blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
