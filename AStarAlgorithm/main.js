@@ -12,6 +12,13 @@ const heightTile = parseInt(canvas.height / rows);
 const bgFillTile = '#000';
 const bgEmptyTile = '#ccc';
 
+// route
+const openSet = [];
+const closeSet = [];
+const route = [];
+let start, finish;
+let isOver = false;
+
 // objects
 class Box {
   constructor(x, y) {
@@ -48,6 +55,13 @@ class Box {
 }
 
 // helper functions
+const heuristic = (obj1, obj2) => {
+  const x = Math.abs(obj1.x - obj2.x);
+  const y = Math.abs(obj1.y - obj2.y);
+
+  return x + y;
+};
+
 const create2DArray = () => {
   const obj = new Array(rows);
 
@@ -58,6 +72,10 @@ const create2DArray = () => {
   return obj;
 };
 
+const removeOfArray = (array, obj) => {
+  return array.filter(element => obj === element);
+};
+
 const drawScene = () => {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
@@ -66,8 +84,13 @@ const drawScene = () => {
   }
 };
 
+const clearScene = () => {
+  ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+};
+
 // looping
 const loop = () => {
+  clearScene();
   drawScene();
   requestAnimationFrame(loop);
 };
@@ -88,6 +111,11 @@ const init = () => {
       scene[i][j].getNeighbors();
     }
   }
+
+  start = scene[0][0];
+  finish = scene[rows - 1][columns - 1];
+
+  openSet.push(start);
 
   loop();
 };
