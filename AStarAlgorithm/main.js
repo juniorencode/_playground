@@ -119,7 +119,22 @@ const clearScene = () => {
 };
 
 const algorithm = () => {
-  if (isOver) return;
+  if (isOver || openSet.length < 1) return;
+
+  let indexWinner = 0;
+
+  for (let i = 0; i < openSet.length; i++) {
+    if (openSet[i].f < openSet[indexWinner].f) {
+      indexWinner = i;
+    }
+  }
+
+  const current = openSet[indexWinner];
+
+  if (current === finish) {
+    isOver = true;
+    return;
+  }
 };
 
 // looping
