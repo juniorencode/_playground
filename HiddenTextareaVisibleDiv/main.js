@@ -32,8 +32,15 @@ const handleInput = () => {
   renderCursor();
 };
 
-const handleKeydown = () => {
-  Cursor.left += Typography.width;
+const handleKeydown = e => {
+  switch (e.key) {
+    case 'Backspace':
+      Cursor.left -= Typography.width;
+      break;
+    default:
+      Cursor.left += Typography.width;
+      break;
+  }
   renderCursor();
 };
 
