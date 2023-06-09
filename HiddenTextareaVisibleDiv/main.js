@@ -7,6 +7,7 @@ const Editor = {
 };
 
 const Typography = {
+  width: 0,
   padding: 3,
   family: 'monospace',
   size: 14,
@@ -31,15 +32,21 @@ const handleInput = () => {
   renderCursor();
 };
 
+const handleKeydown = () => {
+  Cursor.left += Typography.width;
+  renderCursor();
+};
+
 const renderCursor = () => {
   ctnCursor.style.top = `${Cursor.top}px`;
   ctnCursor.style.left = `${Cursor.left}px`;
 };
 
-textarea.addEventListener('input', handleInput);
-textarea.focus();
-
 const defaultActions = () => {
+  Typography.width = (7.6961 * Typography.size) / 14;
+  Typography.height = (17 * Typography.size) / 14;
+  Typography.tall = Typography.height + Typography.padding * 2;
+
   ctnEditor.style.fontFamily = Typography.family;
   ctnEditor.style.fontSize = `${Typography.size}px`;
 
@@ -48,4 +55,7 @@ const defaultActions = () => {
   handleInput();
 };
 
+textarea.focus();
+textarea.addEventListener('keydown', handleKeydown);
+textarea.addEventListener('input', handleInput);
 defaultActions();
