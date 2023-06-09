@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 80%;
+  background-color: #ddd;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.textarea {
+  width: 100%;
+}
+
+.editor {
+  width: 100%;
+  padding: 10px;
+  background-color: #fff;
+}
