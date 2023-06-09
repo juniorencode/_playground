@@ -29,6 +29,13 @@ class Box {
     if (this.type === 1) this.color = bgFillTile;
   }
 
+  getNeighbors() {
+    if (this.x > 0) this.neighbors.push(scene[this.y][this.x - 1]); // rigth
+    if (this.x < rows - 1) this.neighbors.push(scene[this.y][this.x + 1]); // left
+    if (this.y > 0) this.neighbors.push(scene[this.y - 1][this.x]); // up
+    if (this.y < columns - 1) this.neighbors.push(scene[this.y + 1][this.x]); // down
+  }
+
   draw() {
     ctx.fillStyle = this.color;
     ctx.fillRect(
@@ -54,7 +61,6 @@ const create2DArray = () => {
 const drawScene = () => {
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
-      // console.log(scene[i][j]);
       scene[i][j].draw();
     }
   }
@@ -69,13 +75,19 @@ const loop = () => {
 const init = () => {
   scene = create2DArray();
 
+  // add box
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
       scene[i][j] = new Box(j, i);
     }
   }
 
-  console.log(heightTile);
+  // add neighbors
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      scene[i][j].getNeighbors();
+    }
+  }
 
   loop();
 };
