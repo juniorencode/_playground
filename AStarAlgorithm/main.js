@@ -20,9 +20,15 @@ const create2DArray = () => {
   return obj;
 };
 
+const loop = () => {
+  console.log('loop');
+
+  requestAnimationFrame(loop);
+};
+
 const init = () => {
   scene = create2DArray();
-  console.log(scene);
+  loop();
 };
 
 init();
