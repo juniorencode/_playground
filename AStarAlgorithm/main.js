@@ -21,6 +21,8 @@ class Map {
     this.start = this.scene[0][0];
     this.goal = this.scene[this.rows - 1][this.columns - 1];
 
+    this.algorithm = new AStart(this.scene);
+
     this.update();
   }
 
@@ -63,8 +65,7 @@ class Map {
       });
     });
 
-    this.openSet.forEach(tile => tile.draw(this.bgOpenSet));
-    this.closeSet.forEach(tile => tile.draw(this.bgCloseSet));
+    this.algorithm.draw();
     this.route.forEach(tile => tile.draw(this.bgRoute));
 
     this.start.draw(this.bgStart);
@@ -99,8 +100,6 @@ class Map {
     this.columns = this.columnsElement.value || 30;
     this.tileSize = this.sizeElement.value || 10;
     this.speed = this.speedElement.value || 1;
-    this.openSet = [];
-    this.closeSet = [];
     this.route = [];
     this.isOver = false;
 
@@ -122,10 +121,8 @@ class Map {
     this.clearButton = document.querySelector('#clear');
 
     this.bgTile = ['#cfd8dc', '#37474f'];
-    this.bgOpenSet = '#1565c0';
-    this.bgCloseSet = '#e57373';
     this.bgRoute = '#18ffff';
-    this.bgStart = '#f4511e';
+    this.bgStart = '#ff8f00 ';
     this.bgGoal = '#43a047';
   }
 }
@@ -160,6 +157,32 @@ class Tile {
       this.map.tileSize,
       this.map.tileSize
     );
+  }
+}
+
+class AStart {
+  constructor(scene) {
+    this.scene = scene;
+    this.openSet = [];
+    this.closeSet = [];
+    this.bgOpenSet = '#1565c0';
+    this.bgCloseSet = '#e57373';
+  }
+
+  heuristic(obj1, obj2) {
+    const x = Math.abs(obj1.x - obj2.x);
+    const y = Math.abs(obj1.y - obj2.y);
+
+    return x + y;
+  }
+
+  removeOfOpenSet(obj) {
+    this.openSet = this.openSet.filter(tile => tile !== obj);
+  }
+
+  draw() {
+    this.openSet.forEach(tile => tile.draw(this.bgOpenSet));
+    this.closeSet.forEach(tile => tile.draw(this.bgCloseSet));
   }
 }
 
