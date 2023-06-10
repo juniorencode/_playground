@@ -38,6 +38,18 @@ class Map {
     }
   }
 
+  drawScene() {
+    this.scene.forEach(row => {
+      row.forEach(tile => {
+        tile.draw(this.bgTile[tile.type]);
+      });
+    });
+
+    this.openSet.forEach(tile => tile.draw(this.bgOpenSet));
+    this.closeSet.forEach(tile => tile.draw(this.bgCloseSet));
+    this.route.forEach(tile => tile.draw(this.bgRoute));
+  }
+
   refresh() {
     this.rows = this.rowsElement.value || 30;
     this.columns = this.columnsElement.value || 30;
@@ -65,8 +77,7 @@ class Map {
     this.randomButton = document.querySelector('#random');
     this.clearButton = document.querySelector('#clear');
 
-    this.bgWalls = '#37474f';
-    this.bgWay = '#cfd8dc';
+    this.bgTile = ['#cfd8dc', '#37474f'];
     this.bgOpenSet = '#1565c0';
     this.bgCloseSet = '#e57373';
     this.bgRoute = '#18ffff';
