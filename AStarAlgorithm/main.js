@@ -38,6 +38,10 @@ class Map {
     }
   }
 
+  clearScene() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
   drawScene() {
     this.scene.forEach(row => {
       row.forEach(tile => {
