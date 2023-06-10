@@ -10,6 +10,7 @@ const drawButton = document.querySelector('#draw');
 const randomButton = document.querySelector('#random');
 const clearButton = document.querySelector('#clear');
 
+// objects
 class Map {
   constructor() {
     this.references();
@@ -50,6 +51,39 @@ class Map {
     this.bgOpenSet = '#1565c0';
     this.bgCloseSet = '#e57373';
     this.bgRoute = '#18ffff';
+  }
+}
+
+class Tile {
+  constructor(x, y, map) {
+    this.map = map;
+    this.x = x;
+    this.y = y;
+    this.type = 0; // 0: way, 1: wall
+    this.f = 0; // total cost (g+h)
+    this.g = 0; // steps done
+    this.h = 0; // heuristics (estimate of what remains)
+    this.parent = null;
+    this.neighbors = [];
+  }
+
+  getNeighbors() {
+    if (this.x > 0) this.neighbors.push(this.map.scene[this.y][this.x - 1]); // right
+    if (this.x < this.rows - 1)
+      this.neighbors.push(this.map.scene[this.y][this.x + 1]); // left
+    if (this.y > 0) this.neighbors.push(this.map.scene[this.y - 1][this.x]); // up
+    if (this.y < this.columns - 1)
+      this.neighbors.push(this.map.scene[this.y + 1][this.x]); // down
+  }
+
+  draw(color) {
+    this.map.ctx.fillStyle = color;
+    this.map.ctx.fillRect(
+      this.x * this.map.tileSize,
+      this.y * this.map.tileSize,
+      this.map.tileSize,
+      this.map.tileSize
+    );
   }
 }
 
