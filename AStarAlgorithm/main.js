@@ -22,6 +22,7 @@ class Map {
     this.goal = this.scene[this.rows - 1][this.columns - 1];
 
     this.algorithm = new AStart(this.scene);
+    console.log(this.scene[0][0]);
 
     this.update();
   }
@@ -137,16 +138,6 @@ class Tile {
     this.g = 0; // steps done
     this.h = 0; // heuristics (estimate of what remains)
     this.parent = null;
-    this.neighbors = [];
-  }
-
-  getNeighbors() {
-    if (this.x > 0) this.neighbors.push(this.map.scene[this.y][this.x - 1]); // right
-    if (this.x < this.rows - 1)
-      this.neighbors.push(this.map.scene[this.y][this.x + 1]); // left
-    if (this.y > 0) this.neighbors.push(this.map.scene[this.y - 1][this.x]); // up
-    if (this.y < this.columns - 1)
-      this.neighbors.push(this.map.scene[this.y + 1][this.x]); // down
   }
 
   draw(color) {
@@ -167,6 +158,26 @@ class AStart {
     this.closeSet = [];
     this.bgOpenSet = '#1565c0';
     this.bgCloseSet = '#e57373';
+
+    this.init();
+  }
+
+  init() {
+    this.scene.forEach(row => {
+      row.forEach(tile => {
+        tile.neighbors = [];
+        this.getNeighbors(tile);
+      });
+    });
+  }
+
+  getNeighbors(obj) {
+    if (obj.x > 0) obj.neighbors.push(this.scene[obj.y][obj.x - 1]); // right
+    if (obj.x < this.scene.length - 1)
+      obj.neighbors.push(this.scene[obj.y][obj.x + 1]); // left
+    if (obj.y > 0) obj.neighbors.push(this.scene[obj.y - 1][obj.x]); // up
+    if (obj.y < this.scene[0].length - 1)
+      obj.neighbors.push(this.scene[obj.y + 1][obj.x]); // down
   }
 
   heuristic(obj1, obj2) {
