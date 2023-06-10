@@ -1,0 +1,95 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+}
+
+.container {
+  display: flex;
+  gap: 10px;
+}
+
+.map {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map canvas {
+  border: solid 1px #000;
+}
+
+.tools {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.params {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.params label {
+  font-size: 0.8em;
+  font-weight: 600;
+  color: #424242;
+}
+
+.params input {
+  padding: 5px 0;
+  width: 57px;
+  text-align: center;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.buttons button {
+  padding: 5px 10px;
+  min-width: 100px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.start-point {
+  border-color: #ff8f00;
+  background-color: #ffecb3;
+}
+
+.goal-point {
+  border-color: #2e7d32;
+  background-color: #c8e6c9;
+}
+
+.draw-walls,
+.random-walls {
+  border-color: #37474f;
+  background-color: #cfd8dc;
+}
+
+.clear {
+  border-color: #000;
+  background-color: #fff;
+}
