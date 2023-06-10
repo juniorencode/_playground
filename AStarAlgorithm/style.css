@@ -24,10 +24,6 @@ body {
   justify-content: center;
 }
 
-.map canvas {
-  border: solid 1px #000;
-}
-
 .tools {
   display: flex;
   flex-direction: column;

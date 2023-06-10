@@ -69,6 +69,29 @@ class Map {
 
     this.start.draw(this.bgStart);
     this.goal.draw(this.bgGoal);
+
+    this.drawGrid();
+  }
+
+  drawGrid() {
+    this.ctx.strokeStyle = '#fff';
+    this.ctx.lineWidth = 2;
+
+    // rows
+    for (let i = 0; i <= this.rows; i++) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, i * this.tileSize);
+      this.ctx.lineTo(this.canvas.width, i * this.tileSize);
+      this.ctx.stroke();
+    }
+
+    // columns
+    for (let i = 0; i <= this.columns; i++) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(i * this.tileSize, 0);
+      this.ctx.lineTo(i * this.tileSize, this.canvas.height);
+      this.ctx.stroke();
+    }
   }
 
   refresh() {
