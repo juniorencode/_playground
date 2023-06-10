@@ -10,6 +10,49 @@ const drawButton = document.querySelector('#draw');
 const randomButton = document.querySelector('#random');
 const clearButton = document.querySelector('#clear');
 
+class Map {
+  constructor() {
+    this.references();
+    this.start = null;
+    this.finish = null;
+    this.scene = [];
+  }
+
+  refresh() {
+    this.rows = this.rowsElement.value;
+    this.columns = this.columnsElement.value;
+    this.tileSize = this.sizeElement.value;
+    this.speed = this.speed.value;
+    this.openSet = [];
+    this.closeSet = [];
+    this.route = [];
+    this.isOver = false;
+
+    this.canvas.width = this.tileSize * this.columns;
+    this.canvas.height = this.tileSize * this.rows;
+  }
+
+  references() {
+    this.canvas = document.querySelector('#canvas');
+    this.ctx = canvas.getContext('2d');
+    this.rowsElement = document.querySelector('#rows');
+    this.columnsElement = document.querySelector('#columns');
+    this.sizeElement = document.querySelector('#size');
+    this.speedElement = document.querySelector('#speed');
+    this.startButton = document.querySelector('#start');
+    this.goalButton = document.querySelector('#goal');
+    this.drawButton = document.querySelector('#draw');
+    this.randomButton = document.querySelector('#random');
+    this.clearButton = document.querySelector('#clear');
+
+    this.bgWalls = '#37474f';
+    this.bgWay = '#cfd8dc';
+    this.bgOpenSet = '#1565c0';
+    this.bgCloseSet = '#e57373';
+    this.bgRoute = '#18ffff';
+  }
+}
+
 // Scene
 const columns = 30;
 const rows = 30;
