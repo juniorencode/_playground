@@ -14,9 +14,23 @@ const clearButton = document.querySelector('#clear');
 class Map {
   constructor() {
     this.references();
-    this.start = null;
-    this.finish = null;
     this.scene = [];
+
+    this.refresh();
+    this.createScene();
+    this.start = this.scene[0][0];
+    this.goal = this.scene[this.rows - 1][this.columns - 1];
+
+    this.update();
+  }
+
+  update() {
+    this.clearScene();
+    this.drawScene();
+
+    requestAnimationFrame(() => {
+      this.update();
+    });
   }
 
   createScene() {
@@ -52,13 +66,16 @@ class Map {
     this.openSet.forEach(tile => tile.draw(this.bgOpenSet));
     this.closeSet.forEach(tile => tile.draw(this.bgCloseSet));
     this.route.forEach(tile => tile.draw(this.bgRoute));
+
+    this.start.draw(this.bgStart);
+    this.goal.draw(this.bgGoal);
   }
 
   refresh() {
     this.rows = this.rowsElement.value || 30;
     this.columns = this.columnsElement.value || 30;
     this.tileSize = this.sizeElement.value || 10;
-    this.speed = this.speed.value || 1;
+    this.speed = this.speedElement.value || 1;
     this.openSet = [];
     this.closeSet = [];
     this.route = [];
@@ -85,6 +102,8 @@ class Map {
     this.bgOpenSet = '#1565c0';
     this.bgCloseSet = '#e57373';
     this.bgRoute = '#18ffff';
+    this.bgStart = '#f4511e';
+    this.bgGoal = '#43a047';
   }
 }
 
@@ -173,6 +192,8 @@ class Box {
     );
   }
 }
+
+new Map();
 
 // helper functions
 const heuristic = (obj1, obj2) => {
@@ -294,4 +315,4 @@ const init = () => {
   loop();
 };
 
-init();
+// init();
