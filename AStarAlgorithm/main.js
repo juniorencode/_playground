@@ -13,6 +13,7 @@ const bgFillTile = '#000';
 const bgEmptyTile = '#ccc';
 const bgOpenSetTile = '#2e7d32';
 const bgCloseSetTile = '#c62828';
+const bgRouteTitle = '#4dd0e1';
 
 // route
 const openSet = [];
@@ -26,7 +27,7 @@ class Box {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.type = 0;
+    this.type = 0; // 0: empty, 1: fill
     this.color = bgEmptyTile;
     this.f = 0; // total cost (g+h)
     this.g = 0; // steps done
@@ -74,6 +75,16 @@ class Box {
       heightTile
     );
   }
+
+  drawRoute() {
+    ctx.fillStyle = bgRouteTitle;
+    ctx.fillRect(
+      this.x * widthTile,
+      this.y * heightTile,
+      widthTile,
+      heightTile
+    );
+  }
 }
 
 // helper functions
@@ -95,7 +106,11 @@ const create2DArray = () => {
 };
 
 const removeOfArray = (array, obj) => {
-  return array.filter(element => obj === element);
+  for (let i = array.length - 1; i >= 0; i--) {
+    if (array[i] == obj) {
+      array.splice(i, 1);
+    }
+  }
 };
 
 const drawScene = () => {
@@ -105,13 +120,9 @@ const drawScene = () => {
     }
   }
 
-  for (let i = 0; i < openSet.length; i++) {
-    openSet[i].drawOpenSet();
-  }
-
-  for (let i = 0; i < closeSet.length; i++) {
-    closeSet[i].drawCloseSet();
-  }
+  openSet.map(box => box.drawOpenSet());
+  closeSet.map(box => box.drawCloseSet());
+  route.map(box => box.drawRoute());
 };
 
 const clearScene = () => {
@@ -119,28 +130,57 @@ const clearScene = () => {
 };
 
 const algorithm = () => {
-  if (isOver || openSet.length < 1) return;
+  if (isOver || openSet.length === 0) return;
 
   let indexWinner = 0;
 
-  for (let i = 0; i < openSet.length; i++) {
-    if (openSet[i].f < openSet[indexWinner].f) {
-      indexWinner = i;
-    }
-  }
+  openSet.map((box, i) => {
+    if (box.f < openSet[indexWinner].f) indexWinner = i;
+  });
 
   const current = openSet[indexWinner];
 
   if (current === finish) {
+    let temp = current;
+    route.push(temp);
+
+    while (temp.parent != null) {
+      temp = temp.parent;
+      route.push(temp);
+    }
+
     isOver = true;
     return;
   }
+
+  removeOfArray(openSet, current);
+  closeSet.push(current);
+
+  current.neighbors.map(neighbor => {
+    if (!closeSet.includes(neighbor) && neighbor.type != 1) {
+      const tempG = current.g + 1;
+
+      if (openSet.includes(neighbor)) {
+        if (tempG < neighbor.g) {
+          neighbor.g = tempG;
+        }
+      } else {
+        neighbor.g = tempG;
+        openSet.push(neighbor);
+      }
+
+      neighbor.h = heuristic(neighbor, finish);
+      neighbor.f = neighbor.g + neighbor.h;
+      neighbor.parent = current;
+    }
+  });
 };
 
 // looping
 const loop = () => {
   clearScene();
   drawScene();
+  algorithm();
   requestAnimationFrame(loop);
 };
 
@@ -163,7 +203,6 @@ const init = () => {
 
   start = scene[0][0];
   finish = scene[rows - 1][columns - 1];
-
   openSet.push(start);
 
   loop();
