@@ -24,11 +24,11 @@ class Map {
     const map = {
       getOver: () => this.isOver,
       setOver: bool => (this.isOver = bool),
-      getGoal: () => this.goal
+      getGoal: () => this.goal,
+      pushRoute: tile => this.route.push(tile)
     };
 
     this.algorithm = new AStart(this.scene, map);
-    console.log(this.scene[0][0]);
 
     this.update();
   }
@@ -36,6 +36,7 @@ class Map {
   update() {
     this.clearScene();
     this.drawScene();
+    this.algorithm.update();
 
     requestAnimationFrame(() => {
       this.update();
@@ -103,9 +104,9 @@ class Map {
   }
 
   refresh() {
-    this.rows = this.rowsElement.value || 30;
-    this.columns = this.columnsElement.value || 30;
-    this.tileSize = this.sizeElement.value || 10;
+    this.rows = this.rowsElement.value || 10;
+    this.columns = this.columnsElement.value || 10;
+    this.tileSize = this.sizeElement.value || 20;
     this.speed = this.speedElement.value || 1;
     this.route = [];
     this.isOver = false;
@@ -128,7 +129,7 @@ class Map {
     this.clearButton = document.querySelector('#clear');
 
     this.bgTile = ['#cfd8dc', '#37474f'];
-    this.bgRoute = '#18ffff';
+    this.bgRoute = '#1565c0';
     this.bgStart = '#ff8f00 ';
     this.bgGoal = '#43a047';
   }
@@ -158,10 +159,12 @@ class AStart {
   constructor(scene, map) {
     this.scene = scene;
     this.map = map;
-    this.openSet = [scene[0][0]];
+    this.openSet = [];
     this.closeSet = [];
-    this.bgOpenSet = '#1565c0';
-    this.bgCloseSet = '#e57373';
+    this.bgOpenSet = '#ab47bc';
+    this.bgCloseSet = '#ef9a9a ';
+
+    this.openSet.push(this.scene[0][0]);
 
     this.init();
   }
@@ -169,7 +172,7 @@ class AStart {
   update() {
     if (this.map.getOver() || this.openSet.length === 0) return;
 
-    let currentTile = this.openSet[0][0];
+    let currentTile = this.openSet[0];
 
     this.openSet.forEach(tile => {
       if (tile.f < currentTile.f) currentTile = tile;
@@ -177,11 +180,11 @@ class AStart {
 
     if (currentTile === this.map.getGoal()) {
       let temp = currentTile;
-      this.route.push(temp);
+      this.map.pushRoute(temp);
 
       while (temp.parent) {
         temp = temp.parent;
-        route.push(temp);
+        this.map.pushRoute(temp);
       }
 
       this.map.setOver(true);
@@ -201,7 +204,7 @@ class AStart {
           }
         } else {
           neighbor.g = tempG;
-          openSet.push(neighbor);
+          this.openSet.push(neighbor);
         }
 
         neighbor.h = this.heuristic(neighbor, this.map.getGoal());
