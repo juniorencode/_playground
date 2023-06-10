@@ -1,15 +1,3 @@
-const canvas = document.querySelector('#canvas');
-const ctx = canvas.getContext('2d');
-const rowsElement = document.querySelector('#rows');
-const columnsElement = document.querySelector('#columns');
-const sizeElement = document.querySelector('#size');
-const speedElement = document.querySelector('#speed');
-const startButton = document.querySelector('#start');
-const goalButton = document.querySelector('#goal');
-const drawButton = document.querySelector('#draw');
-const randomButton = document.querySelector('#random');
-const clearButton = document.querySelector('#clear');
-
 // objects
 class Map {
   constructor() {
@@ -34,9 +22,14 @@ class Map {
   }
 
   update() {
+    if (this.isOver) return;
+
+    for (let i = 0; i < this.speed; i++) {
+      this.algorithm.update();
+    }
+
     this.clearScene();
     this.drawScene();
-    this.algorithm.update();
 
     requestAnimationFrame(() => {
       this.update();
