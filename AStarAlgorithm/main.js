@@ -21,7 +21,13 @@ class Map {
     this.start = this.scene[0][0];
     this.goal = this.scene[this.rows - 1][this.columns - 1];
 
-    this.algorithm = new AStart(this.scene);
+    const map = {
+      getOver: () => this.isOver,
+      setOver: bool => (this.isOver = bool),
+      getGoal: () => this.goal
+    };
+
+    this.algorithm = new AStart(this.scene, map);
     console.log(this.scene[0][0]);
 
     this.update();
@@ -134,9 +140,6 @@ class Tile {
     this.x = x;
     this.y = y;
     this.type = 0; // 0: way, 1: wall
-    this.f = 0; // total cost (g+h)
-    this.g = 0; // steps done
-    this.h = 0; // heuristics (estimate of what remains)
     this.parent = null;
   }
 
@@ -152,9 +155,10 @@ class Tile {
 }
 
 class AStart {
-  constructor(scene) {
+  constructor(scene, map) {
     this.scene = scene;
-    this.openSet = [];
+    this.map = map;
+    this.openSet = [scene[0][0]];
     this.closeSet = [];
     this.bgOpenSet = '#1565c0';
     this.bgCloseSet = '#e57373';
@@ -162,10 +166,58 @@ class AStart {
     this.init();
   }
 
+  update() {
+    if (this.map.getOver() || this.openSet.length === 0) return;
+
+    let currentTile = this.openSet[0][0];
+
+    this.openSet.forEach(tile => {
+      if (tile.f < currentTile.f) currentTile = tile;
+    });
+
+    if (currentTile === this.map.getGoal()) {
+      let temp = currentTile;
+      this.route.push(temp);
+
+      while (temp.parent) {
+        temp = temp.parent;
+        route.push(temp);
+      }
+
+      this.map.setOver(true);
+      return;
+    }
+
+    this.removeOfOpenSet(currentTile);
+    this.closeSet.push(currentTile);
+
+    currentTile.neighbors.forEach(neighbor => {
+      if (!this.closeSet.includes(neighbor) && neighbor.type !== 1) {
+        const tempG = currentTile.g + 1;
+
+        if (this.openSet.includes(neighbor)) {
+          if (tempG < neighbor.g) {
+            neighbor.g = tempG;
+          }
+        } else {
+          neighbor.g = tempG;
+          openSet.push(neighbor);
+        }
+
+        neighbor.h = this.heuristic(neighbor, this.map.getGoal());
+        neighbor.f = neighbor.g + neighbor.h;
+        neighbor.parent = currentTile;
+      }
+    });
+  }
+
   init() {
     this.scene.forEach(row => {
       row.forEach(tile => {
         tile.neighbors = [];
+        tile.f = 0; // total cost (g+h)
+        tile.g = 0; // steps done
+        tile.h = 0; // heuristics (estimate of what remains)
         this.getNeighbors(tile);
       });
     });
