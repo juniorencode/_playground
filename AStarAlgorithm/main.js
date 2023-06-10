@@ -19,11 +19,30 @@ class Map {
     this.scene = [];
   }
 
+  createScene() {
+    const map = {
+      ctx: this.ctx,
+      rows: this.rows,
+      columns: this.columns,
+      tileSize: this.tileSize
+    };
+
+    this.scene = new Array(this.rows);
+
+    for (let i = 0; i < this.rows; i++) {
+      this.scene[i] = new Array(this.columns);
+
+      for (let j = 0; j < this.columns; j++) {
+        this.scene[i][j] = new Tile(j, i, map);
+      }
+    }
+  }
+
   refresh() {
-    this.rows = this.rowsElement.value;
-    this.columns = this.columnsElement.value;
-    this.tileSize = this.sizeElement.value;
-    this.speed = this.speed.value;
+    this.rows = this.rowsElement.value || 30;
+    this.columns = this.columnsElement.value || 30;
+    this.tileSize = this.sizeElement.value || 10;
+    this.speed = this.speed.value || 1;
     this.openSet = [];
     this.closeSet = [];
     this.route = [];
