@@ -35,7 +35,7 @@ class Map {
     this.route = [];
     this.isOver = false;
 
-    this.algorithm.init();
+    this.algorithm.updateScene();
     this.update();
   }
 
