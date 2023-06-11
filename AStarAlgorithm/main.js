@@ -19,6 +19,24 @@ class Map {
     this.algorithm = new AStart(this.scene, map);
 
     this.update();
+
+    this.randomButton.addEventListener('click', () => {
+      this.randomScene();
+    });
+  }
+
+  randomScene() {
+    this.scene.forEach(row => {
+      row.forEach(tile => {
+        if (Math.floor(Math.random() * 10) === 1) tile.type = 1;
+      });
+    });
+
+    this.route = [];
+    this.isOver = false;
+
+    this.algorithm.init();
+    this.update();
   }
 
   update() {
