@@ -23,12 +23,30 @@ class Map {
     this.randomButton.addEventListener('click', () => {
       this.randomScene();
     });
+
+    this.clearButton.addEventListener('click', () => {
+      this.clearScene();
+    });
   }
 
   randomScene() {
     this.scene.forEach(row => {
       row.forEach(tile => {
         if (Math.floor(Math.random() * 10) === 1) tile.type = 1;
+      });
+    });
+
+    this.route = [];
+    this.isOver = false;
+
+    this.algorithm.updateScene();
+    this.update();
+  }
+
+  clearScene() {
+    this.scene.forEach(row => {
+      row.forEach(tile => {
+        tile.type = 0;
       });
     });
 
