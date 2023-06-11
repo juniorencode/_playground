@@ -36,6 +36,9 @@ class Map {
       });
     });
 
+    this.start.type = 0;
+    this.goal.type = 0;
+
     this.route = [];
     this.isOver = false;
 
