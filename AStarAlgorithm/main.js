@@ -27,6 +27,31 @@ class Map {
     this.clearButton.addEventListener('click', () => {
       this.clearScene();
     });
+
+    this.canvas.addEventListener('click', e => {
+      this.handleCanvas(e);
+    });
+  }
+
+  handleCanvas(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    const clickedTile = this.getClickedTile(mouseX, mouseY);
+
+    console.log(clickedTile);
+  }
+
+  getClickedTile(mouseX, mouseY) {
+    const tileX = Math.floor(mouseX / this.tileSize);
+    const tileY = Math.floor(mouseY / this.tileSize);
+
+    if (tileX >= 0 && tileX < this.columns && tileY >= 0 && tileY < this.rows) {
+      return this.scene[tileY][tileX];
+    }
+
+    return null;
   }
 
   randomScene() {
