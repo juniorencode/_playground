@@ -9,6 +9,8 @@ class Map {
     this.start = this.scene[0][0];
     this.goal = this.scene[this.rows - 1][this.columns - 1];
 
+    this.clickMode = null;
+
     const map = {
       getOver: () => this.isOver,
       setOver: bool => (this.isOver = bool),
@@ -31,6 +33,15 @@ class Map {
     this.canvas.addEventListener('click', e => {
       this.handleCanvas(e);
     });
+
+    this.goalButton.addEventListener('click', () => {
+      this.setGoal();
+    });
+  }
+
+  setGoal() {
+    this.clickMode = 'goal';
+    this.goalButton.disabled = true;
   }
 
   handleCanvas(e) {
@@ -40,7 +51,18 @@ class Map {
 
     const clickedTile = this.getClickedTile(mouseX, mouseY);
 
-    console.log(clickedTile);
+    if (this.clickMode === 'goal') {
+      this.goal = clickedTile;
+      this.goalButton.disabled = false;
+    }
+
+    this.clickMode = null;
+
+    this.route = [];
+    this.isOver = false;
+
+    this.algorithm.updateScene();
+    this.update();
   }
 
   getClickedTile(mouseX, mouseY) {
