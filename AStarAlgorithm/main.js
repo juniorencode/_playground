@@ -46,7 +46,7 @@ class Map {
       this.algorithm.update();
     }
 
-    this.clearScene();
+    this.clearCanvas();
     this.drawScene();
 
     requestAnimationFrame(() => {
@@ -73,7 +73,7 @@ class Map {
     }
   }
 
-  clearScene() {
+  clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
@@ -228,11 +228,14 @@ class AStart {
 
     this.scene.forEach(row => {
       row.forEach(tile => {
-        tile.neighbors = [];
         tile.f = 0; // total cost (g+h)
         tile.g = 0; // steps done
         tile.h = 0; // heuristics (estimate of what remains)
-        !ignoreNeighbors && this.getNeighbors(tile);
+
+        if (!ignoreNeighbors) {
+          tile.neighbors = [];
+          this.getNeighbors(tile);
+        }
       });
     });
   }
