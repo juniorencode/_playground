@@ -24,6 +24,10 @@ body {
   justify-content: center;
 }
 
+.map canvas {
+  border: solid 1px #000;
+}
+
 .tools {
   display: flex;
   flex-direction: column;
@@ -69,14 +73,21 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 10px;
 }
 
+.buttons button:disabled {
+  background-color: #ccc;
+  border-style: solid;
+  border-color: #eee;
+  color: #eee;
+}
+
 .start-point {
   border-color: #ff8f00;
   background-color: #ffecb3;
 }
 
 .goal-point {
-  border-color: #2e7d32;
-  background-color: #c8e6c9;
+  border-color: #6200ea;
+  background-color: #d1c4e9;
 }
 
 .draw-walls,

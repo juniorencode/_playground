@@ -177,7 +177,7 @@ class Map {
   }
 
   drawGrid() {
-    this.ctx.strokeStyle = '#fff';
+    this.ctx.strokeStyle = '#000';
     this.ctx.lineWidth = 2;
 
     // rows
@@ -222,10 +222,10 @@ class Map {
     this.randomButton = document.querySelector('#random');
     this.clearButton = document.querySelector('#clear');
 
-    this.bgTile = ['#cfd8dc', '#37474f'];
-    this.bgRoute = '#1565c0';
-    this.bgStart = '#ff8f00 ';
-    this.bgGoal = '#43a047';
+    this.bgTile = ['#bAb9bA', '#2a282a'];
+    this.bgRoute = '#ac4042';
+    this.bgStart = '#ff8f00';
+    this.bgGoal = '#6200ea';
   }
 }
 
@@ -253,8 +253,8 @@ class AStart {
   constructor(scene, map) {
     this.scene = scene;
     this.map = map;
-    this.bgOpenSet = '#ab47bc';
-    this.bgCloseSet = '#ef9a9a ';
+    this.bgOpenSet = '#4c9a4c';
+    this.bgCloseSet = '#4f689d';
 
     this.init();
   }
