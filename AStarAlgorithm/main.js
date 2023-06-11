@@ -152,12 +152,8 @@ class AStart {
   constructor(scene, map) {
     this.scene = scene;
     this.map = map;
-    this.openSet = [];
-    this.closeSet = [];
     this.bgOpenSet = '#ab47bc';
     this.bgCloseSet = '#ef9a9a ';
-
-    this.openSet.push(this.scene[0][0]);
 
     this.init();
   }
@@ -207,16 +203,24 @@ class AStart {
     });
   }
 
-  init() {
+  init(ignoreNeighbors = false) {
+    this.openSet = [];
+    this.closeSet = [];
+    this.openSet.push(this.scene[0][0]);
+
     this.scene.forEach(row => {
       row.forEach(tile => {
         tile.neighbors = [];
         tile.f = 0; // total cost (g+h)
         tile.g = 0; // steps done
         tile.h = 0; // heuristics (estimate of what remains)
-        this.getNeighbors(tile);
+        !ignoreNeighbors && this.getNeighbors(tile);
       });
     });
+  }
+
+  updateScene() {
+    this.init(true);
   }
 
   getNeighbors(obj) {
