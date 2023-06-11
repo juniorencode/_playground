@@ -14,6 +14,7 @@ class Map {
     const map = {
       getOver: () => this.isOver,
       setOver: bool => (this.isOver = bool),
+      getStart: () => this.start,
       getGoal: () => this.goal,
       pushRoute: tile => this.route.push(tile)
     };
@@ -34,9 +35,18 @@ class Map {
       this.handleCanvas(e);
     });
 
+    this.startButton.addEventListener('click', () => {
+      this.setStart();
+    });
+
     this.goalButton.addEventListener('click', () => {
       this.setGoal();
     });
+  }
+
+  setStart() {
+    this.clickMode = 'start';
+    this.startButton.disabled = true;
   }
 
   setGoal() {
@@ -51,8 +61,13 @@ class Map {
 
     const clickedTile = this.getClickedTile(mouseX, mouseY);
 
-    if (this.clickMode === 'goal') {
+    if (this.clickMode === 'start') {
+      this.start = clickedTile;
+      this.start.type = 0;
+      this.startButton.disabled = false;
+    } else if (this.clickMode === 'goal') {
       this.goal = clickedTile;
+      this.goal.type = 0;
       this.goalButton.disabled = false;
     }
 
@@ -292,10 +307,11 @@ class AStart {
   init(ignoreNeighbors = false) {
     this.openSet = [];
     this.closeSet = [];
-    this.openSet.push(this.scene[0][0]);
+    this.openSet.push(this.map.getStart());
 
     this.scene.forEach(row => {
       row.forEach(tile => {
+        tile.parent = null;
         tile.f = 0; // total cost (g+h)
         tile.g = 0; // steps done
         tile.h = 0; // heuristics (estimate of what remains)
