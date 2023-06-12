@@ -66,14 +66,14 @@ input[type='number']::-webkit-outer-spin-button {
   gap: 6px;
 }
 
-.buttons button {
+.buttons .button {
   padding: 5px 10px;
   min-width: 100px;
   cursor: pointer;
   border-radius: 10px;
 }
 
-.buttons button:disabled {
+.buttons .button--disabled {
   background-color: #ccc;
   border-style: solid;
   border-color: #eee;

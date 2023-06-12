@@ -10,6 +10,8 @@ class Map {
     this.goal = this.scene[this.rows - 1][this.columns - 1];
 
     this.clickMode = null;
+    this.openDraw = false;
+    this.isDrawing = false;
 
     const map = {
       getOver: () => this.isOver,
@@ -32,7 +34,19 @@ class Map {
     });
 
     this.canvas.addEventListener('click', e => {
-      this.handleCanvas(e);
+      this.handleCanvasClick(e);
+    });
+
+    this.canvas.addEventListener('mousedown', e => {
+      this.handleCanvasMousedown(e);
+    });
+
+    this.canvas.addEventListener('mousemove', e => {
+      this.handleCanvasMousemove(e);
+    });
+
+    this.canvas.addEventListener('mouseup', () => {
+      this.handleCanvasMouseup();
     });
 
     this.startButton.addEventListener('click', () => {
@@ -42,19 +56,64 @@ class Map {
     this.goalButton.addEventListener('click', () => {
       this.setGoal();
     });
+
+    this.drawButton.addEventListener('click', () => {
+      this.drawWall();
+    });
   }
 
   setStart() {
     this.clickMode = 'start';
-    this.startButton.disabled = true;
+    this.startButton.classList.add('button--disabled');
   }
 
   setGoal() {
     this.clickMode = 'goal';
-    this.goalButton.disabled = true;
+    this.goalButton.classList.add('button--disabled');
   }
 
-  handleCanvas(e) {
+  drawWall() {
+    this.openDraw = !this.openDraw;
+    this.drawButton.classList.toggle('button--disabled');
+  }
+
+  setWall(x, y) {
+    const tileX = Math.floor(x / this.tileSize);
+    const tileY = Math.floor(y / this.tileSize);
+
+    if (tileX >= 0 && tileX < this.columns && tileY >= 0 && tileY < this.rows) {
+      this.scene[tileY][tileX].type = 1;
+      this.clearCanvas();
+      this.drawScene();
+    }
+  }
+
+  handleCanvasMousedown(e) {
+    if (!this.openDraw) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    this.isDrawing = true;
+    this.setWall(x, y);
+  }
+
+  handleCanvasMousemove(e) {
+    if (!this.openDraw || !this.isDrawing) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    this.setWall(x, y);
+  }
+
+  handleCanvasMouseup() {
+    this.isDrawing = false;
+  }
+
+  handleCanvasClick(e) {
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
@@ -64,11 +123,11 @@ class Map {
     if (this.clickMode === 'start') {
       this.start = clickedTile;
       this.start.type = 0;
-      this.startButton.disabled = false;
+      this.startButton.classList.remove('button--disabled');
     } else if (this.clickMode === 'goal') {
       this.goal = clickedTile;
       this.goal.type = 0;
-      this.goalButton.disabled = false;
+      this.goalButton.classList.remove('button--disabled');
     }
 
     this.clickMode = null;
