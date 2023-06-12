@@ -75,6 +75,13 @@ class Map {
   drawWall() {
     this.openDraw = !this.openDraw;
     this.drawButton.classList.toggle('button--disabled');
+
+    if (this.openDraw) {
+      this.clearCanvas();
+      this.drawScene();
+    } else {
+      this.update();
+    }
   }
 
   setWall(x, y) {
@@ -182,7 +189,7 @@ class Map {
   }
 
   update() {
-    if (this.isOver) return;
+    if (this.isOver || this.openDraw) return;
 
     for (let i = 0; i < this.speed; i++) {
       this.algorithm.update();
@@ -226,8 +233,10 @@ class Map {
       });
     });
 
-    this.algorithm.draw();
-    this.route.forEach(tile => tile.draw(this.bgRoute));
+    if (!this.openDraw) {
+      this.algorithm.draw();
+      this.route.forEach(tile => tile.draw(this.bgRoute));
+    }
 
     this.start.draw(this.bgStart);
     this.goal.draw(this.bgGoal);
