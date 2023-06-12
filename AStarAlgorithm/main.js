@@ -336,8 +336,15 @@ class AStart {
     let currentTile = this.openSet[0];
 
     this.openSet.forEach(tile => {
-      if (tile.f < currentTile.f) currentTile = tile;
+      if (
+        tile.f < currentTile.f ||
+        (tile.f === currentTile.f && tile.h < currentTile.h)
+      )
+        currentTile = tile;
     });
+
+    this.closeSet.push(currentTile);
+    this.removeOfOpenSet(currentTile);
 
     if (currentTile === this.map.getGoal()) {
       let temp = currentTile;
@@ -352,33 +359,31 @@ class AStart {
       return;
     }
 
-    this.removeOfOpenSet(currentTile);
-    this.closeSet.push(currentTile);
-
     currentTile.neighbors.forEach(neighbor => {
-      if (!this.closeSet.includes(neighbor) && neighbor.type !== 1) {
-        let tempG;
+      if (this.closeSet.includes(neighbor) || neighbor.type === 1) return;
 
-        if (neighbor.x !== currentTile.x && neighbor.y !== currentTile.y) {
-          tempG = currentTile.g + this.diagonalCost;
-        } else {
-          tempG = currentTile.g + this.straightCost;
-        }
+      const inOpenSet = this.openSet.includes(neighbor);
+      const tempG = currentTile.g + this.getDistance(currentTile, neighbor);
 
-        if (this.openSet.includes(neighbor)) {
-          if (tempG < neighbor.g) {
-            neighbor.g = tempG;
-          }
-        } else {
-          neighbor.g = tempG;
+      if (!inOpenSet || tempG < neighbor.g) {
+        neighbor.g = tempG;
+        neighbor.parent = currentTile;
+
+        if (!inOpenSet) {
+          neighbor.h = this.getDistance(neighbor, this.map.getGoal());
+          neighbor.f = neighbor.g + neighbor.h;
           this.openSet.push(neighbor);
         }
-
-        neighbor.h = this.heuristic(neighbor, this.map.getGoal());
-        neighbor.f = neighbor.g + neighbor.h;
-        neighbor.parent = currentTile;
       }
     });
+  }
+
+  getDistance(obj1, obj2) {
+    const dist = [Math.abs(obj1.x - obj2.x), Math.abs(obj1.y - obj2.y)];
+    const lowest = Math.min(dist.x, dist.y);
+    const highest = Math.max(dist.x, dist.y);
+    const horizontalMovesRequired = highest - lowest;
+    return lowest * 14 + horizontalMovesRequired * 10;
   }
 
   init(ignoreNeighbors = false) {
@@ -421,18 +426,6 @@ class AStart {
     if (x > 0 && y < rows - 1) neighbors.push(this.scene[y + 1][x - 1]); // bottom-left
     if (x < cols - 1 && y > 0) neighbors.push(this.scene[y - 1][x + 1]); // top-right
     if (x < cols - 1 && y < rows - 1) neighbors.push(this.scene[y + 1][x + 1]); // bottom-right
-  }
-
-  heuristic(obj1, obj2) {
-    const dx = Math.abs(obj1.x - obj2.x);
-    const dy = Math.abs(obj1.y - obj2.y);
-    const p = 1.5;
-
-    // return dx + dy; // Manhattan
-    // return Math.max(dx, dy); // Chebyshev
-    // return Math.sqrt(dx * dx + dy * dy); // Euclidean
-    // return Math.max(dx, dy) + (Math.sqrt(2) - 1) * Math.min(dx, dy); // octile
-    return (dx ** p + dy ** p) ** (1 / p);
   }
 
   removeOfOpenSet(obj) {
