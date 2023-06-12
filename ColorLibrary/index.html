@@ -18,11 +18,11 @@
           <div id="hexcode" class="code">#000000</div>
           <div id="hexcolor" class="color"></div>
           <div class="name">CMYK:</div>
-          <div class="code">C0 M0 Y0 K0</div>
-          <div class="color"></div>
+          <div id="cmykcode" class="code">C0 M0 Y0 K0</div>
+          <div id="cmykcolor" class="color"></div>
           <div class="name">RGBA:</div>
-          <div class="code">rgba(0, 0, 0, 1)</div>
-          <div class="color"></div>
+          <div id="rgbacode" class="code">rgba(0, 0, 0, 1)</div>
+          <div id="rgbacolor" class="color"></div>
           <div class="name">HSBA:</div>
           <div class="code">hsba(0, 0%, 0%, 1)</div>
           <div class="color"></div>
@@ -40,9 +40,19 @@
       const rgbaInput = document.querySelector('#rgba');
       const hexCode = document.querySelector('#hexcode');
       const hexColor = document.querySelector('#hexcolor');
+      const cmykCode = document.querySelector('#cmykcode');
+      const cmykColor = document.querySelector('#cmykcolor');
+      const rgbaCode = document.querySelector('#rgbacode');
+      const rgbaColor = document.querySelector('#rgbacolor');
 
       rgbaInput.addEventListener('input', () => {
-        hexCode.innerText = new Color(rgbaInput.value).toHexString();
+        const color = new Color(rgbaInput.value);
+        hexCode.innerText = color.toHexString();
+        hexColor.style.backgroundColor = color.toHexString();
+        cmykCode.innerText = color.toCmykString();
+        cmykColor.style.backgroundColor = color.toHexString();
+        rgbaCode.innerText = color.toRgbaString();
+        rgbaColor.style.backgroundColor = color.toRgbaString();
       });
     </script>
   </body>
