@@ -20,6 +20,9 @@
           <div class="name">CMYK:</div>
           <div id="cmykcode" class="code">C0 M0 Y0 K0</div>
           <div id="cmykcolor" class="color"></div>
+          <div class="name">RGB:</div>
+          <div id="rgbcode" class="code">rgb(0, 0, 0)</div>
+          <div id="rgbcolor" class="color"></div>
           <div class="name">RGBA:</div>
           <div id="rgbacode" class="code">rgba(0, 0, 0, 1)</div>
           <div id="rgbacolor" class="color"></div>
@@ -27,7 +30,7 @@
           <div class="code">hsba(0, 0%, 0%, 1)</div>
           <div class="color"></div>
           <div class="name">HSLA:</div>
-          <div class="code">hsl(0, 0%, 0%, 1)</div>
+          <div class="code">hsla(0, 0%, 0%, 1)</div>
           <div class="color"></div>
           <div class="name">HSVA:</div>
           <div class="code">hsva(0, 0%, 0%, 1)</div>
@@ -42,6 +45,8 @@
       const hexColor = document.querySelector('#hexcolor');
       const cmykCode = document.querySelector('#cmykcode');
       const cmykColor = document.querySelector('#cmykcolor');
+      const rgbCode = document.querySelector('#rgbcode');
+      const rgbColor = document.querySelector('#rgbcolor');
       const rgbaCode = document.querySelector('#rgbacode');
       const rgbaColor = document.querySelector('#rgbacolor');
 
@@ -51,6 +56,8 @@
         hexColor.style.backgroundColor = color.toHexString();
         cmykCode.innerText = color.toCmykString();
         cmykColor.style.backgroundColor = color.toHexString();
+        rgbCode.innerText = color.toRgbString();
+        rgbColor.style.backgroundColor = color.toRgbString();
         rgbaCode.innerText = color.toRgbaString();
         rgbaColor.style.backgroundColor = color.toRgbaString();
       });

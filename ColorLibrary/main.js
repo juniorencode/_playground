@@ -48,13 +48,22 @@ class Color {
     return { c, m, y, k };
   }
 
+  toRgb() {
+    return this.mixAlpha(this.rgba);
+  }
+
+  toRgbString() {
+    const { r, g, b } = this.toRgb();
+    return `rgba(${r}, ${g}, ${b})`;
+  }
+
   toRgba() {
     return this.rgba;
   }
 
   toRgbaString() {
-    const color = this.toRgba();
-    return `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+    const { r, g, b, a } = this.toRgba();
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
   }
 
   toHex() {
@@ -70,8 +79,8 @@ class Color {
   }
 
   toCmykString() {
-    const color = this.toCmyk();
-    return `C${color.c} M${color.m} Y${color.y} K${color.k}`;
+    const { c, m, y, k } = this.toCmyk();
+    return `C${c} M${m} Y${y} K${k}`;
   }
 
   // helpers
