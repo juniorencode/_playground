@@ -10,8 +10,8 @@
     <main class="container">
       <section class="module">
         <div class="header">
-          <label for="">RGBA</label>
-          <input type="text" value="rgba(0, 0, 0, 1)" />
+          <label for="rgba">RGBA</label>
+          <input type="text" id="rgba" value="rgba(0, 0, 0, 1)" />
         </div>
         <div class="list">
           <div class="name">HEX:</div>
@@ -36,5 +36,9 @@
       </section>
     </main>
     <script src="./main.js"></script>
+    <script>
+      const rgbaElement = document.querySelector('#rgba');
+      const rgba = new Color(rgbaElement.value);
+    </script>
   </body>
 </html>
