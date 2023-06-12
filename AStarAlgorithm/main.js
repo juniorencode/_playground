@@ -324,6 +324,9 @@ class AStart {
     this.bgOpenSet = '#4c9a4c';
     this.bgCloseSet = '#4f689d';
 
+    this.diagonalCost = 1.414; // square 2
+    this.straightCost = 1;
+
     this.init();
   }
 
@@ -354,7 +357,13 @@ class AStart {
 
     currentTile.neighbors.forEach(neighbor => {
       if (!this.closeSet.includes(neighbor) && neighbor.type !== 1) {
-        const tempG = currentTile.g + 1;
+        let tempG;
+
+        if (neighbor.x !== currentTile.x && neighbor.y !== currentTile.y) {
+          tempG = currentTile.g + this.diagonalCost;
+        } else {
+          tempG = currentTile.g + this.straightCost;
+        }
 
         if (this.openSet.includes(neighbor)) {
           if (tempG < neighbor.g) {
@@ -397,19 +406,28 @@ class AStart {
   }
 
   getNeighbors(obj) {
-    if (obj.x > 0) obj.neighbors.push(this.scene[obj.y][obj.x - 1]); // right
-    if (obj.x < this.scene.length - 1)
-      obj.neighbors.push(this.scene[obj.y][obj.x + 1]); // left
-    if (obj.y > 0) obj.neighbors.push(this.scene[obj.y - 1][obj.x]); // up
-    if (obj.y < this.scene[0].length - 1)
-      obj.neighbors.push(this.scene[obj.y + 1][obj.x]); // down
+    const { x, y, neighbors } = obj;
+    const rows = this.scene.length;
+    const cols = this.scene[0].length;
+
+    // horizontal y vertical
+    if (x > 0) neighbors.push(this.scene[y][x - 1]); // left
+    if (x < cols - 1) neighbors.push(this.scene[y][x + 1]); // right
+    if (y > 0) neighbors.push(this.scene[y - 1][x]); // top
+    if (y < rows - 1) neighbors.push(this.scene[y + 1][x]); // bottom
+
+    // diagonals
+    if (x > 0 && y > 0) neighbors.push(this.scene[y - 1][x - 1]); // top-left
+    if (x > 0 && y < rows - 1) neighbors.push(this.scene[y + 1][x - 1]); // bottom-left
+    if (x < cols - 1 && y > 0) neighbors.push(this.scene[y - 1][x + 1]); // top-right
+    if (x < cols - 1 && y < rows - 1) neighbors.push(this.scene[y + 1][x + 1]); // bottom-right
   }
 
   heuristic(obj1, obj2) {
-    const x = Math.abs(obj1.x - obj2.x);
-    const y = Math.abs(obj1.y - obj2.y);
+    const dx = Math.abs(obj1.x - obj2.x);
+    const dy = Math.abs(obj1.y - obj2.y);
 
-    return x + y;
+    return Math.max(dx, dy);
   }
 
   removeOfOpenSet(obj) {
