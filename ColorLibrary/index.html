@@ -15,8 +15,8 @@
         </div>
         <div class="list">
           <div class="name">HEX:</div>
-          <div class="code">#000000</div>
-          <div class="color"></div>
+          <div id="hexcode" class="code">#000000</div>
+          <div id="hexcolor" class="color"></div>
           <div class="name">CMYK:</div>
           <div class="code">C0 M0 Y0 K0</div>
           <div class="color"></div>
@@ -37,8 +37,13 @@
     </main>
     <script src="./main.js"></script>
     <script>
-      const rgbaElement = document.querySelector('#rgba');
-      const rgba = new Color(rgbaElement.value);
+      const rgbaInput = document.querySelector('#rgba');
+      const hexCode = document.querySelector('#hexcode');
+      const hexColor = document.querySelector('#hexcolor');
+
+      rgbaInput.addEventListener('input', () => {
+        hexCode.innerText = new Color(rgbaInput.value).toHexString();
+      });
     </script>
   </body>
 </html>
