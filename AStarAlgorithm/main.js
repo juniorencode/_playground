@@ -324,7 +324,7 @@ class AStart {
     this.bgOpenSet = '#4c9a4c';
     this.bgCloseSet = '#4f689d';
 
-    this.diagonalCost = 1.414; // square 2
+    this.diagonalCost = 1; // square 2
     this.straightCost = 1;
 
     this.init();
@@ -426,8 +426,13 @@ class AStart {
   heuristic(obj1, obj2) {
     const dx = Math.abs(obj1.x - obj2.x);
     const dy = Math.abs(obj1.y - obj2.y);
+    const p = 1.5;
 
-    return Math.max(dx, dy);
+    // return dx + dy; // Manhattan
+    // return Math.max(dx, dy); // Chebyshev
+    // return Math.sqrt(dx * dx + dy * dy); // Euclidean
+    // return Math.max(dx, dy) + (Math.sqrt(2) - 1) * Math.min(dx, dy); // octile
+    return (dx ** p + dy ** p) ** (1 / p);
   }
 
   removeOfOpenSet(obj) {
