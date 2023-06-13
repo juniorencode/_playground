@@ -3,7 +3,21 @@ class Color {
     if (!input || input.trim() === '')
       throw new Error('Invalid color: color cannot be empty or null.');
 
-    this.rgba = this.parseRGBA(input);
+    this.regexHex = /^#?[a-f0-9]{3}(?:[a-f0-9]{3})?$/i;
+
+    console.log(this.validateInput(input));
+    // this.validateInput(input);
+    // this.rgba = this.parseRGBA(input);
+  }
+
+  validateInput(color) {
+    // hexadecimal: #000, #0000, #000000
+    if (this.regexHex.test(color)) {
+      return true;
+    }
+
+    // no match found for any format
+    return false;
   }
 
   parseRGBA(string) {
