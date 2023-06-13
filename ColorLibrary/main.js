@@ -79,6 +79,11 @@ class Color {
     return { h, s, b };
   }
 
+  rgbToHsv(rgb) {
+    const { h, s, b } = this.rgbToHs(rgb);
+    return { h, s, v: b };
+  }
+
   rgbaToHex(rgba) {
     return this.rgbToHex(this.mixAlpha(rgba));
   }
@@ -95,6 +100,11 @@ class Color {
   rgbaToHsba(rgba) {
     const { h, s, b } = this.rgbToHs(this.rgba);
     return { h, s, b, a: rgba.a };
+  }
+
+  rgbaToHsva(rgba) {
+    const { h, s, b } = this.rgbToHs(this.rgba);
+    return { h, s, v: b, a: rgba.a };
   }
 
   // object
@@ -118,6 +128,10 @@ class Color {
     return this.rgbToHsb(this.mixAlpha(this.rgba));
   }
 
+  toHsv() {
+    return this.rgbToHsv(this.mixAlpha(this.rgba));
+  }
+
   toRgba() {
     return this.rgba;
   }
@@ -128,6 +142,10 @@ class Color {
 
   toHsba() {
     return this.rgbaToHsba(this.rgba);
+  }
+
+  toHsva() {
+    return this.rgbaToHsva(this.rgba);
   }
 
   // string
@@ -156,6 +174,11 @@ class Color {
     return `hsb(${h}, ${Math.floor(s * 100)}%, ${Math.floor(b * 100)}%)`;
   }
 
+  toHsvString() {
+    const { h, s, v } = this.toHsv();
+    return `hsv(${h}, ${Math.floor(s * 100)}%, ${Math.floor(v * 100)}%)`;
+  }
+
   toRgbaString() {
     const { r, g, b, a } = this.toRgba();
     return `rgba(${r}, ${g}, ${b}, ${a})`;
@@ -169,6 +192,11 @@ class Color {
   toHsbaString() {
     const { h, s, b, a } = this.toHsba();
     return `hsba(${h}, ${Math.round(s * 100)}%, ${Math.round(b * 100)}%, ${a})`;
+  }
+
+  toHsvaString() {
+    const { h, s, v, a } = this.toHsva();
+    return `hsva(${h}, ${Math.round(s * 100)}%, ${Math.round(v * 100)}%, ${a})`;
   }
 
   // helpers
