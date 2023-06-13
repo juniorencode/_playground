@@ -24,10 +24,7 @@ class Color {
   }
 
   rgbToCmyk(rgb) {
-    const { r, g, b } = rgb;
-    const red = r / 255;
-    const green = g / 255;
-    const blue = b / 255;
+    const { red, green, blue } = this.normalizeRgb(rgb);
     let c = 1 - red;
     let m = 1 - green;
     let y = 1 - blue;
@@ -41,11 +38,8 @@ class Color {
     return { c, m, y, k };
   }
 
-  rgbToHsl(rgb) {
-    const { r, g, b } = rgb;
-    const red = r / 255;
-    const green = g / 255;
-    const blue = b / 255;
+  rgbToHs(rgb) {
+    const { red, green, blue } = this.normalizeRgb(rgb);
     const max = Math.max(red, green, blue);
     const min = Math.min(red, green, blue);
     let h, s, l;
@@ -72,6 +66,11 @@ class Color {
     };
   }
 
+  rgbToHsl(rgb) {
+    const { h, s, l } = this.rgbToHs(rgb);
+    return { h, s, l };
+  }
+
   rgbaToHex(rgba) {
     return this.rgbToHex(this.mixAlpha(rgba));
   }
@@ -81,7 +80,8 @@ class Color {
   }
 
   rgbaToHsla(rgba) {
-    return { ...this.rgbToHsl(this.rgba), a: rgba.a };
+    const { h, s, l } = this.rgbToHs(this.rgba);
+    return { h, s, l, a: rgba.a };
   }
 
   // object
@@ -111,7 +111,8 @@ class Color {
 
   // string
   toHexString() {
-    return `#${this.toHex().hex}`;
+    const { hex } = this.toHex();
+    return `#${hex}`;
   }
 
   toCmykString() {
@@ -140,6 +141,15 @@ class Color {
   }
 
   // helpers
+  normalizeRgb(rgb) {
+    const { r, g, b } = rgb;
+    const red = r / 255;
+    const green = g / 255;
+    const blue = b / 255;
+
+    return { red, green, blue };
+  }
+
   mixAlpha(rgba) {
     const { r, g, b, a } = rgba;
     const mixedR = Math.round((1 - a) * 255 + a * r);
