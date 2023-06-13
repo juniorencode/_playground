@@ -30,6 +30,10 @@
           <div id="hslcode" class="code">hsl(0, 0%, 0%)</div>
           <div id="hslcolor" class="color"></div>
 
+          <div class="name">HSB:</div>
+          <div id="hsbcode" class="code">hsb(0, 0%, 0%)</div>
+          <div id="hsbcolor" class="color"></div>
+
           <div class="name">RGBA:</div>
           <div id="rgbacode" class="code">rgba(0, 0, 0, 1)</div>
           <div id="rgbacolor" class="color"></div>
@@ -37,6 +41,10 @@
           <div class="name">HSLA:</div>
           <div id="hslacode" class="code">hsla(0, 0, 0, 1)</div>
           <div id="hslacolor" class="color"></div>
+
+          <div class="name">HSBA:</div>
+          <div id="hsbacode" class="code">hsba(0, 0, 0, 1)</div>
+          <div id="hsbacolor" class="color"></div>
         </div>
       </section>
     </main>
@@ -56,11 +64,17 @@
       const hslCode = document.querySelector('#hslcode');
       const hslColor = document.querySelector('#hslcolor');
 
+      const hsbCode = document.querySelector('#hsbcode');
+      const hsbColor = document.querySelector('#hsbcolor');
+
       const rgbaCode = document.querySelector('#rgbacode');
       const rgbaColor = document.querySelector('#rgbacolor');
 
       const hslaCode = document.querySelector('#hslacode');
       const hslaColor = document.querySelector('#hslacolor');
+
+      const hsbaCode = document.querySelector('#hsbacode');
+      const hsbaColor = document.querySelector('#hsbacolor');
 
       rgbaInput.addEventListener('input', () => {
         const color = new Color(rgbaInput.value);
@@ -77,11 +91,17 @@
         hslCode.innerText = color.toHslString();
         hslColor.style.backgroundColor = color.toHslString();
 
+        hsbCode.innerText = color.toHsbString();
+        hsbColor.style.backgroundColor = color.toHslString();
+
         rgbaCode.innerText = color.toRgbaString();
         rgbaColor.style.backgroundColor = color.toRgbaString();
 
         hslaCode.innerText = color.toHslaString();
         hslaColor.style.backgroundColor = color.toHslaString();
+
+        hsbaCode.innerText = color.toHsbaString();
+        hsbaColor.style.backgroundColor = color.toHslaString();
       });
     </script>
   </body>

@@ -42,33 +42,41 @@ class Color {
     const { red, green, blue } = this.normalizeRgb(rgb);
     const max = Math.max(red, green, blue);
     const min = Math.min(red, green, blue);
-    let h, s, l;
+    const delta = max - min;
+    let h, s, l, b;
 
     l = (max + min) / 2;
+    b = max;
 
-    if (max === min) return { h: 0, s: 0, l };
+    if (delta === 0) h = 0;
+    else {
+      if (max === red) h = (green - blue) / delta;
+      else if (max === green) h = 2 + (blue - red) / delta;
+      else h = 4 + (red - green) / delta;
 
-    const delta = max - min;
+      h *= 60;
+      if (h < 0) h += 360;
+    }
 
-    if (max === red) h = (green - blue) / delta;
-    else if (max === green) h = 2 + (blue - red) / delta;
-    else h = 4 + (red - green) / delta;
-
-    h *= 60;
-    s = delta / (1 - Math.abs(2 * l - 1));
-
-    if (h < 0) h += 360;
+    if (delta === 0) s = 0;
+    else s = delta / (1 - Math.abs(2 * l - 1));
 
     return {
       h: Math.round(h),
       s: Math.round(s * 100) / 100,
-      l: Math.round(l * 100) / 100
+      l: Math.round(l * 100) / 100,
+      b: Math.round(b * 100) / 100
     };
   }
 
   rgbToHsl(rgb) {
     const { h, s, l } = this.rgbToHs(rgb);
     return { h, s, l };
+  }
+
+  rgbToHsb(rgb) {
+    const { h, s, b } = this.rgbToHs(rgb);
+    return { h, s, b };
   }
 
   rgbaToHex(rgba) {
@@ -82,6 +90,11 @@ class Color {
   rgbaToHsla(rgba) {
     const { h, s, l } = this.rgbToHs(this.rgba);
     return { h, s, l, a: rgba.a };
+  }
+
+  rgbaToHsba(rgba) {
+    const { h, s, b } = this.rgbToHs(this.rgba);
+    return { h, s, b, a: rgba.a };
   }
 
   // object
@@ -101,12 +114,20 @@ class Color {
     return this.rgbToHsl(this.mixAlpha(this.rgba));
   }
 
+  toHsb() {
+    return this.rgbToHsb(this.mixAlpha(this.rgba));
+  }
+
   toRgba() {
     return this.rgba;
   }
 
   toHsla() {
     return this.rgbaToHsla(this.rgba);
+  }
+
+  toHsba() {
+    return this.rgbaToHsba(this.rgba);
   }
 
   // string
@@ -130,6 +151,11 @@ class Color {
     return `hsl(${h}, ${Math.floor(s * 100)}%, ${Math.floor(l * 100)}%)`;
   }
 
+  toHsbString() {
+    const { h, s, b } = this.toHsb();
+    return `hsb(${h}, ${Math.floor(s * 100)}%, ${Math.floor(b * 100)}%)`;
+  }
+
   toRgbaString() {
     const { r, g, b, a } = this.toRgba();
     return `rgba(${r}, ${g}, ${b}, ${a})`;
@@ -138,6 +164,11 @@ class Color {
   toHslaString() {
     const { h, s, l, a } = this.toHsla();
     return `hsla(${h}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%, ${a})`;
+  }
+
+  toHsbaString() {
+    const { h, s, b, a } = this.toHsba();
+    return `hsba(${h}, ${Math.round(s * 100)}%, ${Math.round(b * 100)}%, ${a})`;
   }
 
   // helpers
