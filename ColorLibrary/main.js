@@ -1,5 +1,8 @@
 class Color {
   constructor(input) {
+    if (!input || input.trim() === '')
+      throw new Error('Invalid color: color cannot be empty or null.');
+
     this.rgba = this.parseRGBA(input);
   }
 
@@ -8,15 +11,30 @@ class Color {
 
     const rgbaValues = string.split(',');
 
+    if (rgbaValues.length < 2 && rgbaValues.length > 3)
+      throw new Error('Invalid color: values are missing or incorrect.');
+
     const r = parseInt(rgbaValues[0].trim());
     const g = parseInt(rgbaValues[1].trim());
     const b = parseInt(rgbaValues[2].trim());
     const a = parseFloat(rgbaValues[3]?.trim()) || 1;
 
+    if (isNaN(r) || isNaN(g) || isNaN(b) || isNaN(a)) {
+      throw new Error('Invalid color: values must be numeric.');
+    }
+
+    if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+      throw new Error('Invalid color: values must be between 0 and 255.');
+    }
+
+    if (a < 0 || a > 1) {
+      throw new Error('Invalid color: alpha value must be between 0 and 1.');
+    }
+
     return { r, g, b, a };
   }
 
-  // convert
+  // convert color
   rgbToHex(rgb) {
     const { r, g, b } = rgb;
 
@@ -107,7 +125,7 @@ class Color {
     return { h, s, v: b, a: rgba.a };
   }
 
-  // object
+  // convert to object
   toHex() {
     return this.rgbaToHex(this.rgba);
   }
@@ -148,7 +166,7 @@ class Color {
     return this.rgbaToHsva(this.rgba);
   }
 
-  // string
+  // convert to string
   toHexString() {
     const { hex } = this.toHex();
     return `#${hex}`;
