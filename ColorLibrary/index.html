@@ -126,19 +126,22 @@
 
       // Examples
 
-      new Color('#000'); // true
-      new Color('000'); // true
-      new Color('#f0f0f6'); // true
-      new Color('f0f0f6'); // true
-      new Color('#369C'); // false
-      new Color('369C'); // false
+      // new Color('#000'); // true
+      // new Color('000'); // true
+      // new Color('#f0f0f6'); // true
+      // new Color('f0f0f6'); // true
+      // new Color('#369C'); // false
+      // new Color('369C'); // false
 
-      // new Color('rgb (255, 0, 0)');
-      // new Color('rgba (255, 0, 0, .5)');
-      // new Color('rgb 255 0 0');
-      // new Color('rgba 255 0 0 .5');
-      // new Color({ r: 255, g: 0, b: 0 });
-      // new Color({ r: 255, g: 0, b: 0, a: 0.5 });
+      new Color('rgb (255, 0, 0)'); // true
+      new Color('rgba (255, 0, 0, .5)'); // true
+      new Color('rgb 255 0 0'); // true
+      new Color('rgba 255 0 0 .5'); // true
+      // new Color({ r: 255, g: 0, b: 0 }); // true
+      // new Color({ r: 255, g: 0, b: 0, a: 0.5 }); //true
+      new Color('rgba (255, 0, 0, .)'); // false
+      new Color('rgba (255, 0, , .5)'); // false
+      new Color('rgb 255 0 '); // false
 
       // new Color('hsl(0, 100%, 50%)');
       // new Color('hsla(0, 100%, 50%, .5)');

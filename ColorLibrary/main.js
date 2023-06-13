@@ -4,6 +4,8 @@ class Color {
       throw new Error('Invalid color: color cannot be empty or null.');
 
     this.regexHex = /^#?[a-f0-9]{3}(?:[a-f0-9]{3})?$/i;
+    this.regexRgba =
+      /^rgba?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
 
     console.log(this.validateInput(input));
     // this.validateInput(input);
@@ -16,6 +18,10 @@ class Color {
       return true;
     }
 
+    // /^rgba?\s*\(?\s*\d{1,3}\s*,?\s*\d{1,3}\s*,?\s*\d{1,3}(?:\s*,?\s*(?:0?\.\d+|1(?:\.0)?))?\s*\)?$/
+    if (this.regexRgba.test(color)) {
+      return true;
+    }
     // no match found for any format
     return false;
   }
