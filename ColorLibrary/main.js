@@ -16,18 +16,11 @@ class Color {
     return { r, g, b, a };
   }
 
-  rgbaToHex(rgba) {
-    return this.rgbToHex(this.mixAlpha(rgba));
-  }
-
+  // convert
   rgbToHex(rgb) {
     const { r, g, b } = rgb;
 
     return { hex: this.numbToHex(r) + this.numbToHex(g) + this.numbToHex(b) };
-  }
-
-  rgbaToCmyk(rgba) {
-    return this.rgbToCmyk(this.mixAlpha(rgba));
   }
 
   rgbToCmyk(rgb) {
@@ -48,17 +41,92 @@ class Color {
     return { c, m, y, k };
   }
 
+  rgbToHsl(rgb) {
+    const { r, g, b } = rgb;
+    const red = r / 255;
+    const green = g / 255;
+    const blue = b / 255;
+    const max = Math.max(red, green, blue);
+    const min = Math.min(red, green, blue);
+    let h, s, l;
+
+    l = (max + min) / 2;
+
+    if (max === min) return { h: 0, s: 0, l };
+
+    const delta = max - min;
+
+    if (max === red) h = (green - blue) / delta;
+    else if (max === green) h = 2 + (blue - red) / delta;
+    else h = 4 + (red - green) / delta;
+
+    h *= 60;
+    s = delta / (1 - Math.abs(2 * l - 1));
+
+    if (h < 0) h += 360;
+
+    return {
+      h: Math.round(h),
+      s: Math.round(s * 100) / 100,
+      l: Math.round(l * 100) / 100
+    };
+  }
+
+  rgbaToHex(rgba) {
+    return this.rgbToHex(this.mixAlpha(rgba));
+  }
+
+  rgbaToCmyk(rgba) {
+    return this.rgbToCmyk(this.mixAlpha(rgba));
+  }
+
+  rgbaToHsla(rgba) {
+    return { ...this.rgbToHsl(this.rgba), a: rgba.a };
+  }
+
+  // object
+  toHex() {
+    return this.rgbaToHex(this.rgba);
+  }
+
+  toCmyk() {
+    return this.rgbaToCmyk(this.rgba);
+  }
+
   toRgb() {
     return this.mixAlpha(this.rgba);
   }
 
-  toRgbString() {
-    const { r, g, b } = this.toRgb();
-    return `rgba(${r}, ${g}, ${b})`;
+  toHsl() {
+    return this.rgbToHsl(this.mixAlpha(this.rgba));
   }
 
   toRgba() {
     return this.rgba;
+  }
+
+  toHsla() {
+    return this.rgbaToHsla(this.rgba);
+  }
+
+  // string
+  toHexString() {
+    return `#${this.toHex().hex}`;
+  }
+
+  toCmykString() {
+    const { c, m, y, k } = this.toCmyk();
+    return `C${c} M${m} Y${y} K${k}`;
+  }
+
+  toRgbString() {
+    const { r, g, b } = this.toRgb();
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  toHslString() {
+    const { h, s, l } = this.toHsl();
+    return `hsl(${h}, ${Math.floor(s * 100)}%, ${Math.floor(l * 100)}%)`;
   }
 
   toRgbaString() {
@@ -66,21 +134,9 @@ class Color {
     return `rgba(${r}, ${g}, ${b}, ${a})`;
   }
 
-  toHex() {
-    return this.rgbaToHex(this.rgba);
-  }
-
-  toHexString() {
-    return `#${this.toHex().hex}`;
-  }
-
-  toCmyk() {
-    return this.rgbaToCmyk(this.rgba);
-  }
-
-  toCmykString() {
-    const { c, m, y, k } = this.toCmyk();
-    return `C${c} M${m} Y${y} K${k}`;
+  toHslaString() {
+    const { h, s, l, a } = this.toHsla();
+    return `hsla(${h}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%, ${a})`;
   }
 
   // helpers

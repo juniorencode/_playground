@@ -17,49 +17,71 @@
           <div class="name">HEX:</div>
           <div id="hexcode" class="code">#000000</div>
           <div id="hexcolor" class="color"></div>
+
           <div class="name">CMYK:</div>
           <div id="cmykcode" class="code">C0 M0 Y0 K0</div>
           <div id="cmykcolor" class="color"></div>
+
           <div class="name">RGB:</div>
           <div id="rgbcode" class="code">rgb(0, 0, 0)</div>
           <div id="rgbcolor" class="color"></div>
+
+          <div class="name">HSL:</div>
+          <div id="hslcode" class="code">hsl(0, 0%, 0%)</div>
+          <div id="hslcolor" class="color"></div>
+
           <div class="name">RGBA:</div>
           <div id="rgbacode" class="code">rgba(0, 0, 0, 1)</div>
           <div id="rgbacolor" class="color"></div>
-          <div class="name">HSBA:</div>
-          <div class="code">hsba(0, 0%, 0%, 1)</div>
-          <div class="color"></div>
+
           <div class="name">HSLA:</div>
-          <div class="code">hsla(0, 0%, 0%, 1)</div>
-          <div class="color"></div>
-          <div class="name">HSVA:</div>
-          <div class="code">hsva(0, 0%, 0%, 1)</div>
-          <div class="color"></div>
+          <div id="hslacode" class="code">hsla(0, 0, 0, 1)</div>
+          <div id="hslacolor" class="color"></div>
         </div>
       </section>
     </main>
     <script src="./main.js"></script>
     <script>
       const rgbaInput = document.querySelector('#rgba');
+
       const hexCode = document.querySelector('#hexcode');
       const hexColor = document.querySelector('#hexcolor');
+
       const cmykCode = document.querySelector('#cmykcode');
       const cmykColor = document.querySelector('#cmykcolor');
+
       const rgbCode = document.querySelector('#rgbcode');
       const rgbColor = document.querySelector('#rgbcolor');
+
+      const hslCode = document.querySelector('#hslcode');
+      const hslColor = document.querySelector('#hslcolor');
+
       const rgbaCode = document.querySelector('#rgbacode');
       const rgbaColor = document.querySelector('#rgbacolor');
 
+      const hslaCode = document.querySelector('#hslacode');
+      const hslaColor = document.querySelector('#hslacolor');
+
       rgbaInput.addEventListener('input', () => {
         const color = new Color(rgbaInput.value);
+
         hexCode.innerText = color.toHexString();
         hexColor.style.backgroundColor = color.toHexString();
+
         cmykCode.innerText = color.toCmykString();
         cmykColor.style.backgroundColor = color.toHexString();
+
         rgbCode.innerText = color.toRgbString();
         rgbColor.style.backgroundColor = color.toRgbString();
+
+        hslCode.innerText = color.toHslString();
+        hslColor.style.backgroundColor = color.toHslString();
+
         rgbaCode.innerText = color.toRgbaString();
         rgbaColor.style.backgroundColor = color.toRgbaString();
+
+        hslaCode.innerText = color.toHslaString();
+        hslaColor.style.backgroundColor = color.toHslaString();
       });
     </script>
   </body>
