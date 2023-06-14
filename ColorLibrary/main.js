@@ -44,7 +44,37 @@ class Color {
 
     // HSL and HSLA: hsl(0, 100%, 50%), hsla(0, 100%, 50%, .5)
     if (this.regexHsla.test(color)) {
-      return true;
+      const match = color.match(this.regexHsla);
+      const isSaturationAPercentage = match[2][match[2].length - 1] === '%';
+      const isLightnessAPercentage = match[2][match[2].length - 1] === '%';
+      const hue = parseInt(match[1]);
+      const alpha = parseFloat(match[4]) || 1;
+      let saturation, lightness;
+
+      if (isSaturationAPercentage) {
+        saturation = parseFloat(parseInt(match[2].slice(0, -1)) / 100);
+      } else {
+        saturation = parseFloat(match[2]);
+      }
+
+      if (isLightnessAPercentage) {
+        lightness = parseFloat(parseInt(match[3].slice(0, -1)) / 100);
+      } else {
+        lightness = parseFloat(match[3]);
+      }
+
+      if (
+        0 <= hue &&
+        hue <= 360 &&
+        0 <= saturation &&
+        saturation <= 1 &&
+        0 <= lightness &&
+        lightness <= 1 &&
+        0 <= alpha &&
+        alpha <= 1
+      ) {
+        return true;
+      }
     }
 
     // no match found for any format
