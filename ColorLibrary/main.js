@@ -7,8 +7,8 @@ class Color {
     this.regexRgba =
       /^rgba?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
 
-    console.log(this.validateInput(input));
-    // this.validateInput(input);
+    // console.log(this.validateInput(input));
+    this.validateInput(input);
     // this.rgba = this.parseRGBA(input);
   }
 
@@ -18,10 +18,28 @@ class Color {
       return true;
     }
 
-    // /^rgba?\s*\(?\s*\d{1,3}\s*,?\s*\d{1,3}\s*,?\s*\d{1,3}(?:\s*,?\s*(?:0?\.\d+|1(?:\.0)?))?\s*\)?$/
+    // RGB and RGBA: rgb(255, 0, 0), rgba(255, 0, 0, .5)
     if (this.regexRgba.test(color)) {
-      return true;
+      const match = color.match(this.regexRgba);
+      const red = parseInt(match[1]);
+      const green = parseInt(match[2]);
+      const blue = parseInt(match[3]);
+      const alpha = parseFloat(match[4]) || 1;
+
+      if (
+        0 <= red &&
+        red <= 255 &&
+        0 <= green &&
+        green <= 255 &&
+        0 <= blue &&
+        blue <= 255 &&
+        0 <= alpha &&
+        alpha <= 1
+      ) {
+        return true;
+      }
     }
+
     // no match found for any format
     return false;
   }
