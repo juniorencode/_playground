@@ -9,8 +9,7 @@ class Color {
     this.regexHsxa =
       /^(hs(?:l|b|v)a?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
 
-    this.rgba = null;
-    // console.log(this.validateInput(input));
+    this.rgba = { r: 0, g: 0, b: 0, a: 1 };
     this.validateInput(input);
     // this.rgba = this.parseRGBA(input);
   }
@@ -38,7 +37,7 @@ class Color {
       const red = parseInt(matchRgba[2]);
       const green = parseInt(matchRgba[3]);
       const blue = parseInt(matchRgba[4]);
-      const alpha = matchHsxa[5] && parseFloat(matchHsxa[5]);
+      const alpha = matchRgba[5] && parseFloat(matchRgba[5]);
 
       if (type === 'rgb' && typeof alpha === 'number')
         throw 'Invalid RGB: must not include a fourth component.';
@@ -276,13 +275,13 @@ class Color {
   }
 
   rgbaToHsba(rgba) {
-    const { h, s, b } = this.rgbToHs(this.rgba);
-    return { h, s, b, a: rgba.a };
+    const { h, s, v } = this.rgbToHs(this.rgba);
+    return { h, s, b: v, a: rgba.a };
   }
 
   rgbaToHsva(rgba) {
-    const { h, s, b } = this.rgbToHs(this.rgba);
-    return { h, s, v: b, a: rgba.a };
+    const { h, s, v } = this.rgbToHs(this.rgba);
+    return { h, s, v, a: rgba.a };
   }
 
   // convert to object
