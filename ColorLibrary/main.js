@@ -122,7 +122,7 @@ class Color {
       if (this.type.includes('hsl'))
         this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
 
-      if (this.type.includes('hsv'))
+      if (this.type.includes('hsb') || this.type.includes('hsv'))
         this.rgba = { ...this.hsvToRgb(hue, saturation, value), a: alpha | 1 };
     }
 
