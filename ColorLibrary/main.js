@@ -121,6 +121,9 @@ class Color {
 
       if (this.type.includes('hsl'))
         this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
+
+      if (this.type.includes('hsv'))
+        this.rgba = { ...this.hsvToRgb(hue, saturation, value), a: alpha | 1 };
     }
 
     // no match found for any format
@@ -163,6 +166,31 @@ class Color {
     r = Math.round(r * 255);
     g = Math.round(g * 255);
     b = Math.round(b * 255);
+
+    return { r, g, b };
+  }
+
+  hsvToRgb(h, s, v) {
+    let r, g, b;
+
+    const hue = h / 360;
+    const saturation = s / 100;
+    const value = v / 100;
+
+    const c = value * saturation;
+    const x = c * (1 - Math.abs((hue % 2) - 1));
+    const m = value - c;
+
+    if (hue >= 0 && hue < 1) [r, g, b] = [c, x, 0];
+    else if (hue >= 1 && hue < 2) [r, g, b] = [x, c, 0];
+    else if (hue >= 2 && hue < 3) [r, g, b] = [0, c, x];
+    else if (hue >= 3 && hue < 4) [r, g, b] = [0, x, c];
+    else if (hue >= 4 && hue < 5) [r, g, b] = [x, 0, c];
+    else [r, g, b] = [c, 0, x];
+
+    r = Math.round((r + m) * 255);
+    g = Math.round((g + m) * 255);
+    b = Math.round((b + m) * 255);
 
     return { r, g, b };
   }
