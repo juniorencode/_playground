@@ -73,7 +73,6 @@ class Color {
     // hsxa(0, 100%, 50%, .5)
     const matchHsxa = color.match(this.regexHsxa);
     if (matchHsxa) {
-      console.log(matchHsxa);
       const isSatPercent = matchHsxa[3].includes('%');
       const isValPercent = matchHsxa[4].includes('%');
       const type = matchHsxa[1].toLowerCase();
@@ -119,6 +118,9 @@ class Color {
 
       if (0 > alpha || alpha > 1)
         throw 'Invalid color: the transparency value is outside the valid range (0-1).';
+
+      if (this.type.includes('hsl'))
+        this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
     }
 
     // no match found for any format
@@ -135,6 +137,34 @@ class Color {
     const blue = parseInt(hex.substring(4, 6), 16);
 
     return { r: red, g: green, b: blue, a: 1 };
+  }
+
+  hslToRgb(h, s, l) {
+    let r, g, b;
+
+    const hue = h / 360;
+    const saturation = s / 100;
+    const lightness = l / 100;
+
+    if (saturation === 0) {
+      r = g = b = lightness;
+    } else {
+      const q =
+        lightness < 0.5
+          ? lightness * (1 + saturation)
+          : lightness + saturation - lightness * saturation;
+      const p = 2 * lightness - q;
+
+      r = hueToRgb(p, q, hue + 1 / 3);
+      g = hueToRgb(p, q, hue);
+      b = hueToRgb(p, q, hue - 1 / 3);
+    }
+
+    r = Math.round(r * 255);
+    g = Math.round(g * 255);
+    b = Math.round(b * 255);
+
+    return { r, g, b };
   }
 
   rgbToHex(rgb) {
@@ -340,5 +370,14 @@ class Color {
 
   numbToHex(numb) {
     return numb.toString(16).padStart(2, '0');
+  }
+
+  hueToRgb(p, q, t) {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
   }
 }
