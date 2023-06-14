@@ -133,15 +133,21 @@
       // new Color('#369C'); // false
       // new Color('369C'); // false
 
-      // new Color('rgb (255, 0, 0)'); // true
-      // new Color('rgba (255, 0, 0, .5)'); // true
-      // new Color('rgb 255 0 0'); // true
-      // new Color('rgba 255 0 0 .5'); // true
+      new Color('rgb (255, 0, 0)'); // true
+      new Color('rgba (255, 0, 0, .5)'); // true
+      new Color('rgb 255 0 0'); // true
+      new Color('rgba 255 0 0 .5'); // true
       // new Color({ r: 255, g: 0, b: 0 }); // true
       // new Color({ r: 255, g: 0, b: 0, a: 0.5 }); //true
-      // new Color('rgba (255, 0, 0, .)'); // false
-      // new Color('rgba (255, 0, , .5)'); // false
-      // new Color('rgb 255 0 '); // false
+      // new Color('rgb(255, 0, 0, 1)'); // false
+      // new Color('rgba(255, 0, 0)'); // false
+      // new Color('rgb(400, 0, 0)'); // false
+      // new Color('rgb(255, 400, 0)'); // false
+      // new Color('rgb(255, 0, 400)'); // false
+      // new Color('rgba(255, 0, 0, 2)'); // false
+      new Color('rgba (255, 0, 0, .)'); // false
+      new Color('rgba (255, 0, , .5)'); // false
+      new Color('rgb 255 0 '); // false
 
       // new Color('hsl(0, 100%, 50%)'); // true
       // new Color('hsla(0, 100%, 50%, .5)'); // true
@@ -173,19 +179,19 @@
       // new Color('hsba(0, 100%, 100%, .)'); // false
       // new Color('hsb 0 1'); // false
 
-      new Color('hsv(0, 100%, 50%)');
-      new Color('hsva(0, 100%, 50%, .5)');
-      new Color('hsv(0, 1, .5)');
-      new Color('hsva(0, 1, .5, .5)');
-      new Color('hsv 0 1 .5');
-      new Color('hsv 0 1 .5 .5');
+      // new Color('hsv(0, 100%, 50%)');
+      // new Color('hsva(0, 100%, 50%, .5)');
+      // new Color('hsv(0, 1, .5)');
+      // new Color('hsva(0, 1, .5, .5)');
+      // new Color('hsv 0 1 .5');
+      // new Color('hsv 0 1 .5 .5');
       // new Color({ h: 0, s: 100, v: 50 });
       // new Color({ h: 0, s: 100, v: 50, a: 0.5 });
       // new Color({ h: 0, s: 1, v: 0.5 });
       // new Color({ h: 0, s: 1, v: 0.5, a: 0.5 });
-      new Color('hsva(0, 100%, %, .5)'); // false
-      new Color('hsva(0, 100%, 100%, .)'); // false
-      new Color('hsv 0 1'); // false
+      // new Color('hsva(0, 100%, %, .5)'); // false
+      // new Color('hsva(0, 100%, 100%, .)'); // false
+      // new Color('hsv 0 1'); // false
     </script>
   </body>
 </html>

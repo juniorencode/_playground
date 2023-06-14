@@ -1,11 +1,11 @@
 class Color {
   constructor(input) {
     if (!input || input.trim() === '')
-      throw new Error('Invalid color: color cannot be empty or null.');
+      throw 'Invalid color: color cannot be empty or null.';
 
     this.regexHex = /^#?[a-f0-9]{3}(?:[a-f0-9]{3})?$/i;
     this.regexRgba =
-      /^rgba?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
+      /^(rgba?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
     this.regexHsla =
       /^hsla?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
     this.regexHsba =
@@ -13,37 +13,51 @@ class Color {
     this.regexHsva =
       /^hsva?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
 
-    console.log(this.validateInput(input));
-    // this.validateInput(input);
+    // console.log(this.validateInput(input));
+    this.validateInput(input);
     // this.rgba = this.parseRGBA(input);
   }
 
   validateInput(color) {
-    // hexadecimal: #000, #0000, #000000
+    // Hexadecimal:
+    // #000
+    // #000000
     if (this.regexHex.test(color)) {
       return true;
     }
 
-    // RGB and RGBA: rgb(255, 0, 0), rgba(255, 0, 0, .5)
-    if (this.regexRgba.test(color)) {
-      const match = color.match(this.regexRgba);
-      const red = parseInt(match[1]);
-      const green = parseInt(match[2]);
-      const blue = parseInt(match[3]);
-      const alpha = parseFloat(match[4]) || 1;
+    // RGB and RGBA:
+    // rgb 255 0 0
+    // rgb(255, 0, 0)
+    // rgba 255 0 0 .5
+    // rgba(255, 0, 0, .5)
+    const matchRgba = color.match(this.regexRgba);
+    if (matchRgba) {
+      const type = matchRgba[1].toLowerCase();
+      const red = parseInt(matchRgba[2]);
+      const green = parseInt(matchRgba[3]);
+      const blue = parseInt(matchRgba[4]);
+      const alpha = parseFloat(matchRgba[5]);
 
-      if (
-        0 <= red &&
-        red <= 255 &&
-        0 <= green &&
-        green <= 255 &&
-        0 <= blue &&
-        blue <= 255 &&
-        0 <= alpha &&
-        alpha <= 1
-      ) {
-        return true;
-      }
+      if (type === 'rgb' && alpha)
+        throw 'Invalid RGB: must not include a fourth component.';
+
+      if (type === 'rgba' && !alpha)
+        throw 'Invalid RGBA: must include a fourth component.';
+
+      if (0 > red || red > 255)
+        throw 'Invalid color: red color is out of valid range (0-255).';
+
+      if (0 > green || green > 255)
+        throw 'Invalid color: green color is out of valid range (0-255).';
+
+      if (0 > blue || blue > 255)
+        throw 'Invalid color: blue color is out of valid range (0-255).';
+
+      if (0 > alpha || alpha > 1)
+        throw 'Invalid color: the transparency value is outside the valid range (0-1).';
+
+      return true;
     }
 
     // HSL and HSLA: hsl(0, 100%, 50%), hsla(0, 100%, 50%, .5)
@@ -161,7 +175,7 @@ class Color {
     const rgbaValues = string.split(',');
 
     if (rgbaValues.length < 2 && rgbaValues.length > 3)
-      throw new Error('Invalid color: values are missing or incorrect.');
+      throw 'Invalid color: values are missing or incorrect.';
 
     const r = parseInt(rgbaValues[0].trim());
     const g = parseInt(rgbaValues[1].trim());
@@ -169,15 +183,15 @@ class Color {
     const a = parseFloat(rgbaValues[3]?.trim()) || 1;
 
     if (isNaN(r) || isNaN(g) || isNaN(b) || isNaN(a)) {
-      throw new Error('Invalid color: values must be numeric.');
+      throw 'Invalid color: values must be numeric.';
     }
 
     if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-      throw new Error('Invalid color: values must be between 0 and 255.');
+      throw 'Invalid color: values must be between 0 and 255.';
     }
 
     if (a < 0 || a > 1) {
-      throw new Error('Invalid color: alpha value must be between 0 and 1.');
+      throw 'Invalid color: alpha value must be between 0 and 1.';
     }
 
     return { r, g, b, a };
