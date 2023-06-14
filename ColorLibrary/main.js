@@ -6,12 +6,14 @@ class Color {
     this.regexHex = /^#?[a-f0-9]{3}(?:[a-f0-9]{3})?$/i;
     this.regexRgba =
       /^(rgba?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
-    this.regexHsla =
-      /^hsla?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
-    this.regexHsba =
-      /^hsba?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
-    this.regexHsva =
-      /^hsva?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
+    this.regexHsxa =
+      /^(hsla?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
+    // this.regexHsla =
+    //   /^hsla?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
+    // this.regexHsba =
+    //   /^hsba?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
+    // this.regexHsva =
+    //   /^hsva?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
 
     // console.log(this.validateInput(input));
     this.validateInput(input);
@@ -22,9 +24,7 @@ class Color {
     // Hexadecimal:
     // #000
     // #000000
-    if (this.regexHex.test(color)) {
-      return true;
-    }
+    if (this.regexHex.test(color)) return true;
 
     // RGB and RGBA:
     // rgb 255 0 0
@@ -37,12 +37,12 @@ class Color {
       const red = parseInt(matchRgba[2]);
       const green = parseInt(matchRgba[3]);
       const blue = parseInt(matchRgba[4]);
-      const alpha = parseFloat(matchRgba[5]);
+      const alpha = matchHsxa[5] && parseFloat(matchHsxa[5]);
 
-      if (type === 'rgb' && alpha)
+      if (type === 'rgb' && typeof alpha === 'number')
         throw 'Invalid RGB: must not include a fourth component.';
 
-      if (type === 'rgba' && !alpha)
+      if (type === 'rgba' && !typeof alpha === 'number')
         throw 'Invalid RGBA: must include a fourth component.';
 
       if (0 > red || red > 255)
@@ -60,109 +60,62 @@ class Color {
       return true;
     }
 
-    // HSL and HSLA: hsl(0, 100%, 50%), hsla(0, 100%, 50%, .5)
-    if (this.regexHsla.test(color)) {
-      const match = color.match(this.regexHsla);
-      const isSaturationAPercentage = match[2][match[2].length - 1] === '%';
-      const isLightnessAPercentage = match[2][match[2].length - 1] === '%';
-      const hue = parseInt(match[1]);
-      const alpha = parseFloat(match[4]) || 1;
-      let saturation, lightness;
-
-      if (isSaturationAPercentage) {
-        saturation = parseFloat(parseInt(match[2].slice(0, -1)) / 100);
-      } else {
-        saturation = parseFloat(match[2]);
-      }
-
-      if (isLightnessAPercentage) {
-        lightness = parseFloat(parseInt(match[3].slice(0, -1)) / 100);
-      } else {
-        lightness = parseFloat(match[3]);
-      }
-
-      if (
-        0 <= hue &&
-        hue <= 360 &&
-        0 <= saturation &&
-        saturation <= 1 &&
-        0 <= lightness &&
-        lightness <= 1 &&
-        0 <= alpha &&
-        alpha <= 1
-      ) {
-        return true;
-      }
-    }
-
-    // HSB and HSBA: hsb(0, 100%, 50%), hsba(0, 100%, 50%, .5)
-    if (this.regexHsba.test(color)) {
-      const match = color.match(this.regexHsba);
-      const isSaturationAPercentage = match[2][match[2].length - 1] === '%';
-      const isBrightnessAPercentage = match[2][match[2].length - 1] === '%';
-      const hue = parseInt(match[1]);
-      const alpha = parseFloat(match[4]) || 1;
-      let saturation, brightness;
-
-      if (isSaturationAPercentage) {
-        saturation = parseFloat(parseInt(match[2].slice(0, -1)) / 100);
-      } else {
-        saturation = parseFloat(match[2]);
-      }
-
-      if (isBrightnessAPercentage) {
-        brightness = parseFloat(parseInt(match[3].slice(0, -1)) / 100);
-      } else {
-        brightness = parseFloat(match[3]);
-      }
-
-      if (
-        0 <= hue &&
-        hue <= 360 &&
-        0 <= saturation &&
-        saturation <= 1 &&
-        0 <= brightness &&
-        brightness <= 1 &&
-        0 <= alpha &&
-        alpha <= 1
-      ) {
-        return true;
-      }
-    }
-
-    // HSV and HSVA: hsv(0, 100%, 50%), hsva(0, 100%, 50%, .5)
-    if (this.regexHsva.test(color)) {
-      const match = color.match(this.regexHsva);
-      const isSaturationAPercentage = match[2][match[2].length - 1] === '%';
-      const isValueAPercentage = match[2][match[2].length - 1] === '%';
-      const hue = parseInt(match[1]);
-      const alpha = parseFloat(match[4]) || 1;
+    // HSX and HSXA:
+    // hsx 0 1 5.5
+    // hsx 0 100% 50%
+    // hsx(0, 1, .5)
+    // hsx(0, 100%, 50%)
+    // hsxa 0 1 .5 .5
+    // hsxa 0 100% 50% .5
+    // hsxa(0, 100%, 50%, .5)
+    const matchHsxa = color.match(this.regexHsxa);
+    if (matchHsxa) {
+      console.log(matchHsxa);
+      const isSatPercent = matchHsxa[3].includes('%');
+      const isValPercent = matchHsxa[4].includes('%');
+      const type = matchHsxa[1].toLowerCase();
+      const hue = parseInt(matchHsxa[2]);
+      const alpha = matchHsxa[5] && parseFloat(matchHsxa[5]);
       let saturation, value;
 
-      if (isSaturationAPercentage) {
-        saturation = parseFloat(parseInt(match[2].slice(0, -1)) / 100);
+      if (!type.includes('a') && typeof alpha === 'number')
+        throw `Invalid ${type.toUpperCase()}: must not include a fourth component.`;
+
+      if (type.includes('a') && !typeof alpha === 'number')
+        throw `Invalid ${type.toUpperCase()}: must include a fourth component.`;
+
+      if (0 > hue || hue > 360)
+        throw 'Invalid color: hue is out of valid range (0-360).';
+
+      if (isSatPercent) {
+        saturation = parseInt(matchHsxa[3]);
+        if (0 > saturation || saturation > 100)
+          throw 'Invalid color: saturation is out of valid range (0-100)';
+        saturation = parseFloat(saturation / 100);
       } else {
-        saturation = parseFloat(match[2]);
+        saturation = parseFloat(matchHsxa[3]);
+        if (0 > saturation || saturation > 1)
+          throw 'Invalid color: saturation is out of valid range (0-1)';
       }
 
-      if (isValueAPercentage) {
-        value = parseFloat(parseInt(match[3].slice(0, -1)) / 100);
+      const name = type.includes('hsl')
+        ? 'lightness'
+        : type.includes('hsb')
+        ? 'brightness'
+        : 'value';
+      if (isValPercent) {
+        value = parseInt(matchHsxa[4]);
+        if (0 > value || value > 100)
+          throw `Invalid color: ${name} is out of valid range (0-100)`;
+        value = parseFloat(value / 100);
       } else {
-        value = parseFloat(match[3]);
+        value = parseFloat(matchHsxa[4]);
+        if (0 > value || value > 1)
+          throw `Invalid color: ${name} is out of valid range (0-1)`;
       }
 
-      if (
-        0 <= hue &&
-        hue <= 360 &&
-        0 <= saturation &&
-        saturation <= 1 &&
-        0 <= value &&
-        value <= 1 &&
-        0 <= alpha &&
-        alpha <= 1
-      ) {
-        return true;
-      }
+      if (0 > alpha || alpha > 1)
+        throw 'Invalid color: the transparency value is outside the valid range (0-1).';
     }
 
     // no match found for any format
