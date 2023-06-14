@@ -10,7 +10,7 @@ class Color {
       /^(hs(?:l|b|v)a?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
 
     this.rgba = { r: 0, g: 0, b: 0, a: 1 };
-    this.meta.format = this.validateInput(input);
+    this.format = this.validateInput(input) | null;
     // this.rgba = this.parseRGBA(input);
   }
 
