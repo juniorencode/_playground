@@ -5,12 +5,12 @@ class Color {
 
     this.regexHex = /^(#?)([a-f0-9]{3}(?:[a-f0-9]{3})?)$/i;
     this.regexRgba =
-      /^(rgba?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
+      /^(rgba?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.?\d+|0|1))?\)?\s*$/i;
     this.regexHsxa =
       /^(hs(?:l|b|v)a?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
 
     this.rgba = { r: 0, g: 0, b: 0, a: 1 };
-    this.validateInput(input);
+    this.meta.format = this.validateInput(input);
     // this.rgba = this.parseRGBA(input);
   }
 
@@ -23,7 +23,7 @@ class Color {
     const matchHex = color.match(this.regexHex);
     if (matchHex) {
       this.rgba = this.hexToRgb(matchHex[2]);
-      return true;
+      return 'hex';
     }
 
     // RGB and RGBA:
@@ -32,6 +32,7 @@ class Color {
     // rgba 255 0 0 .5
     // rgba(255, 0, 0, .5)
     const matchRgba = color.match(this.regexRgba);
+    console.log(matchRgba);
     if (matchRgba) {
       const type = matchRgba[1].toLowerCase();
       const red = parseInt(matchRgba[2]);
@@ -42,7 +43,7 @@ class Color {
       if (type === 'rgb' && typeof alpha === 'number')
         throw 'Invalid RGB: must not include a fourth component.';
 
-      if (type === 'rgba' && !typeof alpha === 'number')
+      if (type === 'rgba' && typeof alpha !== 'number')
         throw 'Invalid RGBA: must include a fourth component.';
 
       if (0 > red || red > 255)
@@ -59,7 +60,7 @@ class Color {
 
       this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
 
-      return true;
+      return type;
     }
 
     // HSX and HSXA:
@@ -82,7 +83,7 @@ class Color {
       if (!type.includes('a') && typeof alpha === 'number')
         throw `Invalid ${type.toUpperCase()}: must not include a fourth component.`;
 
-      if (type.includes('a') && !typeof alpha === 'number')
+      if (type.includes('a') && typeof alpha !== 'number')
         throw `Invalid ${type.toUpperCase()}: must include a fourth component.`;
 
       if (0 > hue || hue > 360)
@@ -123,10 +124,12 @@ class Color {
 
       if (this.type.includes('hsb') || this.type.includes('hsv'))
         this.rgba = { ...this.hsvToRgb(hue, saturation, value), a: alpha | 1 };
+
+      return type;
     }
 
     // no match found for any format
-    return false;
+    throw 'Invalid color: the color format is incorrect or unknown.';
   }
 
   // convert color
