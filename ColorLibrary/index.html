@@ -182,6 +182,13 @@
       // new Color({ h: 0, s: 100, b: 50, a: 0.5 });
       // new Color({ h: 0, s: 1, b: 0.5 });
       // new Color({ h: 0, s: 1, b: 0.5, a: 0.5 });
+      // new Color('hsb(0, 100%, 100%, .5)'); // false
+      // new Color('hsba(0, 100%, 100%)'); // false
+      // new Color('hsb(400, 100%, 100%)'); // false
+      // new Color('hsb(0, 200%, 100%)'); // false
+      // new Color('hsb(0, 2, 100%)'); // false
+      // new Color('hsb(0, 100%, 200%)'); // false
+      // new Color('hsb(0, 100%, 2)'); // false
       // new Color('hsba(0, 100%, %, .5)'); // false
       // new Color('hsba(0, 100%, 100%, .)'); // false
       // new Color('hsb 0 1'); // false
@@ -196,6 +203,13 @@
       // new Color({ h: 0, s: 100, v: 50, a: 0.5 });
       // new Color({ h: 0, s: 1, v: 0.5 });
       // new Color({ h: 0, s: 1, v: 0.5, a: 0.5 });
+      // new Color('hsv(0, 100%, 100%, .5)'); // false
+      // new Color('hsva(0, 100%, 100%)'); // false
+      // new Color('hsv(400, 100%, 100%)'); // false
+      // new Color('hsv(0, 200%, 100%)'); // false
+      // new Color('hsv(0, 2, 100%)'); // false
+      // new Color('hsv(0, 100%, 200%)'); // false
+      // new Color('hsv(0, 100%, 2)'); // false
       // new Color('hsva(0, 100%, %, .5)'); // false
       // new Color('hsva(0, 100%, 100%, .)'); // false
       // new Color('hsv 0 1'); // false
