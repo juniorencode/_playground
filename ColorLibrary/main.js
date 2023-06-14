@@ -3,12 +3,13 @@ class Color {
     if (!input || input.trim() === '')
       throw 'Invalid color: color cannot be empty or null.';
 
-    this.regexHex = /^#?[a-f0-9]{3}(?:[a-f0-9]{3})?$/i;
+    this.regexHex = /^(#?)([a-f0-9]{3}(?:[a-f0-9]{3})?)$/i;
     this.regexRgba =
       /^(rgba?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
     this.regexHsxa =
       /^(hs(?:l|b|v)a?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
 
+    this.rgba = null;
     // console.log(this.validateInput(input));
     this.validateInput(input);
     // this.rgba = this.parseRGBA(input);
@@ -16,9 +17,15 @@ class Color {
 
   validateInput(color) {
     // Hexadecimal:
+    // 000
     // #000
+    // 000000
     // #000000
-    if (this.regexHex.test(color)) return true;
+    const matchHex = color.match(this.regexHex);
+    if (matchHex) {
+      this.rgba = this.hexToRgb(matchHex[2]);
+      return true;
+    }
 
     // RGB and RGBA:
     // rgb 255 0 0
@@ -116,35 +123,18 @@ class Color {
     return false;
   }
 
-  parseRGBA(string) {
-    string = string.replace('rgba(', '').replace(')', '');
+  // convert color
+  hexToRgb(hex) {
+    if (hex.length === 3)
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
 
-    const rgbaValues = string.split(',');
+    const red = parseInt(hex.substring(0, 2), 16);
+    const green = parseInt(hex.substring(2, 4), 16);
+    const blue = parseInt(hex.substring(4, 6), 16);
 
-    if (rgbaValues.length < 2 && rgbaValues.length > 3)
-      throw 'Invalid color: values are missing or incorrect.';
-
-    const r = parseInt(rgbaValues[0].trim());
-    const g = parseInt(rgbaValues[1].trim());
-    const b = parseInt(rgbaValues[2].trim());
-    const a = parseFloat(rgbaValues[3]?.trim()) || 1;
-
-    if (isNaN(r) || isNaN(g) || isNaN(b) || isNaN(a)) {
-      throw 'Invalid color: values must be numeric.';
-    }
-
-    if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-      throw 'Invalid color: values must be between 0 and 255.';
-    }
-
-    if (a < 0 || a > 1) {
-      throw 'Invalid color: alpha value must be between 0 and 1.';
-    }
-
-    return { r, g, b, a };
+    return { r: red, g: green, b: blue, a: 1 };
   }
 
-  // convert color
   rgbToHex(rgb) {
     const { r, g, b } = rgb;
 
@@ -171,10 +161,10 @@ class Color {
     const max = Math.max(red, green, blue);
     const min = Math.min(red, green, blue);
     const delta = max - min;
-    let h, s, l, b;
+    let h, s, l, v;
 
     l = (max + min) / 2;
-    b = max;
+    v = max;
 
     if (delta === 0) h = 0;
     else {
@@ -193,7 +183,7 @@ class Color {
       h: Math.round(h),
       s: Math.round(s * 100) / 100,
       l: Math.round(l * 100) / 100,
-      b: Math.round(b * 100) / 100
+      v: Math.round(v * 100) / 100
     };
   }
 
@@ -203,13 +193,13 @@ class Color {
   }
 
   rgbToHsb(rgb) {
-    const { h, s, b } = this.rgbToHs(rgb);
-    return { h, s, b };
+    const { h, s, v } = this.rgbToHs(rgb);
+    return { h, s, b: v };
   }
 
   rgbToHsv(rgb) {
-    const { h, s, b } = this.rgbToHs(rgb);
-    return { h, s, v: b };
+    const { h, s, v } = this.rgbToHs(rgb);
+    return { h, s, v };
   }
 
   rgbaToHex(rgba) {
