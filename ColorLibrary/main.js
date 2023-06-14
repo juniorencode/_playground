@@ -6,9 +6,11 @@ class Color {
     this.regexHex = /^#?[a-f0-9]{3}(?:[a-f0-9]{3})?$/i;
     this.regexRgba =
       /^rgba?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
+    this.regexHsla =
+      /^hsla?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
 
-    // console.log(this.validateInput(input));
-    this.validateInput(input);
+    console.log(this.validateInput(input));
+    // this.validateInput(input);
     // this.rgba = this.parseRGBA(input);
   }
 
@@ -38,6 +40,11 @@ class Color {
       ) {
         return true;
       }
+    }
+
+    // HSL and HSLA: hsl(0, 100%, 50%), hsla(0, 100%, 50%, .5)
+    if (this.regexHsla.test(color)) {
+      return true;
     }
 
     // no match found for any format
