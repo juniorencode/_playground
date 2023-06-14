@@ -10,6 +10,8 @@ class Color {
       /^hsla?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
     this.regexHsba =
       /^hsba?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
+    this.regexHsva =
+      /^hsva?\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.\d+|0|1))?\)?\s*$/i;
 
     console.log(this.validateInput(input));
     // this.validateInput(input);
@@ -107,6 +109,41 @@ class Color {
         saturation <= 1 &&
         0 <= brightness &&
         brightness <= 1 &&
+        0 <= alpha &&
+        alpha <= 1
+      ) {
+        return true;
+      }
+    }
+
+    // HSV and HSVA: hsv(0, 100%, 50%), hsva(0, 100%, 50%, .5)
+    if (this.regexHsva.test(color)) {
+      const match = color.match(this.regexHsva);
+      const isSaturationAPercentage = match[2][match[2].length - 1] === '%';
+      const isValueAPercentage = match[2][match[2].length - 1] === '%';
+      const hue = parseInt(match[1]);
+      const alpha = parseFloat(match[4]) || 1;
+      let saturation, value;
+
+      if (isSaturationAPercentage) {
+        saturation = parseFloat(parseInt(match[2].slice(0, -1)) / 100);
+      } else {
+        saturation = parseFloat(match[2]);
+      }
+
+      if (isValueAPercentage) {
+        value = parseFloat(parseInt(match[3].slice(0, -1)) / 100);
+      } else {
+        value = parseFloat(match[3]);
+      }
+
+      if (
+        0 <= hue &&
+        hue <= 360 &&
+        0 <= saturation &&
+        saturation <= 1 &&
+        0 <= value &&
+        value <= 1 &&
         0 <= alpha &&
         alpha <= 1
       ) {
