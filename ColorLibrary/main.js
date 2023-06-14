@@ -58,6 +58,8 @@ class Color {
       if (0 > alpha || alpha > 1)
         throw 'Invalid color: the transparency value is outside the valid range (0-1).';
 
+      this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
+
       return true;
     }
 
