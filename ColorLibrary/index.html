@@ -10,7 +10,9 @@
     <main class="container">
       <section class="module">
         <div class="header">
-          <label for="rgba">RGBA</label>
+          <label for="rgba"
+            >HEX, CYMK, RGB, RGBA, HSL, HSLA, HSB, HSBA, HSV, HSVA</label
+          >
           <input type="text" id="rgba" value="rgba(0, 0, 0, 1)" />
         </div>
         <div class="list">
@@ -59,69 +61,33 @@
     <script src="./main.js"></script>
     <script>
       const rgbaInput = document.querySelector('#rgba');
-
-      const hexCode = document.querySelector('#hexcode');
-      const hexColor = document.querySelector('#hexcolor');
-
-      const cmykCode = document.querySelector('#cmykcode');
-      const cmykColor = document.querySelector('#cmykcolor');
-
-      const rgbCode = document.querySelector('#rgbcode');
-      const rgbColor = document.querySelector('#rgbcolor');
-
-      const hslCode = document.querySelector('#hslcode');
-      const hslColor = document.querySelector('#hslcolor');
-
-      const hsbCode = document.querySelector('#hsbcode');
-      const hsbColor = document.querySelector('#hsbcolor');
-
-      const hsvCode = document.querySelector('#hsvcode');
-      const hsvColor = document.querySelector('#hsvcolor');
-
-      const rgbaCode = document.querySelector('#rgbacode');
-      const rgbaColor = document.querySelector('#rgbacolor');
-
-      const hslaCode = document.querySelector('#hslacode');
-      const hslaColor = document.querySelector('#hslacolor');
-
-      const hsbaCode = document.querySelector('#hsbacode');
-      const hsbaColor = document.querySelector('#hsbacolor');
-
-      const hsvaCode = document.querySelector('#hsvacode');
-      const hsvaColor = document.querySelector('#hsvacolor');
+      const labels = [...document.querySelectorAll('.code')];
+      const colors = [...document.querySelectorAll('.color')];
 
       rgbaInput.addEventListener('input', () => {
         const color = new Color(rgbaInput.value);
 
-        hexCode.innerText = color.toHexString();
-        hexColor.style.backgroundColor = color.toHexString();
+        labels[0].innerText = color.toHexString();
+        labels[1].innerText = color.toCmykString();
+        labels[2].innerText = color.toRgbString();
+        labels[3].innerText = color.toHslString();
+        labels[4].innerText = color.toHsbString();
+        labels[5].innerText = color.toHsvString();
+        labels[6].innerText = color.toRgbaString();
+        labels[7].innerText = color.toHslaString();
+        labels[8].innerText = color.toHsbaString();
+        labels[9].innerText = color.toHsvaString();
 
-        cmykCode.innerText = color.toCmykString();
-        cmykColor.style.backgroundColor = color.toHexString();
-
-        rgbCode.innerText = color.toRgbString();
-        rgbColor.style.backgroundColor = color.toRgbString();
-
-        hslCode.innerText = color.toHslString();
-        hslColor.style.backgroundColor = color.toHslString();
-
-        hsbCode.innerText = color.toHsbString();
-        hsbColor.style.backgroundColor = color.toHslString();
-
-        hsvCode.innerText = color.toHsvString();
-        hsvColor.style.backgroundColor = color.toHslString();
-
-        rgbaCode.innerText = color.toRgbaString();
-        rgbaColor.style.backgroundColor = color.toRgbaString();
-
-        hslaCode.innerText = color.toHslaString();
-        hslaColor.style.backgroundColor = color.toHslaString();
-
-        hsbaCode.innerText = color.toHsbaString();
-        hsbaColor.style.backgroundColor = color.toHslaString();
-
-        hsvaCode.innerText = color.toHsvaString();
-        hsvaColor.style.backgroundColor = color.toHslaString();
+        colors[0].style.backgroundColor = color.toHexString();
+        colors[1].style.backgroundColor = color.toHexString();
+        colors[2].style.backgroundColor = color.toRgbString();
+        colors[3].style.backgroundColor = color.toHslString();
+        colors[4].style.backgroundColor = color.toHslString();
+        colors[5].style.backgroundColor = color.toHslString();
+        colors[6].style.backgroundColor = color.toRgbaString();
+        colors[7].style.backgroundColor = color.toRgbaString();
+        colors[8].style.backgroundColor = color.toRgbaString();
+        colors[9].style.backgroundColor = color.toRgbaString();
       });
 
       // Examples

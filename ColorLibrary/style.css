@@ -35,8 +35,10 @@ body {
 }
 
 .header label {
-  font-size: 1.2em;
-  letter-spacing: 0.25em;
+  font-size: 0.7em;
+  word-spacing: 0.2em;
+  font-weight: bold;
+  text-align: center;
 }
 
 .header input {
