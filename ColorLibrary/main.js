@@ -35,6 +35,28 @@ class Color {
       );
   }
 
+  validateCmyk(cyan, magenta, yellow, kblack) {
+    if (0 > cyan || cyan > 100)
+      throw new Error(
+        'Invalid color: cyan color is out of valid range (0-100).'
+      );
+
+    if (0 > magenta || magenta > 100)
+      throw new Error(
+        'Invalid color: magenta color is out of valid range (0-100).'
+      );
+
+    if (0 > yellow || yellow > 100)
+      throw new Error(
+        'Invalid color: yellow color is out of valid range (0-100).'
+      );
+
+    if (0 > kblack || kblack > 100)
+      throw new Error(
+        'Invalid color: black color is out of valid range (0-100).'
+      );
+  }
+
   validateObject(object) {
     // Hexadecimal:
     // { hex: '000' }
@@ -63,26 +85,7 @@ class Color {
       const yellow = object.y | object.Y;
       const kblack = object.k | object.K;
 
-      if (0 > cyan || cyan > 100)
-        throw new Error(
-          'Invalid color: cyan color is out of valid range (0-100).'
-        );
-
-      if (0 > magenta || magenta > 100)
-        throw new Error(
-          'Invalid color: magenta color is out of valid range (0-100).'
-        );
-
-      if (0 > yellow || yellow > 100)
-        throw new Error(
-          'Invalid color: yellow color is out of valid range (0-100).'
-        );
-
-      if (0 > kblack || kblack > 100)
-        throw new Error(
-          'Invalid color: black color is out of valid range (0-100).'
-        );
-
+      this.validateCmyk(cyan, magenta, yellow, kblack);
       this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
       return 'cmyk';
     }
@@ -201,28 +204,8 @@ class Color {
       const yellow = matchCmyk[3];
       const kblack = matchCmyk[4];
 
-      if (0 > cyan || cyan > 100)
-        throw new Error(
-          'Invalid color: cyan color is out of valid range (0-100).'
-        );
-
-      if (0 > magenta || magenta > 100)
-        throw new Error(
-          'Invalid color: magenta color is out of valid range (0-100).'
-        );
-
-      if (0 > yellow || yellow > 100)
-        throw new Error(
-          'Invalid color: yellow color is out of valid range (0-100).'
-        );
-
-      if (0 > kblack || kblack > 100)
-        throw new Error(
-          'Invalid color: black color is out of valid range (0-100).'
-        );
-
+      this.validateCmyk(cyan, magenta, yellow, kblack);
       this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
-
       return 'cmyk';
     }
 
