@@ -1,7 +1,7 @@
 class Color {
   constructor(input) {
     if (!input || input === null)
-      throw 'Invalid color: color cannot be empty or null.';
+      throw new Error('Invalid color: color cannot be empty or null.');
 
     this.input = input;
     this.rgba = { r: 0, g: 0, b: 0, a: 1 };
@@ -39,7 +39,9 @@ class Color {
       const hex = matchHex[2];
 
       if (hex.length !== 3 && hex.length !== 6)
-        throw 'make sure the hexadecimal code is 3 or 6 characters long';
+        throw new Error(
+          'make sure the hexadecimal code is 3 or 6 characters long'
+        );
 
       this.rgba = this.hexToRgb(hex);
       console.log(this.rgba);
@@ -60,16 +62,24 @@ class Color {
       const kblack = object.k | object.K;
 
       if (0 > cyan || cyan > 100)
-        throw 'Invalid color: cyan color is out of valid range (0-100).';
+        throw new Error(
+          'Invalid color: cyan color is out of valid range (0-100).'
+        );
 
       if (0 > magenta || magenta > 100)
-        throw 'Invalid color: magenta color is out of valid range (0-100).';
+        throw new Error(
+          'Invalid color: magenta color is out of valid range (0-100).'
+        );
 
       if (0 > yellow || yellow > 100)
-        throw 'Invalid color: yellow color is out of valid range (0-100).';
+        throw new Error(
+          'Invalid color: yellow color is out of valid range (0-100).'
+        );
 
       if (0 > kblack || kblack > 100)
-        throw 'Invalid color: black color is out of valid range (0-100).';
+        throw new Error(
+          'Invalid color: black color is out of valid range (0-100).'
+        );
 
       this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
 
@@ -90,16 +100,24 @@ class Color {
       const alpha = object.a | object.A;
 
       if (0 > red || red > 255)
-        throw 'Invalid color: red color is out of valid range (0-255).';
+        throw new Error(
+          'Invalid color: red color is out of valid range (0-255).'
+        );
 
       if (0 > green || green > 255)
-        throw 'Invalid color: green color is out of valid range (0-255).';
+        throw new Error(
+          'Invalid color: green color is out of valid range (0-255).'
+        );
 
       if (0 > blue || blue > 255)
-        throw 'Invalid color: blue color is out of valid range (0-255).';
+        throw new Error(
+          'Invalid color: blue color is out of valid range (0-255).'
+        );
 
       if (0 > alpha || alpha > 1)
-        throw 'Invalid color: the transparency value is outside the valid range (0-1).';
+        throw new Error(
+          'Invalid color: the transparency value is outside the valid range (0-1).'
+        );
 
       this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
 
@@ -123,10 +141,12 @@ class Color {
       const alpha = object.a | object.A;
 
       if (0 > hue || hue > 360)
-        throw 'Invalid color: hue is out of valid range (0-360).';
+        throw new Error('Invalid color: hue is out of valid range (0-360).');
 
       if (0 > saturation || saturation > 1)
-        throw 'Invalid color: saturation is out of valid range (0-1)';
+        throw new Error(
+          'Invalid color: saturation is out of valid range (0-1)'
+        );
 
       const name = type.includes('hsl')
         ? 'lightness'
@@ -134,10 +154,12 @@ class Color {
         ? 'brightness'
         : 'value';
       if (0 > value || value > 1)
-        throw `Invalid color: ${name} is out of valid range (0-1)`;
+        throw new Error(`Invalid color: ${name} is out of valid range (0-1)`);
 
       if (0 > alpha || alpha > 1)
-        throw 'Invalid color: the transparency value is outside the valid range (0-1).';
+        throw new Error(
+          'Invalid color: the transparency value is outside the valid range (0-1).'
+        );
 
       if (type.includes('hsl'))
         this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
@@ -160,7 +182,9 @@ class Color {
       const hex = matchHex[2];
 
       if (hex.length !== 3 && hex.length !== 6)
-        throw 'make sure the hexadecimal code is 3 or 6 characters long';
+        throw new Error(
+          'Invalid color: make sure the hexadecimal code is 3 or 6 characters long'
+        );
 
       this.rgba = this.hexToRgb(hex);
 
@@ -180,16 +204,24 @@ class Color {
       const kblack = matchCmyk[4];
 
       if (0 > cyan || cyan > 100)
-        throw 'Invalid color: cyan color is out of valid range (0-100).';
+        throw new Error(
+          'Invalid color: cyan color is out of valid range (0-100).'
+        );
 
       if (0 > magenta || magenta > 100)
-        throw 'Invalid color: magenta color is out of valid range (0-100).';
+        throw new Error(
+          'Invalid color: magenta color is out of valid range (0-100).'
+        );
 
       if (0 > yellow || yellow > 100)
-        throw 'Invalid color: yellow color is out of valid range (0-100).';
+        throw new Error(
+          'Invalid color: yellow color is out of valid range (0-100).'
+        );
 
       if (0 > kblack || kblack > 100)
-        throw 'Invalid color: black color is out of valid range (0-100).';
+        throw new Error(
+          'Invalid color: black color is out of valid range (0-100).'
+        );
 
       this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
 
@@ -210,22 +242,30 @@ class Color {
       const alpha = matchRgba[5] && parseFloat(matchRgba[5]);
 
       if (type === 'rgb' && typeof alpha === 'number')
-        throw 'Invalid RGB: must not include a fourth component.';
+        throw new Error('Invalid RGB: must not include a fourth component.');
 
       if (type === 'rgba' && typeof alpha !== 'number')
-        throw 'Invalid RGBA: must include a fourth component.';
+        throw new Error('Invalid RGBA: must include a fourth component.');
 
       if (0 > red || red > 255)
-        throw 'Invalid color: red color is out of valid range (0-255).';
+        throw new Error(
+          'Invalid color: red color is out of valid range (0-255).'
+        );
 
       if (0 > green || green > 255)
-        throw 'Invalid color: green color is out of valid range (0-255).';
+        throw new Error(
+          'Invalid color: green color is out of valid range (0-255).'
+        );
 
       if (0 > blue || blue > 255)
-        throw 'Invalid color: blue color is out of valid range (0-255).';
+        throw new Error(
+          'Invalid color: blue color is out of valid range (0-255).'
+        );
 
       if (0 > alpha || alpha > 1)
-        throw 'Invalid color: the transparency value is outside the valid range (0-1).';
+        throw new Error(
+          'Invalid color: the transparency value is outside the valid range (0-1).'
+        );
 
       this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
 
@@ -250,23 +290,31 @@ class Color {
       let saturation, value;
 
       if (!type.includes('a') && typeof alpha === 'number')
-        throw `Invalid ${type.toUpperCase()}: must not include a fourth component.`;
+        throw new Error(
+          `Invalid ${type.toUpperCase()}: must not include a fourth component.`
+        );
 
       if (type.includes('a') && typeof alpha !== 'number')
-        throw `Invalid ${type.toUpperCase()}: must include a fourth component.`;
+        throw new Error(
+          `Invalid ${type.toUpperCase()}: must include a fourth component.`
+        );
 
       if (0 > hue || hue > 360)
-        throw 'Invalid color: hue is out of valid range (0-360).';
+        throw new Error('Invalid color: hue is out of valid range (0-360).');
 
       if (isSatPercent) {
         saturation = parseInt(matchHsxa[3]);
         if (0 > saturation || saturation > 100)
-          throw 'Invalid color: saturation is out of valid range (0-100)';
+          throw new Error(
+            'Invalid color: saturation is out of valid range (0-100)'
+          );
         saturation = parseFloat(saturation / 100);
       } else {
         saturation = parseFloat(matchHsxa[3]);
         if (0 > saturation || saturation > 1)
-          throw 'Invalid color: saturation is out of valid range (0-1)';
+          throw new Error(
+            'Invalid color: saturation is out of valid range (0-1)'
+          );
       }
 
       const name = type.includes('hsl')
@@ -277,16 +325,20 @@ class Color {
       if (isValPercent) {
         value = parseInt(matchHsxa[4]);
         if (0 > value || value > 100)
-          throw `Invalid color: ${name} is out of valid range (0-100)`;
+          throw new Error(
+            `Invalid color: ${name} is out of valid range (0-100)`
+          );
         value = parseFloat(value / 100);
       } else {
         value = parseFloat(matchHsxa[4]);
         if (0 > value || value > 1)
-          throw `Invalid color: ${name} is out of valid range (0-1)`;
+          throw new Error(`Invalid color: ${name} is out of valid range (0-1)`);
       }
 
       if (0 > alpha || alpha > 1)
-        throw 'Invalid color: the transparency value is outside the valid range (0-1).';
+        throw new Error(
+          'Invalid color: the transparency value is outside the valid range (0-1).'
+        );
 
       if (type.includes('hsl'))
         this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
@@ -298,7 +350,7 @@ class Color {
     }
 
     // no match found for any format
-    throw 'Invalid color: the color format is incorrect or unknown.';
+    throw new Error('Invalid color: the color format is incorrect or unknown.');
   }
 
   // convert color
@@ -341,9 +393,9 @@ class Color {
           : lightness + saturation - lightness * saturation;
       const p = 2 * lightness - q;
 
-      r = hueToRgb(p, q, hue + 1 / 3);
-      g = hueToRgb(p, q, hue);
-      b = hueToRgb(p, q, hue - 1 / 3);
+      r = this.hueToRgb(p, q, hue + 1 / 3);
+      g = this.hueToRgb(p, q, hue);
+      b = this.hueToRgb(p, q, hue - 1 / 3);
     }
 
     r = Math.round(r * 255);
