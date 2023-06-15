@@ -28,33 +28,35 @@ class Color {
     return 'rgba';
   }
 
+  validateHex(hex) {
+    if (hex.length !== 3 && hex.length !== 6)
+      throw new Error(
+        'Invalid color: make sure the hexadecimal code is 3 or 6 characters long'
+      );
+  }
+
   validateObject(object) {
     // Hexadecimal:
     // { hex: '000' }
     // { hex: '#000' }
     // { hex: '000000' }
     // { hex: '#000000' }
-    if (object.hex !== undefined) {
+    if (this.hasAttr(object, 'hex')) {
       const matchHex = object.hex.match(this.regexHex);
       const hex = matchHex[2];
 
-      if (hex.length !== 3 && hex.length !== 6)
-        throw new Error(
-          'make sure the hexadecimal code is 3 or 6 characters long'
-        );
-
+      this.validateHex(hex);
       this.rgba = this.hexToRgb(hex);
-      console.log(this.rgba);
       return 'hex';
     }
 
     // CMYK:
     // { c: 0, m: 0, y: 0, k: 0 }
     if (
-      (object.c || object.C) &&
-      (object.m || object.M) &&
-      (object.y || object.Y) &&
-      (object.k || object.K)
+      this.hasAttr(object, 'c') &&
+      this.hasAttr(object, 'm') &&
+      this.hasAttr(object, 'y') &&
+      this.hasAttr(object, 'k')
     ) {
       const cyan = object.c | object.C;
       const magenta = object.m | object.M;
@@ -82,7 +84,6 @@ class Color {
         );
 
       this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
-
       return 'cmyk';
     }
 
@@ -90,9 +91,9 @@ class Color {
     // { r: 255, g: 0, b: 0 }
     // { r: 255, g: 0, b: 0, a: 1 }
     if (
-      (object.r || object.R) &&
-      (object.g || object.G) &&
-      (object.b || object.B)
+      this.hasAttr(object, 'r') &&
+      this.hasAttr(object, 'g') &&
+      this.hasAttr(object, 'b')
     ) {
       const red = object.r | object.R;
       const green = object.g | object.G;
@@ -128,9 +129,11 @@ class Color {
     // { h: 0, s: 1, x: .5 }
     // { h: 0, s: 1, x: .5, a: 0 }
     if (
-      (object.h || object.H) &&
-      (object.s || object.S) &&
-      (object.l || object.L || object.b || object.B || object.v || object.V)
+      this.hasAttr(object, 'h') &&
+      this.hasAttr(object, 's') &&
+      (this.hasAttr(object, 'l') ||
+        this.hasAttr(object, 'b') ||
+        this.hasAttr(object, 'v'))
     ) {
       const hue = object.h | object.H;
       const saturation = object.s | object.S;
@@ -181,13 +184,8 @@ class Color {
     if (matchHex) {
       const hex = matchHex[2];
 
-      if (hex.length !== 3 && hex.length !== 6)
-        throw new Error(
-          'Invalid color: make sure the hexadecimal code is 3 or 6 characters long'
-        );
-
+      this.validateHex(hex);
       this.rgba = this.hexToRgb(hex);
-
       return 'hex';
     }
 
@@ -642,5 +640,15 @@ class Color {
     if (t < 1 / 2) return q;
     if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
     return p;
+  }
+
+  hasAttr(obj, attr) {
+    const lowercaseAttribute = attr.toLowerCase();
+    const uppercaseAttribute = attr.toUpperCase();
+
+    return (
+      obj.hasOwnProperty(lowercaseAttribute) ||
+      obj.hasOwnProperty(uppercaseAttribute)
+    );
   }
 }
