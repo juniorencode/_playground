@@ -79,6 +79,56 @@ class Color {
       );
   }
 
+  validateHsxa(
+    type,
+    hue,
+    saturation,
+    isSatPercent,
+    value,
+    isValPercent,
+    alpha
+  ) {
+    const name = type.includes('hsl')
+      ? 'lightness'
+      : type.includes('hsb')
+      ? 'brightness'
+      : 'value';
+
+    if (0 > hue || hue > 360)
+      throw new Error('Invalid color: hue is out of valid range (0-360).');
+
+    if (isSatPercent) {
+      saturation = parseInt(saturation);
+      if (0 > saturation || saturation > 100)
+        throw new Error(
+          'Invalid color: saturation is out of valid range (0-100)'
+        );
+      saturation = parseFloat(saturation / 100);
+    } else {
+      saturation = parseFloat(saturation);
+      if (0 > saturation || saturation > 1)
+        throw new Error(
+          'Invalid color: saturation is out of valid range (0-1)'
+        );
+    }
+
+    if (isValPercent) {
+      value = parseInt(value);
+      if (0 > value || value > 100)
+        throw new Error(`Invalid color: ${name} is out of valid range (0-100)`);
+      value = parseFloat(value / 100);
+    } else {
+      value = parseFloat(value);
+      if (0 > value || value > 1)
+        throw new Error(`Invalid color: ${name} is out of valid range (0-1)`);
+    }
+
+    if (0 > alpha || alpha > 1)
+      throw new Error(
+        'Invalid color: the transparency value is outside the valid range (0-1).'
+      );
+  }
+
   validateObject(object) {
     // Hexadecimal:
     // { hex: '000' }
@@ -147,40 +197,12 @@ class Color {
         const value = this.getAttr(object, type[type.length - 1]);
         const alpha = this.getAttr(object, 'a');
 
-        if (0 > hue || hue > 360)
-          throw new Error('Invalid color: hue is out of valid range (0-360).');
-
-        if (0 > saturation || saturation > 1)
-          throw new Error(
-            'Invalid color: saturation is out of valid range (0-1)'
-          );
-
-        const name = type.includes('hsl')
-          ? 'lightness'
-          : type.includes('hsb')
-          ? 'brightness'
-          : 'value';
-        if (0 > value || value > 1)
-          throw new Error(`Invalid color: ${name} is out of valid range (0-1)`);
-
-        if (0 > alpha || alpha > 1)
-          throw new Error(
-            'Invalid color: the transparency value is outside the valid range (0-1).'
-          );
-
-        if (type.includes('hsl'))
-          this.rgba = {
-            ...this.hslToRgb(hue, saturation, value),
-            a: alpha | 1
-          };
-
-        if (type.includes('hsb') || type.includes('hsv'))
-          this.rgba = {
-            ...this.hsvToRgb(hue, saturation, value),
-            a: alpha | 1
-          };
-
-        return type;
+        this.validateHsxa(type, hue, saturation, false, value, false, alpha);
+        this.rgba = {
+          ...this[type + 'ToRgb'](hue, saturation, value),
+          a: alpha | 1
+        };
+        return typeof alpha === 'number' ? type + 'a' : type;
       }
     }
   }
@@ -268,54 +290,20 @@ class Color {
           `Invalid ${type.toUpperCase()}: must include a fourth component.`
         );
 
-      if (0 > hue || hue > 360)
-        throw new Error('Invalid color: hue is out of valid range (0-360).');
-
-      if (isSatPercent) {
-        saturation = parseInt(matchHsxa[3]);
-        if (0 > saturation || saturation > 100)
-          throw new Error(
-            'Invalid color: saturation is out of valid range (0-100)'
-          );
-        saturation = parseFloat(saturation / 100);
-      } else {
-        saturation = parseFloat(matchHsxa[3]);
-        if (0 > saturation || saturation > 1)
-          throw new Error(
-            'Invalid color: saturation is out of valid range (0-1)'
-          );
-      }
-
-      const name = type.includes('hsl')
-        ? 'lightness'
-        : type.includes('hsb')
-        ? 'brightness'
-        : 'value';
-      if (isValPercent) {
-        value = parseInt(matchHsxa[4]);
-        if (0 > value || value > 100)
-          throw new Error(
-            `Invalid color: ${name} is out of valid range (0-100)`
-          );
-        value = parseFloat(value / 100);
-      } else {
-        value = parseFloat(matchHsxa[4]);
-        if (0 > value || value > 1)
-          throw new Error(`Invalid color: ${name} is out of valid range (0-1)`);
-      }
-
-      if (0 > alpha || alpha > 1)
-        throw new Error(
-          'Invalid color: the transparency value is outside the valid range (0-1).'
-        );
-
-      if (type.includes('hsl'))
-        this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
-
-      if (type.includes('hsb') || type.includes('hsv'))
-        this.rgba = { ...this.hsvToRgb(hue, saturation, value), a: alpha | 1 };
-
-      return type;
+      this.validateHsxa(
+        type,
+        hue,
+        saturation,
+        isSatPercent,
+        value,
+        isValPercent,
+        alpha
+      );
+      this.rgba = {
+        ...this[type.replace('a', '') + 'ToRgb'](hue, saturation, value),
+        a: alpha | 1
+      };
+      return typeof alpha === 'number' ? type + 'a' : type;
     }
 
     // no match found for any format
