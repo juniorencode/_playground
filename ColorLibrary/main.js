@@ -29,6 +29,7 @@ class Color {
   }
 
   validateString(string) {
+    console.log(string);
     // Hexadecimal:
     // 000
     // #000
@@ -161,10 +162,10 @@ class Color {
       if (0 > alpha || alpha > 1)
         throw 'Invalid color: the transparency value is outside the valid range (0-1).';
 
-      if (this.type.includes('hsl'))
+      if (type.includes('hsl'))
         this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
 
-      if (this.type.includes('hsb') || this.type.includes('hsv'))
+      if (type.includes('hsb') || type.includes('hsv'))
         this.rgba = { ...this.hsvToRgb(hue, saturation, value), a: alpha | 1 };
 
       return type;
