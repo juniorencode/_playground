@@ -27,6 +27,35 @@ class Color {
       return 'hex';
     }
 
+    // CMYK
+    // C0 M0 Y0 K0
+    // C0M0Y0K0
+    // C0,M0,Y0,K0
+    // C0-M0-Y0-K0
+    const matchCmyk = color.match(this.regexCmyk);
+    if (matchCmyk) {
+      const cyan = matchCmyk[1];
+      const magenta = matchCmyk[2];
+      const yellow = matchCmyk[3];
+      const kblack = matchCmyk[4];
+
+      if (0 > cyan || cyan > 100)
+        throw 'Invalid color: cyan color is out of valid range (0-100).';
+
+      if (0 > magenta || magenta > 100)
+        throw 'Invalid color: magenta color is out of valid range (0-100).';
+
+      if (0 > yellow || yellow > 100)
+        throw 'Invalid color: yellow color is out of valid range (0-100).';
+
+      if (0 > kblack || kblack > 100)
+        throw 'Invalid color: black color is out of valid range (0-100).';
+
+      this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
+
+      return 'cmyk';
+    }
+
     // RGB and RGBA:
     // rgb 255 0 0
     // rgb(255, 0, 0)
