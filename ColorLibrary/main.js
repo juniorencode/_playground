@@ -57,6 +57,28 @@ class Color {
       );
   }
 
+  validateRgba(red, green, blue, alpha) {
+    if (0 > red || red > 255)
+      throw new Error(
+        'Invalid color: red color is out of valid range (0-255).'
+      );
+
+    if (0 > green || green > 255)
+      throw new Error(
+        'Invalid color: green color is out of valid range (0-255).'
+      );
+
+    if (0 > blue || blue > 255)
+      throw new Error(
+        'Invalid color: blue color is out of valid range (0-255).'
+      );
+
+    if (0 > alpha || alpha > 1)
+      throw new Error(
+        'Invalid color: the transparency value is outside the valid range (0-1).'
+      );
+  }
+
   validateObject(object) {
     // Hexadecimal:
     // { hex: '000' }
@@ -103,28 +125,8 @@ class Color {
       const blue = object.b | object.B;
       const alpha = object.a | object.A;
 
-      if (0 > red || red > 255)
-        throw new Error(
-          'Invalid color: red color is out of valid range (0-255).'
-        );
-
-      if (0 > green || green > 255)
-        throw new Error(
-          'Invalid color: green color is out of valid range (0-255).'
-        );
-
-      if (0 > blue || blue > 255)
-        throw new Error(
-          'Invalid color: blue color is out of valid range (0-255).'
-        );
-
-      if (0 > alpha || alpha > 1)
-        throw new Error(
-          'Invalid color: the transparency value is outside the valid range (0-1).'
-        );
-
+      this.validateRgba(red, green, blue, alpha);
       this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
-
       return alpha ? 'rgba' : 'rgb';
     }
 
@@ -228,29 +230,9 @@ class Color {
       if (type === 'rgba' && typeof alpha !== 'number')
         throw new Error('Invalid RGBA: must include a fourth component.');
 
-      if (0 > red || red > 255)
-        throw new Error(
-          'Invalid color: red color is out of valid range (0-255).'
-        );
-
-      if (0 > green || green > 255)
-        throw new Error(
-          'Invalid color: green color is out of valid range (0-255).'
-        );
-
-      if (0 > blue || blue > 255)
-        throw new Error(
-          'Invalid color: blue color is out of valid range (0-255).'
-        );
-
-      if (0 > alpha || alpha > 1)
-        throw new Error(
-          'Invalid color: the transparency value is outside the valid range (0-1).'
-        );
-
+      this.validateRgba(red, green, blue, alpha);
       this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
-
-      return type;
+      return alpha ? 'rgba' : 'rgb';
     }
 
     // HSX and HSXA:
