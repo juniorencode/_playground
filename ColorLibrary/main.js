@@ -44,6 +44,36 @@ class Color {
       console.log(this.rgba);
       return 'hex';
     }
+
+    // CMYK:
+    // { c: 0, m: 0, y: 0, k: 0}
+    if (
+      (object.c !== undefined || object.C !== undefined) &&
+      (object.m !== undefined || object.M !== undefined) &&
+      (object.y !== undefined || object.Y !== undefined) &&
+      (object.k !== undefined || object.K !== undefined)
+    ) {
+      const cyan = object.c | object.C;
+      const magenta = object.m | object.M;
+      const yellow = object.y | object.Y;
+      const kblack = object.k | object.K;
+
+      if (0 > cyan || cyan > 100)
+        throw 'Invalid color: cyan color is out of valid range (0-100).';
+
+      if (0 > magenta || magenta > 100)
+        throw 'Invalid color: magenta color is out of valid range (0-100).';
+
+      if (0 > yellow || yellow > 100)
+        throw 'Invalid color: yellow color is out of valid range (0-100).';
+
+      if (0 > kblack || kblack > 100)
+        throw 'Invalid color: black color is out of valid range (0-100).';
+
+      this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
+
+      return 'cmyk';
+    }
   }
 
   validateString(string) {
@@ -60,6 +90,7 @@ class Color {
         throw 'make sure the hexadecimal code is 3 or 6 characters long';
 
       this.rgba = this.hexToRgb(hex);
+
       return 'hex';
     }
 
