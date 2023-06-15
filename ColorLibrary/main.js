@@ -4,6 +4,8 @@ class Color {
       throw 'Invalid color: color cannot be empty or null.';
 
     this.regexHex = /^(#?)([a-f0-9]{3}(?:[a-f0-9]{3})?)$/i;
+    this.regexCmyk =
+      /^\s*C(\d{1,})\s*(?:(?:,|-)\s*)?M(\d{1,})\s*(?:(?:,|-)\s*)?Y(\d{1,})\s*(?:(?:,|-)\s*)?K(\d{1,})\s*$/i;
     this.regexRgba =
       /^(rgba?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})(?:\s*,\s*|\s+)(\d{1,3})\s*(?:(?:,\s*|\s+)(0?\.?\d+|0|1))?\)?\s*$/i;
     this.regexHsxa =
@@ -31,7 +33,6 @@ class Color {
     // rgba 255 0 0 .5
     // rgba(255, 0, 0, .5)
     const matchRgba = color.match(this.regexRgba);
-    console.log(matchRgba);
     if (matchRgba) {
       const type = matchRgba[1].toLowerCase();
       const red = parseInt(matchRgba[2]);
@@ -141,6 +142,18 @@ class Color {
     const blue = parseInt(hex.substring(4, 6), 16);
 
     return { r: red, g: green, b: blue, a: 1 };
+  }
+
+  cmykToRgb(c, m, y, k) {
+    const cyan = c / 100;
+    const magenta = m / 100;
+    const yellow = y / 100;
+    const kblack = k / 100;
+    const r = Math.round(255 * (1 - cyan) * (1 - kblack));
+    const g = Math.round(255 * (1 - magenta) * (1 - kblack));
+    const b = Math.round(255 * (1 - yellow) * (1 - kblack));
+
+    return { r, g, b };
   }
 
   hslToRgb(h, s, l) {
