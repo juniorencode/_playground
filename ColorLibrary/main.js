@@ -133,49 +133,55 @@ class Color {
     // HSX and HSXA:
     // { h: 0, s: 1, x: .5 }
     // { h: 0, s: 1, x: .5, a: 0 }
-    if (
-      this.hasAttr(object, 'h') &&
-      this.hasAttr(object, 's') &&
-      (this.hasAttr(object, 'l') ||
-        this.hasAttr(object, 'b') ||
-        this.hasAttr(object, 'v'))
-    ) {
-      const hue = object.h | object.H;
-      const saturation = object.s | object.S;
-      const type =
-        object.l || object.L ? 'hsl' : object.b || object.B ? 'hsb' : 'hsv';
-      const value =
-        object.l | object.L | object.b | object.B | object.v | object.V;
-      const alpha = object.a | object.A;
+    if (this.hasAttr(object, 'h') && this.hasAttr(object, 's')) {
+      const type = this.hasAttr(object, 'l')
+        ? 'hsl'
+        : this.hasAttr(object, 'l')
+        ? 'hsb'
+        : this.hasAttr(object, 'v')
+        ? 'hsv'
+        : undefined;
+      if (type) {
+        const hue = this.getAttr(object, 'h');
+        const saturation = this.getAttr(object, 's');
+        const value = this.getAttr(object, type[type.length - 1]);
+        const alpha = this.getAttr(object, 'a');
 
-      if (0 > hue || hue > 360)
-        throw new Error('Invalid color: hue is out of valid range (0-360).');
+        if (0 > hue || hue > 360)
+          throw new Error('Invalid color: hue is out of valid range (0-360).');
 
-      if (0 > saturation || saturation > 1)
-        throw new Error(
-          'Invalid color: saturation is out of valid range (0-1)'
-        );
+        if (0 > saturation || saturation > 1)
+          throw new Error(
+            'Invalid color: saturation is out of valid range (0-1)'
+          );
 
-      const name = type.includes('hsl')
-        ? 'lightness'
-        : type.includes('hsb')
-        ? 'brightness'
-        : 'value';
-      if (0 > value || value > 1)
-        throw new Error(`Invalid color: ${name} is out of valid range (0-1)`);
+        const name = type.includes('hsl')
+          ? 'lightness'
+          : type.includes('hsb')
+          ? 'brightness'
+          : 'value';
+        if (0 > value || value > 1)
+          throw new Error(`Invalid color: ${name} is out of valid range (0-1)`);
 
-      if (0 > alpha || alpha > 1)
-        throw new Error(
-          'Invalid color: the transparency value is outside the valid range (0-1).'
-        );
+        if (0 > alpha || alpha > 1)
+          throw new Error(
+            'Invalid color: the transparency value is outside the valid range (0-1).'
+          );
 
-      if (type.includes('hsl'))
-        this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
+        if (type.includes('hsl'))
+          this.rgba = {
+            ...this.hslToRgb(hue, saturation, value),
+            a: alpha | 1
+          };
 
-      if (type.includes('hsb') || type.includes('hsv'))
-        this.rgba = { ...this.hsvToRgb(hue, saturation, value), a: alpha | 1 };
+        if (type.includes('hsb') || type.includes('hsv'))
+          this.rgba = {
+            ...this.hsvToRgb(hue, saturation, value),
+            a: alpha | 1
+          };
 
-      return type;
+        return type;
+      }
     }
   }
 
@@ -366,6 +372,10 @@ class Color {
     b = Math.round(b * 255);
 
     return { r, g, b };
+  }
+
+  hsbToRgb(h, s, b) {
+    return this.hsvToRgb(h, s, b);
   }
 
   hsvToRgb(h, s, v) {
@@ -608,12 +618,22 @@ class Color {
   }
 
   hasAttr(obj, attr) {
-    const lowercaseAttribute = attr.toLowerCase();
-    const uppercaseAttribute = attr.toUpperCase();
+    const upperCaseAttr = attr.toUpperCase();
+    const lowerCaseAttr = attr.toLowerCase();
 
     return (
-      obj.hasOwnProperty(lowercaseAttribute) ||
-      obj.hasOwnProperty(uppercaseAttribute)
+      obj.hasOwnProperty(upperCaseAttr) || obj.hasOwnProperty(lowerCaseAttr)
     );
+  }
+
+  getAttr(obj, attr) {
+    const upperCaseAttr = attr.toUpperCase();
+    const lowerCaseAttr = attr.toLowerCase();
+
+    return obj.hasOwnProperty(upperCaseAttr)
+      ? obj[upperCaseAttr]
+      : obj.hasOwnProperty(lowerCaseAttr)
+      ? obj[lowerCaseAttr]
+      : undefined;
   }
 }

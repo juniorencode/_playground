@@ -17,12 +17,12 @@
 // new Color('C0-M0-Y0-K0'); // true
 // new Color({ c: 0, m: 0, y: 0, k: 0 }); // true
 
-new Color('rgb (255, 0, 0)'); // true
-new Color('rgba (255, 0, 0, .5)'); // true
-new Color('rgb 255 0 0'); // true
-new Color('rgba 255 0 0 .5'); // true
-new Color({ r: 255, g: 0, b: 0 }); // true
-new Color({ r: 255, g: 0, b: 0, a: 0.5 }); //true
+// new Color('rgb (255, 0, 0)'); // true
+// new Color('rgba (255, 0, 0, .5)'); // true
+// new Color('rgb 255 0 0'); // true
+// new Color('rgba 255 0 0 .5'); // true
+// new Color({ r: 255, g: 0, b: 0 }); // true
+// new Color({ r: 255, g: 0, b: 0, a: 0.5 }); //true
 // new Color('rgb(255, 0, 0, 1)'); // false
 // new Color('rgba(255, 0, 0)'); // false
 // new Color('rgb(400, 0, 0)'); // false
@@ -33,16 +33,16 @@ new Color({ r: 255, g: 0, b: 0, a: 0.5 }); //true
 // new Color('rgba (255, 0, , .5)'); // false
 // new Color('rgb 255 0 '); // false
 
-// new Color('hsl(0, 100%, 50%)'); // true
-// new Color('hsla(0, 100%, 50%, .5)'); // true
-// new Color('hsl(0, 1, .5)'); // true
-// new Color('hsla(0, 1, .5, .5)'); // true
-// new Color('hsl 0 100% 50%'); // true
-// new Color('hsla 0 100% 50% .5'); // true
-// new Color('hsl 0 1 .5'); // true
-// new Color('hsla 0 1 .5 .5'); // true
-// new Color({ h: 0, s: 1, l: 0.5 }); // true
-// new Color({ h: 0, s: 1, l: 0.5, a: 0.5 }); // true
+new Color('hsl(0, 100%, 50%)'); // true
+new Color('hsla(0, 100%, 50%, .5)'); // true
+new Color('hsl(0, 1, .5)'); // true
+new Color('hsla(0, 1, .5, .5)'); // true
+new Color('hsl 0 100% 50%'); // true
+new Color('hsla 0 100% 50% .5'); // true
+new Color('hsl 0 1 .5'); // true
+new Color('hsla 0 1 .5 .5'); // true
+new Color({ h: 0, s: 1, l: 0.5 }); // true
+new Color({ h: 0, s: 1, l: 0.5, a: 0.5 }); // true
 // new Color({ h: 0, s: 100, l: 50 }); // false
 // new Color({ h: 0, s: 100, l: 50, a: 0.5 }); // false
 // new Color('hsl(0, 100%, 100%, .5)'); // false
