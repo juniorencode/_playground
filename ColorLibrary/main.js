@@ -3,6 +3,9 @@ class Color {
     if (!input || input.trim() === '')
       throw 'Invalid color: color cannot be empty or null.';
 
+    this.input = input;
+    this.rgba = { r: 0, g: 0, b: 0, a: 1 };
+
     this.regexHex = /^(#?)([a-f0-9]{3}(?:[a-f0-9]{3})?)$/i;
     this.regexCmyk =
       /^\s*C(\d{1,})\s*(?:(?:,|-)\s*)?M(\d{1,})\s*(?:(?:,|-)\s*)?Y(\d{1,})\s*(?:(?:,|-)\s*)?K(\d{1,})\s*$/i;
@@ -11,28 +14,38 @@ class Color {
     this.regexHsxa =
       /^(hs(?:l|b|v)a?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
 
-    this.rgba = { r: 0, g: 0, b: 0, a: 1 };
-    this.format = this.validateInput(input) | null;
+    this.validateInput();
   }
 
-  validateInput(color) {
+  validateInput() {
+    switch (typeof this.input) {
+      case 'string':
+        this.format = this.validateString(this.input);
+        break;
+      default:
+        this.format = 'rgba';
+        break;
+    }
+  }
+
+  validateString(string) {
     // Hexadecimal:
     // 000
     // #000
     // 000000
     // #000000
-    const matchHex = color.match(this.regexHex);
+    const matchHex = string.match(this.regexHex);
     if (matchHex) {
       this.rgba = this.hexToRgb(matchHex[2]);
       return 'hex';
     }
 
-    // CMYK
+    // CMYK:
     // C0 M0 Y0 K0
     // C0M0Y0K0
     // C0,M0,Y0,K0
     // C0-M0-Y0-K0
-    const matchCmyk = color.match(this.regexCmyk);
+    const matchCmyk = string.match(this.regexCmyk);
     if (matchCmyk) {
       const cyan = matchCmyk[1];
       const magenta = matchCmyk[2];
@@ -61,7 +74,7 @@ class Color {
     // rgb(255, 0, 0)
     // rgba 255 0 0 .5
     // rgba(255, 0, 0, .5)
-    const matchRgba = color.match(this.regexRgba);
+    const matchRgba = string.match(this.regexRgba);
     if (matchRgba) {
       const type = matchRgba[1].toLowerCase();
       const red = parseInt(matchRgba[2]);
@@ -100,7 +113,7 @@ class Color {
     // hsxa 0 1 .5 .5
     // hsxa 0 100% 50% .5
     // hsxa(0, 100%, 50%, .5)
-    const matchHsxa = color.match(this.regexHsxa);
+    const matchHsxa = string.match(this.regexHsxa);
     if (matchHsxa) {
       const isSatPercent = matchHsxa[3].includes('%');
       const isValPercent = matchHsxa[4].includes('%');
