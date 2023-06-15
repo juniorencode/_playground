@@ -152,10 +152,10 @@ class Color {
       this.hasAttr(object, 'y') &&
       this.hasAttr(object, 'k')
     ) {
-      const cyan = object.c | object.C;
-      const magenta = object.m | object.M;
-      const yellow = object.y | object.Y;
-      const kblack = object.k | object.K;
+      const cyan = this.getAttr(object, 'c');
+      const magenta = this.getAttr(object, 'm');
+      const yellow = this.getAttr(object, 'y');
+      const kblack = this.getAttr(object, 'k');
 
       this.validateCmyk(cyan, magenta, yellow, kblack);
       this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
@@ -170,10 +170,10 @@ class Color {
       this.hasAttr(object, 'g') &&
       this.hasAttr(object, 'b')
     ) {
-      const red = object.r | object.R;
-      const green = object.g | object.G;
-      const blue = object.b | object.B;
-      const alpha = object.a | object.A;
+      const red = this.getAttr(object, 'r');
+      const green = this.getAttr(object, 'g');
+      const blue = this.getAttr(object, 'b');
+      const alpha = this.getAttr(object, 'a');
 
       this.validateRgba(red, green, blue, alpha);
       this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
