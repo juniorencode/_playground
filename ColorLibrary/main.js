@@ -28,7 +28,21 @@ class Color {
   }
 
   validateObject(object) {
-    console.log('validateObject');
+    // Hexadecimal:
+    // { hex: '000' }
+    // { hex: '#000' }
+    // { hex: '000000' }
+    // { hex: '#000000' }
+    if (object.hex !== undefined) {
+      const matchHex = object.hex.match(this.regexHex);
+      const hex = matchHex[2];
+
+      if (hex.length !== 3 || hex.length !== 6)
+        throw 'make sure the hexadecimal code is 3 or 6 characters long';
+
+      this.rgba = this.hexToRgb(hex);
+      return 'hex';
+    }
   }
 
   validateString(string) {
@@ -39,7 +53,12 @@ class Color {
     // #000000
     const matchHex = string.match(this.regexHex);
     if (matchHex) {
-      this.rgba = this.hexToRgb(matchHex[2]);
+      const hex = matchHex[2];
+
+      if (hex.length !== 3 || hex.length !== 6)
+        throw 'make sure the hexadecimal code is 3 or 6 characters long';
+
+      this.rgba = this.hexToRgb(hex);
       return 'hex';
     }
 
