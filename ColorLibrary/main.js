@@ -1,6 +1,6 @@
 class Color {
   constructor(input) {
-    if (!input || input.trim() === '' || input === null)
+    if (!input || input === null)
       throw 'Invalid color: color cannot be empty or null.';
 
     this.input = input;
@@ -37,10 +37,11 @@ class Color {
       const matchHex = object.hex.match(this.regexHex);
       const hex = matchHex[2];
 
-      if (hex.length !== 3 || hex.length !== 6)
+      if (hex.length !== 3 && hex.length !== 6)
         throw 'make sure the hexadecimal code is 3 or 6 characters long';
 
       this.rgba = this.hexToRgb(hex);
+      console.log(this.rgba);
       return 'hex';
     }
   }
@@ -55,7 +56,7 @@ class Color {
     if (matchHex) {
       const hex = matchHex[2];
 
-      if (hex.length !== 3 || hex.length !== 6)
+      if (hex.length !== 3 && hex.length !== 6)
         throw 'make sure the hexadecimal code is 3 or 6 characters long';
 
       this.rgba = this.hexToRgb(hex);
