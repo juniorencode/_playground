@@ -49,10 +49,10 @@ class Color {
     // CMYK:
     // { c: 0, m: 0, y: 0, k: 0 }
     if (
-      (object.c !== undefined || object.C !== undefined) &&
-      (object.m !== undefined || object.M !== undefined) &&
-      (object.y !== undefined || object.Y !== undefined) &&
-      (object.k !== undefined || object.K !== undefined)
+      (object.c || object.C) &&
+      (object.m || object.M) &&
+      (object.y || object.Y) &&
+      (object.k || object.K)
     ) {
       const cyan = object.c | object.C;
       const magenta = object.m | object.M;
@@ -80,9 +80,9 @@ class Color {
     // { r: 255, g: 0, b: 0 }
     // { r: 255, g: 0, b: 0, a: 1 }
     if (
-      (object.r !== undefined || object.R !== undefined) &&
-      (object.g !== undefined || object.G !== undefined) &&
-      (object.b !== undefined || object.B !== undefined)
+      (object.r || object.R) &&
+      (object.g || object.G) &&
+      (object.b || object.B)
     ) {
       const red = object.r | object.R;
       const green = object.g | object.G;
@@ -110,14 +110,9 @@ class Color {
     // { h: 0, s: 1, x: .5 }
     // { h: 0, s: 1, x: .5, a: 0 }
     if (
-      (object.h !== undefined || object.H !== undefined) &&
-      (object.s !== undefined || object.S !== undefined) &&
-      (object.l !== undefined ||
-        object.L !== undefined ||
-        object.b !== undefined ||
-        object.B !== undefined ||
-        object.v !== undefined ||
-        object.V !== undefined)
+      (object.h || object.H) &&
+      (object.s || object.S) &&
+      (object.l || object.L || object.b || object.B || object.v || object.V)
     ) {
       const hue = object.h | object.H;
       const saturation = object.s | object.S;
