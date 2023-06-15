@@ -15,6 +15,7 @@ class Color {
       /^\s*(hs(?:l|b|v)a?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
 
     this.format = this.validateInput();
+    console.log(this.format);
   }
 
   validateInput() {
@@ -103,6 +104,53 @@ class Color {
       this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
 
       return alpha ? 'rgba' : 'rgb';
+    }
+
+    // HSX and HSXA:
+    // { h: 0, s: 1, x: .5 }
+    // { h: 0, s: 1, x: .5, a: 0 }
+    if (
+      (object.h !== undefined || object.H !== undefined) &&
+      (object.s !== undefined || object.S !== undefined) &&
+      (object.l !== undefined ||
+        object.L !== undefined ||
+        object.b !== undefined ||
+        object.B !== undefined ||
+        object.v !== undefined ||
+        object.V !== undefined)
+    ) {
+      const hue = object.h | object.H;
+      const saturation = object.s | object.S;
+      const type =
+        object.l || object.L ? 'hsl' : object.b || object.B ? 'hsb' : 'hsv';
+      const value =
+        object.l | object.L | object.b | object.B | object.v | object.V;
+      const alpha = object.a | object.A;
+
+      if (0 > hue || hue > 360)
+        throw 'Invalid color: hue is out of valid range (0-360).';
+
+      if (0 > saturation || saturation > 1)
+        throw 'Invalid color: saturation is out of valid range (0-1)';
+
+      const name = type.includes('hsl')
+        ? 'lightness'
+        : type.includes('hsb')
+        ? 'brightness'
+        : 'value';
+      if (0 > value || value > 1)
+        throw `Invalid color: ${name} is out of valid range (0-1)`;
+
+      if (0 > alpha || alpha > 1)
+        throw 'Invalid color: the transparency value is outside the valid range (0-1).';
+
+      if (type.includes('hsl'))
+        this.rgba = { ...this.hslToRgb(hue, saturation, value), a: alpha | 1 };
+
+      if (type.includes('hsb') || type.includes('hsv'))
+        this.rgba = { ...this.hsvToRgb(hue, saturation, value), a: alpha | 1 };
+
+      return type;
     }
   }
 
