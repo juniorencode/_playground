@@ -1,6 +1,6 @@
 class Color {
   constructor(input) {
-    if (!input || input.trim() === '')
+    if (!input || input.trim() === '' || input === null)
       throw 'Invalid color: color cannot be empty or null.';
 
     this.input = input;
@@ -14,22 +14,24 @@ class Color {
     this.regexHsxa =
       /^\s*(hs(?:l|b|v)a?)\s*\(?\s*(\d{1,3})(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)(?:\s*,\s*|\s+)(0?\.?\d{1,3}%?)\s*(?:(?:,\s*|\s+)(0?\.?\d+))?\)?\s*$/i;
 
-    this.validateInput();
+    this.format = this.validateInput();
   }
 
   validateInput() {
-    switch (typeof this.input) {
-      case 'string':
-        this.format = this.validateString(this.input);
-        break;
-      default:
-        this.format = 'rgba';
-        break;
+    if (typeof this.input === 'string') {
+      return this.validateString(this.input);
+    } else if (typeof this.input === 'object' && !Array.isArray(this.input)) {
+      return this.validateObject(this.input);
     }
+
+    return 'rgba';
+  }
+
+  validateObject(object) {
+    console.log('validateObject');
   }
 
   validateString(string) {
-    console.log(string);
     // Hexadecimal:
     // 000
     // #000
