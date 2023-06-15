@@ -46,7 +46,7 @@ class Color {
     }
 
     // CMYK:
-    // { c: 0, m: 0, y: 0, k: 0}
+    // { c: 0, m: 0, y: 0, k: 0 }
     if (
       (object.c !== undefined || object.C !== undefined) &&
       (object.m !== undefined || object.M !== undefined) &&
@@ -73,6 +73,36 @@ class Color {
       this.rgba = { ...this.cmykToRgb(cyan, magenta, yellow, kblack), a: 1 };
 
       return 'cmyk';
+    }
+
+    // RGB and RGBA:
+    // { r: 255, g: 0, b: 0 }
+    // { r: 255, g: 0, b: 0, a: 1 }
+    if (
+      (object.r !== undefined || object.R !== undefined) &&
+      (object.g !== undefined || object.G !== undefined) &&
+      (object.b !== undefined || object.B !== undefined)
+    ) {
+      const red = object.r | object.R;
+      const green = object.g | object.G;
+      const blue = object.b | object.B;
+      const alpha = object.a | object.A;
+
+      if (0 > red || red > 255)
+        throw 'Invalid color: red color is out of valid range (0-255).';
+
+      if (0 > green || green > 255)
+        throw 'Invalid color: green color is out of valid range (0-255).';
+
+      if (0 > blue || blue > 255)
+        throw 'Invalid color: blue color is out of valid range (0-255).';
+
+      if (0 > alpha || alpha > 1)
+        throw 'Invalid color: the transparency value is outside the valid range (0-1).';
+
+      this.rgba = { r: red, g: green, b: blue, a: alpha | 1 };
+
+      return alpha ? 'rgba' : 'rgb';
     }
   }
 
