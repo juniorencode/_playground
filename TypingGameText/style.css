@@ -59,18 +59,42 @@ body {
 .typing::-webkit-scrollbar {
   width: 0;
 }
+
 .typing p {
   font-size: 1.2em;
   text-align: justify;
   letter-spacing: 1px;
+  word-break: break-all;
 }
+
 .typing p span {
   position: relative;
 }
+
 .typing p span.correct {
   color: #e6ad12;
 }
+
 .typing p span.incorrect {
   color: #e21e31;
   border-radius: 4px;
+}
+
+.typing p span.active::before {
+  position: absolute;
+  content: '';
+  height: 2px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  border-radius: 5px;
+  background: #007acc;
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
 }
