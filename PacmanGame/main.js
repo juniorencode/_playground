@@ -23,11 +23,11 @@ const map = [
   [1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1],
   [0, 0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 0, 0, 0, 0],
   [0, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0],
-  [1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1],
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
   [1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1],
   [1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1],
-  [1, 1, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 1, 1],
+  [1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 1],
   [1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1],
   [1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1],
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
@@ -66,30 +66,79 @@ class Pacman {
   moveProcess() {
     this.changeDirectionIfPossible();
     this.moveForwards();
+
+    if (this.checkCollisions()) {
+      this.moveBackwards();
+      return;
+    }
   }
 
   changeDirectionIfPossible() {
     if (this.direction === this.nextDirection) return;
+    console.log(this.nextDirection);
+
+    const tempDirection = this.direction;
 
     this.direction = this.nextDirection;
     this.moveForwards();
+
+    if (this.checkCollisions()) {
+      this.moveBackwards();
+      this.direction = tempDirection;
+    } else {
+      this.moveBackwards();
+    }
+  }
+
+  moveBackwards() {
+    switch (this.direction) {
+      case DIRECTION_RIGHT: // right
+        this.x -= this.speed;
+        break;
+      case DIRECTION_UP: // up
+        this.y += this.speed;
+        break;
+      case DIRECTION_LEFT: // left
+        this.x += this.speed;
+        break;
+      case DIRECTION_BOTTOM: // bottom
+        this.y -= this.speed;
+        break;
+    }
   }
 
   moveForwards() {
     switch (this.direction) {
-      case DIRECTION_RIGHT: // Right
+      case DIRECTION_RIGHT: // right
         this.x += this.speed;
         break;
-      case DIRECTION_UP: // Up
+      case DIRECTION_UP: // up
         this.y -= this.speed;
         break;
-      case DIRECTION_LEFT: // Left
+      case DIRECTION_LEFT: // left
         this.x -= this.speed;
         break;
-      case DIRECTION_BOTTOM: // Bottom
+      case DIRECTION_BOTTOM: // bottom
         this.y += this.speed;
         break;
     }
+  }
+
+  checkCollisions() {
+    const blockX = this.x / oneBlockSize;
+    const blockY = this.y / oneBlockSize;
+
+    // console.log('x');
+    if (
+      map[parseInt(blockY)][parseInt(blockX)] == 1 ||
+      map[parseInt(blockY + 0.9999)][parseInt(blockX)] == 1 ||
+      map[parseInt(blockY)][parseInt(blockX + 0.9999)] == 1 ||
+      map[parseInt(blockY + 0.9999)][parseInt(blockX + 0.9999)] == 1
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   draw() {
@@ -118,7 +167,7 @@ let createNewPacman = () => {
     oneBlockSize,
     oneBlockSize,
     oneBlockSize,
-    oneBlockSize / 5
+    oneBlockSize / 9
   );
 };
 
