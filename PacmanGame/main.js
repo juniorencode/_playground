@@ -50,7 +50,17 @@ class Pacman {
     this.speed = speed;
     this.direction = DIRECTION_RIGHT;
     this.nextDirection = DIRECTION_RIGHT;
+    this.frameCount = 7;
     this.currentFrame = 1;
+
+    setInterval(() => {
+      this.changeAnimation();
+    }, 100);
+  }
+
+  changeAnimation() {
+    this.currentFrame =
+      this.currentFrame == this.frameCount ? 1 : this.currentFrame + 1;
   }
 
   moveProcess() {
@@ -89,10 +99,10 @@ class Pacman {
     ctx.translate(-this.x - oneBlockSize / 2, -this.y - oneBlockSize / 2);
     ctx.drawImage(
       pacmanFrames,
-      (this.currentFrame - 1) * oneBlockSize,
+      (this.currentFrame - 1) * 20,
       0,
-      oneBlockSize,
-      oneBlockSize,
+      20,
+      20,
       this.x,
       this.y,
       this.width,
