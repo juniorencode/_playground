@@ -17,6 +17,12 @@ body {
   width: 80%;
 }
 
+.input {
+  opacity: 0;
+  z-index: -999;
+  position: absolute;
+}
+
 .button button {
   padding: 0.5em;
   width: 100%;
@@ -63,9 +69,9 @@ body {
   position: relative;
 }
 .typing p span.correct {
-  color: #d1d0c5;
+  color: #e6ad12;
 }
 .typing p span.incorrect {
-  color: #ca4754;
+  color: #e21e31;
   border-radius: 4px;
 }
