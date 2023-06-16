@@ -49,13 +49,43 @@ class Pacman {
     this.height = height;
     this.speed = speed;
     this.direction = DIRECTION_RIGHT;
+    this.nextDirection = DIRECTION_RIGHT;
     this.currentFrame = 1;
+  }
+
+  moveProcess() {
+    this.changeDirectionIfPossible();
+    this.moveForwards();
+  }
+
+  changeDirectionIfPossible() {
+    if (this.direction === this.nextDirection) return;
+
+    this.direction = this.nextDirection;
+    this.moveForwards();
+  }
+
+  moveForwards() {
+    switch (this.direction) {
+      case DIRECTION_RIGHT: // Right
+        this.x += this.speed;
+        break;
+      case DIRECTION_UP: // Up
+        this.y -= this.speed;
+        break;
+      case DIRECTION_LEFT: // Left
+        this.x -= this.speed;
+        break;
+      case DIRECTION_BOTTOM: // Bottom
+        this.y += this.speed;
+        break;
+    }
   }
 
   draw() {
     ctx.save();
     ctx.translate(this.x + oneBlockSize / 2, this.y + oneBlockSize / 2);
-    ctx.rotate((this.direction * 90 * Math.PI) / 180);
+    ctx.rotate(((this.direction + DIRECTION_RIGHT) * 90 * Math.PI) / 180);
     ctx.translate(-this.x - oneBlockSize / 2, -this.y - oneBlockSize / 2);
     ctx.drawImage(
       pacmanFrames,
@@ -143,9 +173,16 @@ const drawWalls = () => {
   }
 };
 
-const update = () => {};
+const update = () => {
+  pacman.moveProcess();
+};
+
+const clearCanvas = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+};
 
 const draw = () => {
+  clearCanvas();
   drawWalls();
   pacman.draw();
 };
@@ -165,3 +202,12 @@ const init = () => {
 };
 
 init();
+
+window.addEventListener('keydown', e => {
+  const key = e.key;
+
+  if (key === 'w') pacman.nextDirection = DIRECTION_UP; // up
+  else if (key === 'd') pacman.nextDirection = DIRECTION_RIGHT; // right
+  else if (key === 's') pacman.nextDirection = DIRECTION_BOTTOM; // bottom
+  else if (key === 'a') pacman.nextDirection = DIRECTION_LEFT; // left
+});
