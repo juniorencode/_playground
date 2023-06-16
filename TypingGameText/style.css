@@ -94,7 +94,16 @@ body {
 }
 
 @keyframes blink {
-  50% {
+  0% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
     opacity: 1;
   }
 }
