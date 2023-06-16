@@ -29,6 +29,11 @@ const initTyping = () => {
   let typedChar = inpField.value.split('')[charIndex];
 
   if (charIndex < characters.length - 1 && timeLeft > 0) {
+    if (!isTyping) {
+      timer = setInterval(initTimer, 1000);
+      isTyping = true;
+    }
+
     if (typedChar == null) {
       if (charIndex > 0) {
         charIndex--;
@@ -60,6 +65,19 @@ const initTyping = () => {
   } else {
     clearInterval(timer);
     inpField.value = '';
+  }
+};
+
+const initTimer = () => {
+  if (timeLeft > 0) {
+    timeLeft--;
+    timeTag.innerText = timeLeft + 's';
+    let wpm = Math.round(
+      ((charIndex - mistakes) / 5 / (maxTime - timeLeft)) * 60
+    );
+    wpmTag.innerText = wpm;
+  } else {
+    clearInterval(timer);
   }
 };
 
