@@ -41,7 +41,7 @@ const wallSpaceWidth = oneBlockSize / 1.2;
 const wallOffset = (oneBlockSize - wallSpaceWidth) / 2;
 const wallInnerColor = 'black';
 
-let lives = 3;
+let lives = 1;
 
 let ghosts = [];
 const ghostCount = 4;
@@ -499,6 +499,7 @@ const onGhostCollision = () => {
 const gameOver = () => {
   cancelAnimationFrame(animationId);
   stopGame = true;
+  drawGameOver();
 };
 
 const createRect = (x, y, width, height, color) => {
@@ -587,7 +588,7 @@ const drawScore = () => {
 };
 
 const drawLives = () => {
-  const pointStart = this.canvas.width - 3 * oneBlockSize;
+  const pointStart = canvas.width - 3 * oneBlockSize;
 
   ctx.font = '10px Emulogic';
   ctx.textAlign = 'end';
@@ -609,6 +610,18 @@ const drawLives = () => {
       12
     );
   }
+};
+
+const drawGameOver = () => {
+  ctx.font = '20px Emulogic';
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = 'white';
+
+  const text = ctx.measureText('GAME OVER');
+  const x = (canvas.width - text.width) / 2;
+  const y = (canvas.height - 20) / 2;
+  ctx.fillText('GAME OVER', x, y);
 };
 
 const clearCanvas = () => {
