@@ -187,6 +187,36 @@ class Pacman {
   }
 }
 
+class Ghost {
+  constructor(x, y, width, height, speed, imageX, imageY, range) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.speed = speed;
+    this.direction = DIRECTION_RIGHT;
+    this.imageX = imageX;
+    this.imageY = imageY;
+    this.range = range;
+  }
+
+  draw() {
+    ctx.save();
+    ctx.drawImage(
+      ghostFrames,
+      this.imageX,
+      this.imageY,
+      16,
+      16,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );
+    ctx.restore();
+  }
+}
+
 const createNewPacman = () => {
   pacman = new Pacman(
     oneBlockSize,
@@ -195,6 +225,22 @@ const createNewPacman = () => {
     oneBlockSize,
     oneBlockSize / 9
   );
+};
+
+const createGhosts = () => {
+  for (let i = 0; i < ghostCount; i++) {
+    const newGhost = new Ghost(
+      ghostLocations[i].x * oneBlockSize,
+      ghostLocations[i].y * oneBlockSize,
+      oneBlockSize,
+      oneBlockSize,
+      pacman.speed / 2,
+      i * 16,
+      0,
+      6 + i
+    );
+    ghosts.push(newGhost);
+  }
 };
 
 const createRect = (x, y, width, height, color) => {
@@ -297,6 +343,7 @@ const draw = () => {
   drawWalls();
   drawFoods();
   pacman.draw();
+  ghosts.forEach(ghost => ghost.draw());
 };
 
 const loop = () => {
@@ -310,6 +357,7 @@ const init = () => {
   canvas.height = (map.length + 1) * oneBlockSize;
 
   createNewPacman();
+  createGhosts();
   loop();
 };
 
