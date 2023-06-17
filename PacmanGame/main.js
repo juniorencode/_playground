@@ -67,15 +67,11 @@ class Pacman {
     this.changeDirectionIfPossible();
     this.moveForwards();
 
-    if (this.checkCollisions()) {
-      this.moveBackwards();
-      return;
-    }
+    if (this.checkCollisions()) this.moveBackwards();
   }
 
   changeDirectionIfPossible() {
     if (this.direction === this.nextDirection) return;
-    console.log(this.nextDirection);
 
     const tempDirection = this.direction;
 
@@ -128,7 +124,6 @@ class Pacman {
     const blockX = this.x / oneBlockSize;
     const blockY = this.y / oneBlockSize;
 
-    // console.log('x');
     if (
       map[parseInt(blockY)][parseInt(blockX)] == 1 ||
       map[parseInt(blockY + 0.9999)][parseInt(blockX)] == 1 ||
@@ -232,6 +227,22 @@ const drawWalls = () => {
   }
 };
 
+const drawFoods = () => {
+  for (let i = 0; i < map.length; i++) {
+    for (let j = 0; j < map[0].length; j++) {
+      if (map[i][j] == 2) {
+        createRect(
+          j * oneBlockSize + oneBlockSize / 2,
+          i * oneBlockSize + oneBlockSize / 2,
+          oneBlockSize / 6,
+          oneBlockSize / 6,
+          '#FEB897'
+        );
+      }
+    }
+  }
+};
+
 const update = () => {
   pacman.moveProcess();
 };
@@ -243,6 +254,7 @@ const clearCanvas = () => {
 const draw = () => {
   clearCanvas();
   drawWalls();
+  drawFoods();
   pacman.draw();
 };
 
