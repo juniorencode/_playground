@@ -721,7 +721,7 @@ const init = () => {
   canvas.height = (map.length + 1) * oneBlockSize;
 
   createNewPacman();
-  // createGhosts();
+  createGhosts();
   animationId = requestAnimationFrame(loop);
 };
 
