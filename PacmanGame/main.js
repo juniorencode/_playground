@@ -507,6 +507,7 @@ const gameOver = () => {
 const win = () => {
   cancelAnimationFrame(animationId);
   stopGame = true;
+  drawWin();
 };
 
 const createRect = (x, y, width, height, color) => {
@@ -630,6 +631,18 @@ const drawGameOver = () => {
   const x = (canvas.width - text.width) / 2;
   const y = (canvas.height - 20) / 2;
   ctx.fillText('GAME OVER', x, y);
+};
+
+const drawWin = () => {
+  ctx.font = '20px Emulogic';
+  ctx.textAlign = 'start';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = 'white';
+
+  const text = ctx.measureText('YOU WIN');
+  const x = (canvas.width - text.width) / 2;
+  const y = (canvas.height - 20) / 2;
+  ctx.fillText('YOU WIN', x, y);
 };
 
 const clearCanvas = () => {
