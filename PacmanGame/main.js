@@ -472,30 +472,30 @@ const createGhosts = () => {
   ghosts = [];
 
   // red ghost
-  // const redGhost = new Ghost(
-  //   ghostLocations[0].x * oneBlockSize,
-  //   ghostLocations[0].y * oneBlockSize,
-  //   oneBlockSize,
-  //   oneBlockSize,
-  //   pacman.speed / 2,
-  //   0,
-  //   0,
-  //   10
-  // );
-  // ghosts.push(redGhost);
+  const redGhost = new Ghost(
+    ghostLocations[0].x * oneBlockSize,
+    ghostLocations[0].y * oneBlockSize,
+    oneBlockSize,
+    oneBlockSize,
+    pacman.speed / 2,
+    0,
+    0,
+    8
+  );
+  ghosts.push(redGhost);
 
   // pink ghost
-  // const pinkGhost = new Ghost(
-  //   ghostLocations[0].x * oneBlockSize,
-  //   ghostLocations[0].y * oneBlockSize,
-  //   oneBlockSize,
-  //   oneBlockSize,
-  //   pacman.speed / 2,
-  //   16,
-  //   0,
-  //   6
-  // );
-  // ghosts.push(pinkGhost);
+  const pinkGhost = new Ghost(
+    ghostLocations[0].x * oneBlockSize,
+    ghostLocations[0].y * oneBlockSize,
+    oneBlockSize,
+    oneBlockSize,
+    pacman.speed / 2,
+    32,
+    0,
+    6
+  );
+  ghosts.push(pinkGhost);
 
   // orange ghost
   const orangeGhost = new Ghost(
@@ -506,9 +506,22 @@ const createGhosts = () => {
     pacman.speed / 2,
     16,
     0,
-    2
+    3
   );
   ghosts.push(orangeGhost);
+
+  // skyblue ghost
+  const skyblueGhost = new Ghost(
+    ghostLocations[0].x * oneBlockSize,
+    ghostLocations[0].y * oneBlockSize,
+    oneBlockSize,
+    oneBlockSize,
+    pacman.speed / 2,
+    48,
+    0,
+    2
+  );
+  ghosts.push(skyblueGhost);
 };
 
 const restartPacmanAndGhosts = () => {
