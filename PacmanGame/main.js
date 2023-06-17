@@ -8,6 +8,8 @@ const DIRECTION_RIGHT = 2;
 const DIRECTION_BOTTOM = 3;
 const DIRECTION_LEFT = 4;
 
+const ghostCount = 4;
+
 const map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
@@ -20,8 +22,7 @@ const map = [
   [0, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0],
   [1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1],
   [2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2],
-  [1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1],
-  [0, 0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1],
   [0, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0],
   [1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1],
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
@@ -39,6 +40,7 @@ const wallSpaceWidth = oneBlockSize / 1.2;
 const wallOffset = (oneBlockSize - wallSpaceWidth) / 2;
 const wallInnerColor = 'black';
 
+let score = 0;
 let pacman;
 
 class Pacman {
@@ -136,19 +138,41 @@ class Pacman {
     return false;
   }
 
+  eat() {
+    for (let i = 0; i < map.length; i++) {
+      for (let j = 0; j < map[0].length; j++) {
+        if (map[i][j] == 2 && this.getMapX() == j && this.getMapY() == i) {
+          map[i][j] = 3;
+          score++;
+        }
+      }
+    }
+  }
+
+  getMapX() {
+    return parseInt(this.x / oneBlockSize);
+  }
+
+  getMapY() {
+    return parseInt(this.y / oneBlockSize);
+  }
+
   draw() {
+    const translateX = this.x + oneBlockSize / 2;
+    const translateY = this.y + oneBlockSize + oneBlockSize / 2;
+
     ctx.save();
-    ctx.translate(this.x + oneBlockSize / 2, this.y + oneBlockSize / 2);
+    ctx.translate(translateX, translateY);
     ctx.rotate(((this.direction + DIRECTION_RIGHT) * 90 * Math.PI) / 180);
-    ctx.translate(-this.x - oneBlockSize / 2, -this.y - oneBlockSize / 2);
+    ctx.translate(-translateX, -translateY);
     ctx.drawImage(
       pacmanFrames,
-      (this.currentFrame - 1) * 20,
+      (this.currentFrame - 1) * 16,
       0,
-      20,
-      20,
+      16,
+      16,
       this.x,
-      this.y,
+      this.y + oneBlockSize,
       this.width,
       this.height
     );
@@ -156,7 +180,7 @@ class Pacman {
   }
 }
 
-let createNewPacman = () => {
+const createNewPacman = () => {
   pacman = new Pacman(
     oneBlockSize,
     oneBlockSize,
@@ -168,7 +192,7 @@ let createNewPacman = () => {
 
 const createRect = (x, y, width, height, color) => {
   ctx.fillStyle = color;
-  ctx.fillRect(x, y, width, height);
+  ctx.fillRect(x, y + oneBlockSize, width, height);
 };
 
 const drawWalls = () => {
@@ -243,16 +267,26 @@ const drawFoods = () => {
   }
 };
 
-const update = () => {
-  pacman.moveProcess();
+const drawScore = () => {
+  ctx.font = '10px Emulogic';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = 'white';
+  ctx.fillText('SCORE: ' + score, 0, 2);
 };
 
 const clearCanvas = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
 
+const update = () => {
+  pacman.moveProcess();
+  pacman.eat();
+};
+
 const draw = () => {
   clearCanvas();
+  drawScore();
   drawWalls();
   drawFoods();
   pacman.draw();
@@ -266,7 +300,7 @@ const loop = () => {
 
 const init = () => {
   canvas.width = map[0].length * oneBlockSize;
-  canvas.height = map.length * oneBlockSize;
+  canvas.height = (map.length + 1) * oneBlockSize;
 
   createNewPacman();
   loop();

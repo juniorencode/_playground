@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Emulogic';
+  src: url(./fonts/emulogic.ttf);
+}
+
 * {
   margin: 0;
   padding: 0;
