@@ -46,7 +46,6 @@ let lives = totalLives;
 let totalFood = 0;
 
 let ghosts = [];
-const ghostCount = 4;
 const ghostLocations = [
   { x: 10, y: 8 },
   { x: 9, y: 10 },
@@ -450,7 +449,7 @@ class Ghost {
     ctx.strokeStyle = 'red';
     ctx.arc(
       this.x + oneBlockSize / 2,
-      this.y + oneBlockSize / 2,
+      this.y + oneBlockSize / 2 + oneBlockSize,
       this.range * oneBlockSize,
       0,
       2 * Math.PI
@@ -472,19 +471,44 @@ const createNewPacman = () => {
 const createGhosts = () => {
   ghosts = [];
 
-  for (let i = 0; i < ghostCount; i++) {
-    const newGhost = new Ghost(
-      ghostLocations[i].x * oneBlockSize,
-      ghostLocations[i].y * oneBlockSize,
-      oneBlockSize,
-      oneBlockSize,
-      pacman.speed / 2,
-      i * 16,
-      0,
-      6 + i
-    );
-    ghosts.push(newGhost);
-  }
+  // red ghost
+  // const redGhost = new Ghost(
+  //   ghostLocations[0].x * oneBlockSize,
+  //   ghostLocations[0].y * oneBlockSize,
+  //   oneBlockSize,
+  //   oneBlockSize,
+  //   pacman.speed / 2,
+  //   0,
+  //   0,
+  //   10
+  // );
+  // ghosts.push(redGhost);
+
+  // pink ghost
+  // const pinkGhost = new Ghost(
+  //   ghostLocations[0].x * oneBlockSize,
+  //   ghostLocations[0].y * oneBlockSize,
+  //   oneBlockSize,
+  //   oneBlockSize,
+  //   pacman.speed / 2,
+  //   16,
+  //   0,
+  //   6
+  // );
+  // ghosts.push(pinkGhost);
+
+  // orange ghost
+  const orangeGhost = new Ghost(
+    ghostLocations[0].x * oneBlockSize,
+    ghostLocations[0].y * oneBlockSize,
+    oneBlockSize,
+    oneBlockSize,
+    pacman.speed / 2,
+    16,
+    0,
+    2
+  );
+  ghosts.push(orangeGhost);
 };
 
 const restartPacmanAndGhosts = () => {
