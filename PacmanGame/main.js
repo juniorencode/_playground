@@ -38,7 +38,9 @@ const wallSpaceWidth = oneBlockSize / 1.2;
 const wallOffset = (oneBlockSize - wallSpaceWidth) / 2;
 const wallInnerColor = 'black';
 
-const ghosts = [];
+let lives = 3;
+
+let ghosts = [];
 const ghostCount = 4;
 const ghostLocations = [
   { x: 10, y: 8 },
@@ -170,6 +172,20 @@ class Pacman {
 
   getMapY() {
     return parseInt(this.y / oneBlockSize);
+  }
+
+  checkGhostCollision(ghosts) {
+    for (let i = 0; i < ghosts.length; i++) {
+      let ghost = ghosts[i];
+      if (
+        ghost.getMapX() == this.getMapX() &&
+        ghost.getMapY() == this.getMapY()
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   draw() {
@@ -449,6 +465,8 @@ const createNewPacman = () => {
 };
 
 const createGhosts = () => {
+  ghosts = [];
+
   for (let i = 0; i < ghostCount; i++) {
     const newGhost = new Ghost(
       ghostLocations[i].x * oneBlockSize,
@@ -462,6 +480,16 @@ const createGhosts = () => {
     );
     ghosts.push(newGhost);
   }
+};
+
+const restartPacmanAndGhosts = () => {
+  createNewPacman();
+  createGhosts();
+};
+
+const onGhostCollision = () => {
+  lives--;
+  restartPacmanAndGhosts();
 };
 
 const createRect = (x, y, width, height, color) => {
@@ -557,6 +585,7 @@ const update = () => {
   pacman.moveProcess();
   pacman.eat();
   ghosts.forEach(ghost => ghost.moveProcess());
+  if (pacman.checkGhostCollision(ghosts)) onGhostCollision();
 };
 
 const draw = () => {
