@@ -8,7 +8,14 @@ const DIRECTION_RIGHT = 2;
 const DIRECTION_BOTTOM = 3;
 const DIRECTION_LEFT = 4;
 
+const ghosts = [];
 const ghostCount = 4;
+const ghostLocations = [
+  { x: 10, y: 9 },
+  { x: 9, y: 11 },
+  { x: 10, y: 11 },
+  { x: 11, y: 11 }
+];
 
 const map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
