@@ -9,12 +9,12 @@ const DIRECTION_BOTTOM = 3;
 const DIRECTION_LEFT = 4;
 
 const ghosts = [];
-const ghostCount = 4;
+const ghostCount = 1;
 const ghostLocations = [
-  { x: 10, y: 9 },
-  { x: 9, y: 11 },
-  { x: 10, y: 11 },
-  { x: 11, y: 11 }
+  { x: 10, y: 8 },
+  { x: 9, y: 10 },
+  { x: 10, y: 10 },
+  { x: 11, y: 10 }
 ];
 
 const map = [
@@ -198,6 +198,174 @@ class Ghost {
     this.imageX = imageX;
     this.imageY = imageY;
     this.range = range;
+
+    this.target = pacman;
+  }
+
+  moveProcess() {
+    this.changeDirectionIfPossible();
+    this.moveForwards();
+    if (this.checkCollisions()) {
+      this.moveBackwards();
+      return;
+    }
+  }
+
+  changeDirectionIfPossible() {
+    let tempDirection = this.direction;
+
+    this.direction = this.calculateNewDirection(
+      map,
+      parseInt(this.target.x / oneBlockSize),
+      parseInt(this.target.y / oneBlockSize)
+    );
+
+    this.moveForwards();
+
+    if (this.checkCollisions()) {
+      this.moveBackwards();
+      this.direction = tempDirection;
+    } else {
+      this.moveBackwards();
+    }
+  }
+
+  calculateNewDirection(map, destX, destY) {
+    const mp = [];
+
+    for (let i = 0; i < map.length; i++) {
+      mp[i] = map[i].slice();
+    }
+
+    const queue = [
+      {
+        x: this.getMapX(),
+        y: this.getMapY(),
+        moves: []
+      }
+    ];
+
+    while (queue.length > 0) {
+      const poped = queue.shift();
+
+      if (poped.x === destX && poped.y === destY) {
+        return poped.moves[0];
+      } else {
+        mp[poped.y][poped.x] = 1;
+        const neighborList = this.addNeighbors(poped, mp);
+        for (let i = 0; i < neighborList.length; i++) {
+          queue.push(neighborList[i]);
+        }
+      }
+    }
+
+    return DIRECTION_UP; // default
+  }
+
+  addNeighbors(poped, mp) {
+    const queue = [];
+    const numOfRows = mp.length;
+    const numOfColumns = mp[0].length;
+
+    if (
+      poped.x - 1 >= 0 &&
+      poped.x - 1 < numOfRows &&
+      mp[poped.y][poped.x - 1] != 1
+    ) {
+      const tempMoves = poped.moves.slice();
+      tempMoves.push(DIRECTION_LEFT);
+      queue.push({ x: poped.x - 1, y: poped.y, moves: tempMoves });
+    }
+
+    if (
+      poped.x + 1 >= 0 &&
+      poped.x + 1 < numOfRows &&
+      mp[poped.y][poped.x + 1] != 1
+    ) {
+      const tempMoves = poped.moves.slice();
+      tempMoves.push(DIRECTION_RIGHT);
+      queue.push({ x: poped.x + 1, y: poped.y, moves: tempMoves });
+    }
+
+    if (
+      poped.y - 1 >= 0 &&
+      poped.y - 1 < numOfColumns &&
+      mp[poped.y - 1][poped.x] != 1
+    ) {
+      const tempMoves = poped.moves.slice();
+      tempMoves.push(DIRECTION_UP);
+      queue.push({ x: poped.x, y: poped.y - 1, moves: tempMoves });
+    }
+
+    if (
+      poped.y + 1 >= 0 &&
+      poped.y + 1 < numOfColumns &&
+      mp[poped.y + 1][poped.x] != 1
+    ) {
+      const tempMoves = poped.moves.slice();
+      tempMoves.push(DIRECTION_BOTTOM);
+      queue.push({ x: poped.x, y: poped.y + 1, moves: tempMoves });
+    }
+
+    return queue;
+  }
+
+  getMapX() {
+    return parseInt(this.x / oneBlockSize);
+  }
+
+  getMapY() {
+    return parseInt(this.y / oneBlockSize);
+  }
+
+  moveBackwards() {
+    switch (this.direction) {
+      case DIRECTION_RIGHT: // right
+        this.x -= this.speed;
+        break;
+      case DIRECTION_UP: // up
+        this.y += this.speed;
+        break;
+      case DIRECTION_LEFT: // left
+        this.x += this.speed;
+        break;
+      case DIRECTION_BOTTOM: // bottom
+        this.y -= this.speed;
+        break;
+    }
+  }
+
+  moveForwards() {
+    switch (this.direction) {
+      case DIRECTION_RIGHT: // right
+        this.x += this.speed;
+        break;
+      case DIRECTION_UP: // up
+        this.y -= this.speed;
+        break;
+      case DIRECTION_LEFT: // left
+        this.x -= this.speed;
+        break;
+      case DIRECTION_BOTTOM: // bottom
+        this.y += this.speed;
+        break;
+    }
+  }
+
+  checkCollisions() {
+    const blockX = this.x / oneBlockSize;
+    const blockY = this.y / oneBlockSize;
+
+    if (
+      map[parseInt(blockY)][parseInt(blockX)] == 1 ||
+      map[parseInt(blockY + 0.9999)][parseInt(blockX)] == 1 ||
+      map[parseInt(blockY)][parseInt(blockX + 0.9999)] == 1 ||
+      map[parseInt(blockY + 0.9999)][parseInt(blockX + 0.9999)] == 1
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   draw() {
@@ -209,7 +377,7 @@ class Ghost {
       16,
       16,
       this.x,
-      this.y,
+      this.y + oneBlockSize,
       this.width,
       this.height
     );
@@ -335,6 +503,7 @@ const clearCanvas = () => {
 const update = () => {
   pacman.moveProcess();
   pacman.eat();
+  ghosts.forEach(ghost => ghost.moveProcess());
 };
 
 const draw = () => {
