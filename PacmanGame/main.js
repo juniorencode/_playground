@@ -406,6 +406,18 @@ class Ghost {
       this.height
     );
     ctx.restore();
+
+    // circle
+    ctx.beginPath();
+    ctx.strokeStyle = 'red';
+    ctx.arc(
+      this.x + oneBlockSize / 2,
+      this.y + oneBlockSize / 2,
+      this.range * oneBlockSize,
+      0,
+      2 * Math.PI
+    );
+    ctx.stroke();
   }
 }
 
