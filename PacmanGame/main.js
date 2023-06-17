@@ -41,9 +41,9 @@ const wallSpaceWidth = oneBlockSize / 1.2;
 const wallOffset = (oneBlockSize - wallSpaceWidth) / 2;
 const wallInnerColor = 'black';
 
+const totalFood = 210;
 const totalLives = 3;
 let lives = totalLives;
-let totalFood = 0;
 
 let ghosts = [];
 const ghostLocations = [
@@ -87,6 +87,9 @@ class Pacman {
   }
 
   moveProcess() {
+    if (this.x <= -oneBlockSize) this.x = (map.length - 1) * oneBlockSize;
+    if (this.x >= map.length * oneBlockSize) this.x = -oneBlockSize;
+
     this.changeDirectionIfPossible();
     this.moveForwards();
 
@@ -619,7 +622,6 @@ const drawFoods = () => {
           oneBlockSize / 6,
           '#FEB897'
         );
-        totalFood++;
       }
     }
   }
@@ -719,7 +721,7 @@ const init = () => {
   canvas.height = (map.length + 1) * oneBlockSize;
 
   createNewPacman();
-  createGhosts();
+  // createGhosts();
   animationId = requestAnimationFrame(loop);
 };
 
