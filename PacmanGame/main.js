@@ -445,16 +445,16 @@ class Ghost {
     ctx.restore();
 
     // circle range
-    ctx.beginPath();
-    ctx.strokeStyle = 'red';
-    ctx.arc(
-      this.x + oneBlockSize / 2,
-      this.y + oneBlockSize / 2 + oneBlockSize,
-      this.range * oneBlockSize,
-      0,
-      2 * Math.PI
-    );
-    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.strokeStyle = 'red';
+    // ctx.arc(
+    //   this.x + oneBlockSize / 2,
+    //   this.y + oneBlockSize / 2 + oneBlockSize,
+    //   this.range * oneBlockSize,
+    //   0,
+    //   2 * Math.PI
+    // );
+    // ctx.stroke();
   }
 }
 
