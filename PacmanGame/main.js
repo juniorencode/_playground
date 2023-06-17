@@ -41,7 +41,9 @@ const wallSpaceWidth = oneBlockSize / 1.2;
 const wallOffset = (oneBlockSize - wallSpaceWidth) / 2;
 const wallInnerColor = 'black';
 
-let lives = 1;
+const totalLives = 3;
+let lives = totalLives;
+let totalFood = 0;
 
 let ghosts = [];
 const ghostCount = 4;
@@ -502,6 +504,11 @@ const gameOver = () => {
   drawGameOver();
 };
 
+const win = () => {
+  cancelAnimationFrame(animationId);
+  stopGame = true;
+};
+
 const createRect = (x, y, width, height, color) => {
   ctx.fillStyle = color;
   ctx.fillRect(x, y + oneBlockSize, width, height);
@@ -574,6 +581,7 @@ const drawFoods = () => {
           oneBlockSize / 6,
           '#FEB897'
         );
+        totalFood++;
       }
     }
   }
@@ -588,7 +596,7 @@ const drawScore = () => {
 };
 
 const drawLives = () => {
-  const pointStart = canvas.width - 3 * oneBlockSize;
+  const pointStart = canvas.width - totalLives * oneBlockSize;
 
   ctx.font = '10px Emulogic';
   ctx.textAlign = 'end';
@@ -633,6 +641,10 @@ const update = () => {
   pacman.eat();
   ghosts.forEach(ghost => ghost.moveProcess());
   if (pacman.checkGhostCollision(ghosts)) onGhostCollision();
+
+  if (score >= totalFood) {
+    win();
+  }
 };
 
 const draw = () => {
