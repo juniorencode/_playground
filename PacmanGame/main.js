@@ -214,12 +214,29 @@ class Ghost {
     }, 10000);
   }
 
+  isInRange() {
+    const xDistance = Math.abs(pacman.getMapX() - this.getMapX());
+    const yDistance = Math.abs(pacman.getMapY() - this.getMapY());
+
+    if (
+      Math.sqrt(xDistance * xDistance + yDistance * yDistance) <= this.range
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   changeRandomDirection() {
     this.randomTargetIndex = parseInt(Math.random() * 6);
   }
 
   moveProcess() {
-    this.target = randomTargetsForGhosts[this.randomTargetIndex];
+    if (this.isInRange()) {
+      this.target = pacman;
+    } else {
+      this.target = randomTargetsForGhosts[this.randomTargetIndex];
+    }
 
     this.changeDirectionIfPossible();
     this.moveForwards();
@@ -407,7 +424,7 @@ class Ghost {
     );
     ctx.restore();
 
-    // circle
+    // circle range
     ctx.beginPath();
     ctx.strokeStyle = 'red';
     ctx.arc(
