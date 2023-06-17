@@ -8,15 +8,6 @@ const DIRECTION_RIGHT = 2;
 const DIRECTION_BOTTOM = 3;
 const DIRECTION_LEFT = 4;
 
-const ghosts = [];
-const ghostCount = 1;
-const ghostLocations = [
-  { x: 10, y: 8 },
-  { x: 9, y: 10 },
-  { x: 10, y: 10 },
-  { x: 11, y: 10 }
-];
-
 const map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
@@ -46,6 +37,23 @@ const oneBlockSize = 18;
 const wallSpaceWidth = oneBlockSize / 1.2;
 const wallOffset = (oneBlockSize - wallSpaceWidth) / 2;
 const wallInnerColor = 'black';
+
+const ghosts = [];
+const ghostCount = 4;
+const ghostLocations = [
+  { x: 10, y: 8 },
+  { x: 9, y: 10 },
+  { x: 10, y: 10 },
+  { x: 11, y: 10 }
+];
+const randomTargetsForGhosts = [
+  { x: oneBlockSize, y: oneBlockSize },
+  { x: 0, y: 10 * oneBlockSize },
+  { x: oneBlockSize, y: 20 * oneBlockSize },
+  { x: 19 * oneBlockSize, y: oneBlockSize },
+  { x: 20 * oneBlockSize, y: 10 * oneBlockSize },
+  { x: 19 * oneBlockSize, y: 20 * oneBlockSize }
+];
 
 let score = 0;
 let pacman;
@@ -198,11 +206,21 @@ class Ghost {
     this.imageX = imageX;
     this.imageY = imageY;
     this.range = range;
+    this.randomTargetIndex = parseInt(Math.random() * 6);
+    this.target = randomTargetsForGhosts[this.randomTargetIndex];
 
-    this.target = pacman;
+    setInterval(() => {
+      this.changeRandomDirection();
+    }, 10000);
+  }
+
+  changeRandomDirection() {
+    this.randomTargetIndex = parseInt(Math.random() * 6);
   }
 
   moveProcess() {
+    this.target = randomTargetsForGhosts[this.randomTargetIndex];
+
     this.changeDirectionIfPossible();
     this.moveForwards();
     if (this.checkCollisions()) {
@@ -219,6 +237,12 @@ class Ghost {
       parseInt(this.target.x / oneBlockSize),
       parseInt(this.target.y / oneBlockSize)
     );
+
+    if (typeof this.direction == 'undefined') {
+      this.direction = tempDirection;
+      this.changeRandomDirection();
+      return;
+    }
 
     this.moveForwards();
 
