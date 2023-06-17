@@ -33,6 +33,9 @@ const map = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ];
 
+let animationId;
+let stopGame = false;
+
 const oneBlockSize = 18;
 const wallSpaceWidth = oneBlockSize / 1.2;
 const wallOffset = (oneBlockSize - wallSpaceWidth) / 2;
@@ -490,6 +493,12 @@ const restartPacmanAndGhosts = () => {
 const onGhostCollision = () => {
   lives--;
   restartPacmanAndGhosts();
+  if (lives === 0) gameOver();
+};
+
+const gameOver = () => {
+  cancelAnimationFrame(animationId);
+  stopGame = true;
 };
 
 const createRect = (x, y, width, height, color) => {
@@ -571,10 +580,35 @@ const drawFoods = () => {
 
 const drawScore = () => {
   ctx.font = '10px Emulogic';
-  ctx.textAlign = 'left';
+  ctx.textAlign = 'start';
   ctx.textBaseline = 'top';
   ctx.fillStyle = 'white';
   ctx.fillText('SCORE: ' + score, 0, 2);
+};
+
+const drawLives = () => {
+  const pointStart = this.canvas.width - 3 * oneBlockSize;
+
+  ctx.font = '10px Emulogic';
+  ctx.textAlign = 'end';
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = 'white';
+  ctx.fillText('Lives: ', pointStart, 2);
+
+  // lives
+  for (let i = 0; i < lives; i++) {
+    ctx.drawImage(
+      pacmanFrames,
+      2 * 16,
+      0,
+      16,
+      16,
+      pointStart + i * oneBlockSize,
+      0,
+      12,
+      12
+    );
+  }
 };
 
 const clearCanvas = () => {
@@ -591,6 +625,7 @@ const update = () => {
 const draw = () => {
   clearCanvas();
   drawScore();
+  drawLives();
   drawWalls();
   drawFoods();
   pacman.draw();
@@ -598,9 +633,10 @@ const draw = () => {
 };
 
 const loop = () => {
-  update();
   draw();
-  requestAnimationFrame(loop);
+  update();
+  if (stopGame) return;
+  animationId = requestAnimationFrame(loop);
 };
 
 const init = () => {
@@ -609,7 +645,7 @@ const init = () => {
 
   createNewPacman();
   createGhosts();
-  loop();
+  animationId = requestAnimationFrame(loop);
 };
 
 init();
