@@ -19,7 +19,9 @@
     </div>
     <script src="./main.js"></script>
     <script>
-      new InputImageCut(document.querySelector('.InputImageCut'));
+      new InputImageCut({
+        container: document.querySelector('.InputImageCut')
+      });
     </script>
   </body>
 </html>

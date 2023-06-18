@@ -1,6 +1,9 @@
 class InputImageCut {
-  constructor(container) {
-    this.container = container;
+  constructor(options) {
+    if (!options || !options.container)
+      throw new Error('InputImageCut constructor: missing arguments');
+
+    this.container = options.container;
     this.file = document.createElement('input');
     this.file.type = 'file';
     this.imageTexture = new Image();
@@ -10,6 +13,8 @@ class InputImageCut {
     this.filter = null;
 
     this._eventHandlers = [];
+
+    this.init();
   }
 
   init() {
