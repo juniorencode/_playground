@@ -3,3 +3,37 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  width: 100vw;
+  min-height: 100vh;
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  width: 80%;
+}
+
+.InputImageCut {
+  width: 100%;
+  min-height: 300px;
+  border: dashed 2px #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.InputImageCut__banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  color: #ccc;
+}
+
+.InputImageCut__banner i {
+  font-size: 4em;
+}
