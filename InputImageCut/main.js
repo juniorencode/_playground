@@ -6,15 +6,24 @@ class InputImageCut {
     this.imageTexture = new Image();
 
     // canvas
-    this.backgroundCanvas = null;
-    this.filterCanvas = null;
-
-    this.appendBanner();
-    // this.container.addEventListener('click', () => this.handleOpenInputFile());
-    // this.file.addEventListener('change', () => this.handleSelectFile());
-    // this.imageTexture.addEventListener('load', () => this.handleUploadFile());
+    this.background = null;
+    this.filter = null;
 
     this._eventHandlers = [];
+  }
+
+  init() {
+    this.appendBanner();
+    this.background = this.buildCanvas('background');
+    this.filter = this.buildCanvas('filter');
+  }
+
+  buildCanvas(name) {
+    const object = {};
+    object.canvas = document.createElement('canvas');
+    object.canvas.classList.add('InputImageCut__' + name);
+    object.ctx = object.canvas.getContext('2d');
+    return object;
   }
 
   handleOpenInputFile() {
