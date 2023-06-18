@@ -5,7 +5,11 @@ class InputImageCut {
     this.file.type = 'file';
     this.imageTexture = new Image();
 
-    this.drawbanner();
+    // canvas
+    this.backgroundCanvas = null;
+    this.filterCanvas = null;
+
+    this.appendBanner();
     this.container.addEventListener('click', () => this.handleOpenInputFile());
     this.file.addEventListener('change', () => this.handleSelectFile());
     this.imageTexture.addEventListener('load', () => this.handleUploadFile());
@@ -16,15 +20,40 @@ class InputImageCut {
   }
 
   handleSelectFile() {
-    console.log('x');
     this.imageTexture.src = URL.createObjectURL(this.file.files[0]);
   }
 
   handleUploadFile() {
-    console.log('y');
+    this.container.innerHTML = '';
+    this.appendBackgroundCanvas();
+    this.appendFilterCanvas();
+    this.drawBackground();
   }
 
-  drawbanner() {
+  drawBackground() {
+    const ctx = this.backgroundCanvas.getContext('2d');
+    ctx.drawImage(
+      this.imageTexture,
+      0,
+      0,
+      this.imageTexture.width,
+      this.imageTexture.height
+    );
+  }
+
+  appendBackgroundCanvas() {
+    this.backgroundCanvas = document.createElement('canvas');
+    this.backgroundCanvas.classList.add('InputImageCut__background');
+    this.container.append(this.backgroundCanvas);
+  }
+
+  appendFilterCanvas() {
+    this.filterCanvas = document.createElement('canvas');
+    this.filterCanvas.classList.add('InputImageCut__filter');
+    this.container.append(this.filterCanvas);
+  }
+
+  appendBanner() {
     const banner = document.createElement('div');
     const icon = document.createElement('i');
     const paragraph = document.createElement('p');
