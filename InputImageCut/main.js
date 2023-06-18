@@ -1,15 +1,27 @@
 class InputImageCut {
   constructor(container) {
     this.container = container;
-    this.input = document.createElement('input');
-    this.input.type = 'file';
+    this.file = document.createElement('input');
+    this.file.type = 'file';
+    this.imageTexture = new Image();
 
     this.drawbanner();
-    this.container.addEventListener('click', () => this.handleInput());
+    this.container.addEventListener('click', () => this.handleOpenInputFile());
+    this.file.addEventListener('change', () => this.handleSelectFile());
+    this.imageTexture.addEventListener('load', () => this.handleUploadFile());
   }
 
-  handleInput() {
-    this.input.click();
+  handleOpenInputFile() {
+    this.file.click();
+  }
+
+  handleSelectFile() {
+    console.log('x');
+    this.imageTexture.src = URL.createObjectURL(this.file.files[0]);
+  }
+
+  handleUploadFile() {
+    console.log('y');
   }
 
   drawbanner() {
