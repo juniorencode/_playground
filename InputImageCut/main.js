@@ -10,9 +10,11 @@ class InputImageCut {
     this.filterCanvas = null;
 
     this.appendBanner();
-    this.container.addEventListener('click', () => this.handleOpenInputFile());
-    this.file.addEventListener('change', () => this.handleSelectFile());
-    this.imageTexture.addEventListener('load', () => this.handleUploadFile());
+    // this.container.addEventListener('click', () => this.handleOpenInputFile());
+    // this.file.addEventListener('change', () => this.handleSelectFile());
+    // this.imageTexture.addEventListener('load', () => this.handleUploadFile());
+
+    this._eventHandlers = [];
   }
 
   handleOpenInputFile() {
@@ -66,5 +68,37 @@ class InputImageCut {
     banner.append(icon);
     banner.append(paragraph);
     this.container.append(banner);
+  }
+
+  // event manager
+  addListener(node, event, handler, capture = false) {
+    if (!(node in this._eventHandlers)) this._eventHandlers[node] = {};
+    if (!(event in this._eventHandlers[node]))
+      this._eventHandlers[node][event] = [];
+
+    this._eventHandlers[node][event].push([handler, capture]);
+    node.addEventListener(event, handler, capture);
+  }
+
+  removeListenersBase(node, event, handlers) {
+    const eventHandlers = handlers[event];
+    for (let i = 0; i < eventHandlers.length; i++) {
+      const handler = eventHandlers[i];
+      node.removeEventListener(event, handler[0], handler[1]);
+    }
+  }
+
+  removeListeners(node, event) {
+    if (!(node in this._eventHandlers)) return;
+    const handlers = this._eventHandlers[node];
+    event in handlers && this.removeListenersBase(node, event, handlers);
+  }
+
+  removeAllListeners(node) {
+    if (!(node in this._eventHandlers)) return;
+    const handlers = this._eventHandlers[node];
+    for (const event in handlers) {
+      this.removeListenersBase(node, event, handlers);
+    }
   }
 }
