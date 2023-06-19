@@ -52,6 +52,7 @@ class InputImageCut {
     this.filter = this.buildCanvas('filter');
     this.filter.canvas.width = this.background.canvas.width;
     this.filter.canvas.height = this.background.canvas.height;
+    this.scaleFactors = { x: 0, y: 0 };
 
     // start
     this.appendWatermark(this.watermarks.default);
@@ -95,9 +96,17 @@ class InputImageCut {
     this.image.position.y = (canvas.height - height) / 2;
   }
 
+  setScaleFactors() {
+    const { canvas } = this.filter;
+    this.scaleFactors = {
+      x: canvas.width / canvas.clientWidth,
+      y: canvas.height / canvas.clientHeight
+    };
+  }
+
   doCalculateMove(relativeX, relativeY) {
-    const x = relativeX - this.image.temp.x;
-    const y = relativeY - this.image.temp.y;
+    const x = relativeX * this.scaleFactors.x - this.image.temp.x;
+    const y = relativeY * this.scaleFactors.y - this.image.temp.y;
     this.doCalculatePosition(x, y);
   }
 
@@ -226,6 +235,7 @@ class InputImageCut {
     // draw
     this.drawBackground();
     this.drawFilter();
+    this.setScaleFactors();
   }
 
   handleDragEnter(e) {
@@ -255,8 +265,8 @@ class InputImageCut {
   handleMouseDown(e) {
     this.mouseDown = true;
 
-    this.image.temp.x = e.offsetX - this.image.position.x;
-    this.image.temp.y = e.offsetY - this.image.position.y;
+    this.image.temp.x = e.offsetX * this.scaleFactors.x - this.image.position.x;
+    this.image.temp.y = e.offsetY * this.scaleFactors.y - this.image.position.y;
   }
 
   handleMouseUp() {
