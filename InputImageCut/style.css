@@ -27,15 +27,20 @@ body {
   position: relative;
 }
 
-.InputImageCut__banner {
+.InputImageCut--dragover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.InputImageCut__watermark {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1em;
   color: #ccc;
+  pointer-events: none;
 }
 
-.InputImageCut__banner i {
+.InputImageCut__watermark i {
   font-size: 4em;
 }
 

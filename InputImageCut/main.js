@@ -25,6 +25,21 @@ class InputImageCut {
       size: { width: 0, height: 0 }
     };
 
+    this.watermarks = {
+      default: {
+        icon: 'far fa-image',
+        label: 'Drop your photo here or browse your computer'
+      },
+      drop: {
+        icon: 'fas fa-cloud-download-alt',
+        label: 'Drop your photo'
+      },
+      wrong: {
+        icon: 'fas fa-exclamation-circle',
+        label: 'Only images allowed'
+      }
+    };
+
     // canvas
     this.background = this.buildCanvas('background');
     this.background.canvas.width = this.resultImage.width * 2;
@@ -34,7 +49,7 @@ class InputImageCut {
     this.filter.canvas.height = this.background.canvas.height;
 
     // start
-    this.appendBanner();
+    this.appendWatermark(this.watermarks.default);
     this.addEventsDefault();
   }
 
@@ -74,19 +89,17 @@ class InputImageCut {
     this.filter.ctx.fill();
   }
 
-  appendBanner() {
-    const banner = document.createElement('div');
+  appendWatermark(type) {
+    const watermark = document.createElement('div');
     const icon = document.createElement('i');
     const paragraph = document.createElement('p');
-    const text = document.createTextNode(
-      'Drop your photo here or browse your computer'
-    );
-    banner.classList.add('InputImageCut__banner');
-    icon.classList.add('far', 'fa-image');
+    const text = document.createTextNode(type.label);
+    watermark.classList.add('InputImageCut__watermark');
+    icon.className = type.icon;
     paragraph.append(text);
-    banner.append(icon);
-    banner.append(paragraph);
-    this.container.append(banner);
+    watermark.append(icon);
+    watermark.append(paragraph);
+    this.container.append(watermark);
   }
 
   appendCloseButton() {
@@ -141,6 +154,18 @@ class InputImageCut {
     this.drawFilter();
   }
 
+  handleDragEnter() {
+    this.clearContainer();
+    this.appendWatermark(this.watermarks.drop);
+    this.container.classList.add('InputImageCut--dragover');
+  }
+
+  handleDragLeave() {
+    this.clearContainer();
+    this.appendWatermark(this.watermarks.default);
+    this.container.classList.remove('InputImageCut--dragover');
+  }
+
   normalizeSize() {
     const { width, height } = this.image.file;
     const { width: resultWidth, height: resultHeight } = this.resultImage;
@@ -162,6 +187,8 @@ class InputImageCut {
   // events pack
   addEventsDefault() {
     this.addListener(this.container, 'click', () => this.handleOpenInputFile());
+    this.addListener(this.container, 'dragenter', () => this.handleDragEnter());
+    this.addListener(this.container, 'dragleave', () => this.handleDragLeave());
     this.addListener(this.file, 'change', () => this.handleSelectFile());
     this.addListener(this.image.file, 'load', () => this.handleUploadFile());
   }
