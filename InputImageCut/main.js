@@ -5,6 +5,11 @@ class InputImageCut {
 
     this.container = options.container;
 
+    this.resultImage = {
+      width: 500,
+      height: 500
+    };
+
     // events manager
     this._eventHandlers = {};
 
@@ -14,10 +19,16 @@ class InputImageCut {
   init() {
     this.file = document.createElement('input');
     this.file.type = 'file';
-    this.imageTexture = new Image();
+    this.image = {
+      file: new Image(),
+      position: { x: 0, y: 0 },
+      size: { width: 0, height: 0 }
+    };
 
     // canvas
     this.background = this.buildCanvas('background');
+    this.background.canvas.width = this.resultImage.width * 2;
+    this.background.canvas.height = this.resultImage.height * 1.2;
     this.filter = this.buildCanvas('filter');
 
     // start
@@ -27,11 +38,15 @@ class InputImageCut {
 
   drawBackground() {
     this.background.ctx.drawImage(
-      this.imageTexture,
+      this.image.file,
       0,
       0,
-      this.imageTexture.width,
-      this.imageTexture.height
+      this.image.file.width,
+      this.image.file.height,
+      this.image.position.x,
+      this.image.position.y,
+      this.image.size.width,
+      this.image.size.height
     );
   }
 
@@ -53,7 +68,7 @@ class InputImageCut {
   appendCanvas() {
     this.clearContainer();
     this.container.append(this.background.canvas);
-    this.container.append(this.background.filter);
+    // this.container.append(this.filter.canvas);
   }
 
   clearContainer() {
@@ -68,26 +83,51 @@ class InputImageCut {
   handleSelectFile() {
     const file = this.file.files[0];
     if (!file) return;
-    this.imageTexture.src = URL.createObjectURL(file);
+    this.image.file.src = URL.createObjectURL(file);
   }
 
   handleUploadFile() {
+    // prepare
     this.removeEventsDefault();
     this.appendCanvas();
+
+    // normalize
+    this.normalizeSize();
+    this.normalizePosition();
+
+    // draw
     this.drawBackground();
+  }
+
+  normalizeSize() {
+    const { width, height } = this.image.file;
+    const { width: resultWidth, height: resultHeight } = this.resultImage;
+
+    this.image.size.width =
+      width > height ? (width * resultWidth) / height : resultWidth;
+    this.image.size.height =
+      width < height ? (height * resultHeight) / width : resultHeight;
+  }
+
+  normalizePosition() {
+    const { canvas } = this.background;
+    const { width, height } = this.image.size;
+
+    this.image.position.x = (canvas.width - width) / 2;
+    this.image.position.y = (canvas.height - height) / 2;
   }
 
   // events pack
   addEventsDefault() {
     this.addListener(this.container, 'click', () => this.handleOpenInputFile());
     this.addListener(this.file, 'change', () => this.handleSelectFile());
-    this.addListener(this.imageTexture, 'load', () => this.handleUploadFile());
+    this.addListener(this.image.file, 'load', () => this.handleUploadFile());
   }
 
   removeEventsDefault() {
     this.removeListeners(this.container, 'click');
     this.removeListeners(this.file, 'change');
-    this.removeListeners(this.imageTexture, 'load');
+    this.removeListeners(this.image.file, 'load');
   }
 
   // events manager
