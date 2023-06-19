@@ -39,6 +39,7 @@ class InputImageCut {
         label: 'Only images allowed'
       }
     };
+    this.validImageFormats = ['image/png', 'image/jpeg'];
 
     // canvas
     this.background = this.buildCanvas('background');
@@ -51,6 +52,25 @@ class InputImageCut {
     // start
     this.appendWatermark(this.watermarks.default);
     this.addEventsDefault();
+  }
+
+  setFile(file) {
+    if (!file) return;
+    if (!this.validImageFormats.includes(file.type)) {
+      this.wrongFormat();
+      return;
+    }
+    this.image.file.src = URL.createObjectURL(file);
+  }
+
+  wrongFormat() {
+    this.clearContainer();
+    this.appendWatermark(this.watermarks.wrong);
+
+    setTimeout(() => {
+      this.clearContainer();
+      this.appendWatermark(this.watermarks.default);
+    }, 2000);
   }
 
   drawBackground() {
@@ -133,9 +153,7 @@ class InputImageCut {
   }
 
   handleSelectFile() {
-    const file = this.file.files[0];
-    if (!file) return;
-    this.image.file.src = URL.createObjectURL(file);
+    this.setFile(this.file.files[0]);
   }
 
   handleUploadFile() {
@@ -174,10 +192,8 @@ class InputImageCut {
 
   handleDropFile(e) {
     e.preventDefault();
-    console.log('x');
-    const file = e.dataTransfer.files[0];
-    if (!file) return;
-    this.image.file.src = URL.createObjectURL(file);
+    this.container.classList.remove('InputImageCut--dragover');
+    this.setFile(e.dataTransfer.files[0]);
   }
 
   normalizeSize() {
@@ -215,6 +231,10 @@ class InputImageCut {
 
   removeEventsDefault() {
     this.removeListeners(this.container, 'click');
+    this.removeListeners(this.container, 'dragenter');
+    this.removeListeners(this.container, 'dragleave');
+    this.removeListeners(this.container, 'dragover');
+    this.removeListeners(this.container, 'drop');
     this.removeListeners(this.file, 'change');
     this.removeListeners(this.image.file, 'load');
   }
