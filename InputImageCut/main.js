@@ -95,6 +95,7 @@ class InputImageCut {
     button.classList.add('InputImageCut__close');
     icon.classList.add('fas', 'fa-times');
     button.append(icon);
+    this.btnClose = button;
     this.container.append(button);
   }
 
@@ -106,6 +107,11 @@ class InputImageCut {
 
   clearContainer() {
     this.container.innerHTML = '';
+  }
+
+  reset() {
+    this.clearContainer();
+    setTimeout(() => this.init(), 1);
   }
 
   // handlers event
@@ -120,14 +126,15 @@ class InputImageCut {
   }
 
   handleUploadFile() {
+    // normalize
+    this.normalizeSize();
+    this.normalizePosition();
+
     // prepare
     this.removeEventsDefault();
     this.appendCanvas();
     this.appendCloseButton();
-
-    // normalize
-    this.normalizeSize();
-    this.normalizePosition();
+    this.addEventsFilter();
 
     // draw
     this.drawBackground();
@@ -157,6 +164,10 @@ class InputImageCut {
     this.addListener(this.container, 'click', () => this.handleOpenInputFile());
     this.addListener(this.file, 'change', () => this.handleSelectFile());
     this.addListener(this.image.file, 'load', () => this.handleUploadFile());
+  }
+
+  addEventsFilter() {
+    this.addListener(this.btnClose, 'click', () => this.reset());
   }
 
   removeEventsDefault() {
