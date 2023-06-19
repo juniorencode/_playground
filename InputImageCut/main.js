@@ -30,6 +30,8 @@ class InputImageCut {
     this.background.canvas.width = this.resultImage.width * 2;
     this.background.canvas.height = this.resultImage.height * 1.2;
     this.filter = this.buildCanvas('filter');
+    this.filter.canvas.width = this.background.canvas.width;
+    this.filter.canvas.height = this.background.canvas.height;
 
     // start
     this.appendBanner();
@@ -53,6 +55,25 @@ class InputImageCut {
     );
   }
 
+  drawFilter() {
+    const { width, height } = this.filter.canvas;
+    const { width: resultWidth } = this.resultImage;
+    const region = new Path2D();
+
+    region.rect(0, 0, width, height);
+    region.arc(
+      width / 2,
+      height / 2,
+      (width * resultWidth) / width / 2,
+      0,
+      2 * Math.PI
+    );
+    this.filter.ctx.clip(region, 'evenodd');
+    this.filter.ctx.fillStyle = 'rgba(255, 255, 255, .8)';
+    this.filter.ctx.rect(0, 0, width, height);
+    this.filter.ctx.fill();
+  }
+
   appendBanner() {
     const banner = document.createElement('div');
     const icon = document.createElement('i');
@@ -71,7 +92,7 @@ class InputImageCut {
   appendCanvas() {
     this.clearContainer();
     this.container.append(this.background.canvas);
-    // this.container.append(this.filter.canvas);
+    this.container.append(this.filter.canvas);
   }
 
   clearContainer() {
@@ -100,6 +121,7 @@ class InputImageCut {
 
     // draw
     this.drawBackground();
+    this.drawFilter();
   }
 
   normalizeSize() {

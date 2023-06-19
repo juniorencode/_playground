@@ -39,12 +39,7 @@ body {
   font-size: 4em;
 }
 
-.InputImageCut__background {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
+.InputImageCut__background,
 .InputImageCut__filter {
   position: absolute;
   width: 100%;
