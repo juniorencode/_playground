@@ -22,6 +22,7 @@ class InputImageCut {
     this.image = {
       file: new Image(),
       position: { x: 0, y: 0 },
+      temp: { x: 0, y: 0 },
       size: { width: 0, height: 0 }
     };
 
@@ -40,6 +41,9 @@ class InputImageCut {
       }
     };
     this.validImageFormats = ['image/png', 'image/jpeg'];
+
+    // mouse
+    this.mouseDown = false;
 
     // canvas
     this.background = this.buildCanvas('background');
@@ -73,11 +77,55 @@ class InputImageCut {
     }, 2000);
   }
 
+  normalizeSize() {
+    const { width, height } = this.image.file;
+    const { width: resultWidth, height: resultHeight } = this.resultImage;
+
+    this.image.size.width =
+      width > height ? (width * resultWidth) / height : resultWidth;
+    this.image.size.height =
+      width < height ? (height * resultHeight) / width : resultHeight;
+  }
+
+  normalizePosition() {
+    const { canvas } = this.background;
+    const { width, height } = this.image.size;
+
+    this.image.position.x = (canvas.width - width) / 2;
+    this.image.position.y = (canvas.height - height) / 2;
+  }
+
+  doCalculateMove(relativeX, relativeY) {
+    const x = relativeX - this.image.temp.x;
+    const y = relativeY - this.image.temp.y;
+    this.doCalculatePosition(x, y);
+  }
+
+  doCalculatePosition(x, y) {
+    const { canvas } = this.filter;
+    const { width, height } = this.image.size;
+    const { width: resultWidth, height: resultHeight } = this.resultImage;
+    const halfHorizontal = (canvas.width - this.resultImage.width) / 2;
+    const halfVertical = (canvas.height - this.resultImage.height) / 2;
+
+    if (x - halfHorizontal > 0) x = halfHorizontal;
+    else if (x - halfHorizontal + width < resultWidth)
+      x = halfHorizontal + resultWidth - width;
+
+    if (y - halfVertical > 0) y = halfVertical;
+    else if (y - halfVertical + height < resultHeight)
+      y = halfVertical + resultHeight - height;
+
+    this.image.position.x = x;
+    this.image.position.y = y;
+  }
+
   // draw canvas
   drawBackground() {
     const { file, size, position } = this.image;
     const { width, height } = file;
 
+    this.clearBackground();
     this.background.ctx.drawImage(
       file,
       0,
@@ -145,6 +193,11 @@ class InputImageCut {
     this.container.innerHTML = '';
   }
 
+  clearBackground() {
+    const { canvas, ctx } = this.background;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   reset() {
     this.clearContainer();
     setTimeout(() => this.init(), 1);
@@ -199,22 +252,38 @@ class InputImageCut {
     this.setFile(e.dataTransfer.files[0]);
   }
 
-  normalizeSize() {
-    const { width, height } = this.image.file;
-    const { width: resultWidth, height: resultHeight } = this.resultImage;
+  handleMouseDown(e) {
+    this.mouseDown = true;
 
-    this.image.size.width =
-      width > height ? (width * resultWidth) / height : resultWidth;
-    this.image.size.height =
-      width < height ? (height * resultHeight) / width : resultHeight;
+    this.image.temp.x = e.offsetX - this.image.position.x;
+    this.image.temp.y = e.offsetY - this.image.position.y;
   }
 
-  normalizePosition() {
-    const { canvas } = this.background;
-    const { width, height } = this.image.size;
+  handleMouseUp() {
+    this.mouseDown = false;
+  }
 
-    this.image.position.x = (canvas.width - width) / 2;
-    this.image.position.y = (canvas.height - height) / 2;
+  handleMouseMove(e) {
+    if (!this.mouseDown) return;
+
+    const { canvas } = this.filter;
+    const rect = canvas.getBoundingClientRect();
+    const relativeX = e.clientX - rect.left;
+    const relativeY = e.clientY - rect.top;
+    const { clientWidth, clientHeight } = canvas;
+
+    if (
+      relativeX <= 0 ||
+      relativeX >= clientWidth ||
+      relativeY <= 0 ||
+      relativeY >= clientHeight
+    ) {
+      this.mouseDown = false;
+      return;
+    }
+
+    this.doCalculateMove(relativeX, relativeY);
+    this.drawBackground();
   }
 
   // events pack
@@ -229,6 +298,11 @@ class InputImageCut {
   }
 
   addEventsFilter() {
+    const { canvas } = this.filter;
+
+    this.addListener(canvas, 'mousedown', e => this.handleMouseDown(e));
+    this.addListener(canvas, 'mouseup', () => this.handleMouseUp());
+    this.addListener(canvas, 'mousemove', e => this.handleMouseMove(e));
     this.addListener(this.btnClose, 'click', () => this.reset());
   }
 
