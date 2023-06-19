@@ -45,3 +45,17 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.InputImageCut__close {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  font-size: 1.5em;
+  padding: 0.3em 0.4em;
+  color: #bdbdbd;
+  font-weight: 400;
+  text-shadow: 1px 1px #9e9e9e;
+}

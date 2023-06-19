@@ -89,6 +89,15 @@ class InputImageCut {
     this.container.append(banner);
   }
 
+  appendCloseButton() {
+    const button = document.createElement('button');
+    const icon = document.createElement('i');
+    button.classList.add('InputImageCut__close');
+    icon.classList.add('fas', 'fa-times');
+    button.append(icon);
+    this.container.append(button);
+  }
+
   appendCanvas() {
     this.clearContainer();
     this.container.append(this.background.canvas);
@@ -114,6 +123,7 @@ class InputImageCut {
     // prepare
     this.removeEventsDefault();
     this.appendCanvas();
+    this.appendCloseButton();
 
     // normalize
     this.normalizeSize();
