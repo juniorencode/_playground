@@ -73,6 +73,7 @@ class InputImageCut {
     }, 2000);
   }
 
+  // draw canvas
   drawBackground() {
     const { file, size, position } = this.image;
     const { width, height } = file;
@@ -109,6 +110,7 @@ class InputImageCut {
     this.filter.ctx.fill();
   }
 
+  // append child
   appendWatermark(type) {
     const watermark = document.createElement('div');
     const icon = document.createElement('i');
@@ -138,6 +140,7 @@ class InputImageCut {
     this.container.append(this.filter.canvas);
   }
 
+  // clear and reset
   clearContainer() {
     this.container.innerHTML = '';
   }
