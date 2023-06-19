@@ -282,11 +282,12 @@ class InputImageCut {
     const relativeY = e.clientY - rect.top;
     const { clientWidth, clientHeight } = canvas;
 
+    // border container 1px
     if (
-      relativeX <= 0 ||
-      relativeX >= clientWidth ||
-      relativeY <= 0 ||
-      relativeY >= clientHeight
+      relativeX <= 1 ||
+      relativeX >= clientWidth - 1 ||
+      relativeY <= 1 ||
+      relativeY >= clientHeight - 1
     ) {
       this.mouseDown = false;
       return;
