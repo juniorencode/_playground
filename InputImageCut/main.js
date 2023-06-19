@@ -154,16 +154,30 @@ class InputImageCut {
     this.drawFilter();
   }
 
-  handleDragEnter() {
+  handleDragEnter(e) {
+    e.preventDefault();
     this.clearContainer();
     this.appendWatermark(this.watermarks.drop);
     this.container.classList.add('InputImageCut--dragover');
   }
 
-  handleDragLeave() {
+  handleDragLeave(e) {
+    e.preventDefault();
     this.clearContainer();
     this.appendWatermark(this.watermarks.default);
     this.container.classList.remove('InputImageCut--dragover');
+  }
+
+  handleDragOver(e) {
+    e.preventDefault();
+  }
+
+  handleDropFile(e) {
+    e.preventDefault();
+    console.log('x');
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    this.image.file.src = URL.createObjectURL(file);
   }
 
   normalizeSize() {
@@ -187,8 +201,10 @@ class InputImageCut {
   // events pack
   addEventsDefault() {
     this.addListener(this.container, 'click', () => this.handleOpenInputFile());
-    this.addListener(this.container, 'dragenter', () => this.handleDragEnter());
-    this.addListener(this.container, 'dragleave', () => this.handleDragLeave());
+    this.addListener(this.container, 'dragenter', e => this.handleDragEnter(e));
+    this.addListener(this.container, 'dragleave', e => this.handleDragLeave(e));
+    this.addListener(this.container, 'dragover', e => this.handleDragOver(e));
+    this.addListener(this.container, 'drop', e => this.handleDropFile(e));
     this.addListener(this.file, 'change', () => this.handleSelectFile());
     this.addListener(this.image.file, 'load', () => this.handleUploadFile());
   }
