@@ -28,20 +28,20 @@ body {
 }
 
 .InputImageCut--dragover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .InputImageCut__watermark {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1em;
+  gap: 0.5em;
   color: #ccc;
   pointer-events: none;
 }
 
 .InputImageCut__watermark i {
-  font-size: 4em;
+  font-size: 3em;
 }
 
 .InputImageCut__background,
