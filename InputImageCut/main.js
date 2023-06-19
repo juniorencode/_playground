@@ -37,16 +37,19 @@ class InputImageCut {
   }
 
   drawBackground() {
+    const { file, size, position } = this.image;
+    const { width, height } = file;
+
     this.background.ctx.drawImage(
-      this.image.file,
+      file,
       0,
       0,
-      this.image.file.width,
-      this.image.file.height,
-      this.image.position.x,
-      this.image.position.y,
-      this.image.size.width,
-      this.image.size.height
+      width,
+      height,
+      position.x,
+      position.y,
+      size.width,
+      size.height
     );
   }
 
