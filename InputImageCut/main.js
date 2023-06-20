@@ -282,18 +282,6 @@ class InputImageCut {
     const rect = canvas.getBoundingClientRect();
     const relativeX = e.clientX - rect.left;
     const relativeY = e.clientY - rect.top;
-    const { clientWidth, clientHeight } = canvas;
-
-    // border container 1px
-    if (
-      relativeX <= 1 ||
-      relativeX >= clientWidth - 1 ||
-      relativeY <= 1 ||
-      relativeY >= clientHeight - 1
-    ) {
-      this.mouseDown = false;
-      return;
-    }
 
     this.doCalculateMove(relativeX, relativeY);
     this.drawBackground();
@@ -315,6 +303,7 @@ class InputImageCut {
 
     this.addListener(canvas, 'mousedown', e => this.handleMouseDown(e));
     this.addListener(canvas, 'mouseup', () => this.handleMouseUp());
+    this.addListener(canvas, 'mouseleave', () => this.handleMouseUp());
     this.addListener(canvas, 'mousemove', e => this.handleMouseMove(e));
     this.addListener(this.btnClose, 'click', () => this.reset());
   }
