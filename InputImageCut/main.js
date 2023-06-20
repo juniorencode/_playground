@@ -195,7 +195,8 @@ class InputImageCut {
     region.arc(
       width / 2,
       height / 2,
-      (width * resultWidth) / width / 2,
+      // (width * resultWidth) / width / 2,
+      resultWidth / 2,
       0,
       2 * Math.PI
     );
