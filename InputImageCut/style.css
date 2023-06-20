@@ -17,7 +17,7 @@ body {
   width: 80%;
 }
 
-.InputImageCut__container {
+.InputImageCut__content {
   width: 100%;
   min-height: 300px;
   border: dashed 2px #ccc;
@@ -27,7 +27,7 @@ body {
   position: relative;
 }
 
-.InputImageCut__container--dragover {
+.InputImageCut__content--dragover {
   background-color: rgba(0, 0, 0, 0.03);
 }
 

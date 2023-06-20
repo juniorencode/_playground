@@ -4,16 +4,12 @@ class InputImageCut {
       throw new Error('InputImageCut constructor: missing arguments');
 
     this.container = options.container;
-    this.content = document.createElement('div');
-    this.content.classList.add('InputImageCut__container');
-    this.container.append(this.content);
+    this.appendContent();
 
     this.resultImage = {
       width: options.width || options.size || 500,
       height: options.height || options.size || 500
     };
-
-    console.log(this.resultImage);
 
     // events manager
     this._eventHandlers = {};
@@ -213,6 +209,12 @@ class InputImageCut {
     this.content.append(watermark);
   }
 
+  appendContent() {
+    this.content = document.createElement('div');
+    this.content.classList.add('InputImageCut__content');
+    this.container.append(this.content);
+  }
+
   appendCloseButton() {
     const button = document.createElement('button');
     const icon = document.createElement('i');
@@ -224,7 +226,6 @@ class InputImageCut {
   }
 
   appendCanvas() {
-    this.clearContainer();
     this.content.append(this.background.canvas);
     this.content.append(this.filter.canvas);
   }
@@ -240,13 +241,15 @@ class InputImageCut {
     range.step = this.image.scale.step;
     range.value = this.image.scale.min;
     div.append(range);
+    this.ctnScale = div;
     this.rangeScale = range;
     this.container.append(div);
   }
 
   // clear and reset
   clearContainer() {
-    this.content.innerHTML = '';
+    this.container.innerHTML = '';
+    this.appendContent();
   }
 
   clearBackground() {
@@ -275,6 +278,7 @@ class InputImageCut {
 
     // prepare
     this.removeEventsDefault();
+    this.clearContainer();
     this.appendCanvas();
     this.appendScale();
     this.appendCloseButton();
