@@ -117,6 +117,32 @@ class InputImageCut {
     this.doCalculatePosition(x, y);
   }
 
+  doCalculateScale() {
+    const { canvas } = this.filter;
+    const { x: posX, y: posY } = this.image.position;
+    const { width: fileWidth, height: fileHeight } = this.image.file;
+    const { width, height } = this.image.size;
+    const { x: ratioX, y: ratioY } = this.image.ratio;
+    const { value: scale } = this.image.scale;
+    const { width: resultWidth, height: resultHeight } = this.resultImage;
+    const newWidth =
+      (fileWidth > fileHeight
+        ? (fileWidth * resultWidth) / fileHeight
+        : resultWidth) * scale;
+    const newHeight =
+      (fileWidth < fileHeight
+        ? (fileHeight * resultHeight) / fileWidth
+        : resultHeight) * scale;
+    const deltaX = -(-posX + (canvas.clientWidth / 2) * ratioX) / width;
+    const deltaY = -(-posY + (canvas.clientHeight / 2) * ratioY) / height;
+    const x = deltaX * newWidth + (canvas.clientWidth / 2) * ratioX;
+    const y = deltaY * newHeight + (canvas.clientHeight / 2) * ratioY;
+
+    this.image.size.width = newWidth;
+    this.image.size.height = newHeight;
+    this.doCalculatePosition(x, y);
+  }
+
   doCalculatePosition(x, y) {
     const { canvas } = this.filter;
     const { width, height } = this.image.size;
@@ -301,6 +327,9 @@ class InputImageCut {
     scale += Math.sign(e.deltaY) * -1 * step;
     scale = Math.min(Math.max(min, scale), max);
     this.image.scale.value = Number(scale.toFixed(1));
+
+    this.doCalculateScale();
+    this.drawBackground();
   }
 
   // events pack
