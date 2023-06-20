@@ -4,6 +4,7 @@ class InputImageCut {
       throw new Error('InputImageCut constructor: missing arguments');
 
     this.container = options.container;
+    this.shape = options.shape || 'circle';
     this.appendContent();
 
     this.resultImage = {
@@ -184,11 +185,21 @@ class InputImageCut {
 
   drawFilter() {
     const { width, height } = this.filter.canvas;
-    const { height: resultHeight } = this.resultImage;
+    const { width: resultWidth, height: resultHeight } = this.resultImage;
     const region = new Path2D();
 
+    if (this.shape === 'square') {
+      region.rect(
+        (width - resultWidth) / 2,
+        (height - resultHeight) / 2,
+        resultWidth,
+        resultHeight
+      );
+    } else {
+      region.arc(width / 2, height / 2, resultHeight / 2, 0, 2 * Math.PI);
+    }
+
     region.rect(0, 0, width, height);
-    region.arc(width / 2, height / 2, resultHeight / 2, 0, 2 * Math.PI);
     this.filter.ctx.clip(region, 'evenodd');
     this.filter.ctx.fillStyle = 'rgba(255, 255, 255, .8)';
     this.filter.ctx.rect(0, 0, width, height);
