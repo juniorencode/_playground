@@ -188,18 +188,11 @@ class InputImageCut {
 
   drawFilter() {
     const { width, height } = this.filter.canvas;
-    const { width: resultWidth } = this.resultImage;
+    const { height: resultHeight } = this.resultImage;
     const region = new Path2D();
 
     region.rect(0, 0, width, height);
-    region.arc(
-      width / 2,
-      height / 2,
-      // (width * resultWidth) / width / 2,
-      resultWidth / 2,
-      0,
-      2 * Math.PI
-    );
+    region.arc(width / 2, height / 2, resultHeight / 2, 0, 2 * Math.PI);
     this.filter.ctx.clip(region, 'evenodd');
     this.filter.ctx.fillStyle = 'rgba(255, 255, 255, .8)';
     this.filter.ctx.rect(0, 0, width, height);
