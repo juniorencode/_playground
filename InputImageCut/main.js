@@ -9,8 +9,8 @@ class InputImageCut {
     this.container.append(this.content);
 
     this.resultImage = {
-      width: options.size || 500,
-      height: options.size || 500
+      width: options.width || options.size || 500,
+      height: options.height || options.size || 500
     };
 
     console.log(this.resultImage);
