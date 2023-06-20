@@ -4,6 +4,9 @@ class InputImageCut {
       throw new Error('InputImageCut constructor: missing arguments');
 
     this.container = options.container;
+    this.content = document.createElement('div');
+    this.content.classList.add('InputImageCut__container');
+    this.container.append(this.content);
 
     this.resultImage = {
       width: 500,
@@ -211,7 +214,7 @@ class InputImageCut {
     paragraph.append(text);
     watermark.append(icon);
     watermark.append(paragraph);
-    this.container.append(watermark);
+    this.content.append(watermark);
   }
 
   appendCloseButton() {
@@ -221,18 +224,33 @@ class InputImageCut {
     icon.classList.add('fas', 'fa-times');
     button.append(icon);
     this.btnClose = button;
-    this.container.append(button);
+    this.content.append(button);
   }
 
   appendCanvas() {
     this.clearContainer();
-    this.container.append(this.background.canvas);
-    this.container.append(this.filter.canvas);
+    this.content.append(this.background.canvas);
+    this.content.append(this.filter.canvas);
+  }
+
+  appendScale() {
+    const div = document.createElement('div');
+    const range = document.createElement('input');
+    div.classList.add('InputImageCut__zoom');
+    range.classList.add('InputImageCut__range');
+    range.type = 'range';
+    range.min = this.image.scale.min;
+    range.max = this.image.scale.max;
+    range.step = this.image.scale.step;
+    range.value = this.image.scale.min;
+    div.append(range);
+    this.rangeScale = range;
+    this.container.append(div);
   }
 
   // clear and reset
   clearContainer() {
-    this.container.innerHTML = '';
+    this.content.innerHTML = '';
   }
 
   clearBackground() {
@@ -262,6 +280,7 @@ class InputImageCut {
     // prepare
     this.removeEventsDefault();
     this.appendCanvas();
+    this.appendScale();
     this.appendCloseButton();
     this.addEventsFilter();
 
@@ -275,14 +294,14 @@ class InputImageCut {
     e.preventDefault();
     this.clearContainer();
     this.appendWatermark(this.watermarks.drop);
-    this.container.classList.add('InputImageCut--dragover');
+    this.content.classList.add('InputImageCut__container--dragover');
   }
 
   handleDragLeave(e) {
     e.preventDefault();
     this.clearContainer();
     this.appendWatermark(this.watermarks.default);
-    this.container.classList.remove('InputImageCut--dragover');
+    this.content.classList.remove('InputImageCut--dragover');
   }
 
   handleDragOver(e) {
@@ -291,7 +310,7 @@ class InputImageCut {
 
   handleDropFile(e) {
     e.preventDefault();
-    this.container.classList.remove('InputImageCut--dragover');
+    this.content.classList.remove('InputImageCut--dragover');
     this.setFile(e.dataTransfer.files[0]);
   }
 
@@ -332,13 +351,19 @@ class InputImageCut {
     this.drawBackground();
   }
 
+  handleRange(e) {
+    this.image.scale.value = Number(e.target.value);
+    this.doCalculateScale();
+    this.drawBackground();
+  }
+
   // events pack
   addEventsDefault() {
-    this.addListener(this.container, 'click', () => this.handleOpenInputFile());
-    this.addListener(this.container, 'dragenter', e => this.handleDragEnter(e));
-    this.addListener(this.container, 'dragleave', e => this.handleDragLeave(e));
-    this.addListener(this.container, 'dragover', e => this.handleDragOver(e));
-    this.addListener(this.container, 'drop', e => this.handleDropFile(e));
+    this.addListener(this.content, 'click', () => this.handleOpenInputFile());
+    this.addListener(this.content, 'dragenter', e => this.handleDragEnter(e));
+    this.addListener(this.content, 'dragleave', e => this.handleDragLeave(e));
+    this.addListener(this.content, 'dragover', e => this.handleDragOver(e));
+    this.addListener(this.content, 'drop', e => this.handleDropFile(e));
     this.addListener(this.file, 'change', () => this.handleSelectFile());
     this.addListener(this.image.file, 'load', () => this.handleUploadFile());
   }
@@ -351,15 +376,16 @@ class InputImageCut {
     this.addListener(canvas, 'mouseleave', () => this.handleMouseUp());
     this.addListener(canvas, 'mousemove', e => this.handleMouseMove(e));
     this.addListener(canvas, 'wheel', e => this.handleZoom(e));
+    this.addListener(this.rangeScale, 'input', e => this.handleRange(e));
     this.addListener(this.btnClose, 'click', () => this.reset());
   }
 
   removeEventsDefault() {
-    this.removeListeners(this.container, 'click');
-    this.removeListeners(this.container, 'dragenter');
-    this.removeListeners(this.container, 'dragleave');
-    this.removeListeners(this.container, 'dragover');
-    this.removeListeners(this.container, 'drop');
+    this.removeListeners(this.content, 'click');
+    this.removeListeners(this.content, 'dragenter');
+    this.removeListeners(this.content, 'dragleave');
+    this.removeListeners(this.content, 'dragover');
+    this.removeListeners(this.content, 'drop');
     this.removeListeners(this.file, 'change');
     this.removeListeners(this.image.file, 'load');
   }

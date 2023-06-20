@@ -17,7 +17,7 @@ body {
   width: 80%;
 }
 
-.InputImageCut {
+.InputImageCut__container {
   width: 100%;
   min-height: 300px;
   border: dashed 2px #ccc;
@@ -27,7 +27,7 @@ body {
   position: relative;
 }
 
-.InputImageCut--dragover {
+.InputImageCut__container--dragover {
   background-color: rgba(0, 0, 0, 0.03);
 }
 
@@ -64,4 +64,13 @@ body {
   color: #bdbdbd;
   font-weight: 400;
   text-shadow: 1px 1px #9e9e9e;
+}
+
+.InputImageCut__zoom {
+  padding: 12px 0;
+  width: 100%;
+}
+
+.InputImageCut__range {
+  width: 100%;
 }
