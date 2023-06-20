@@ -24,7 +24,13 @@ class InputImageCut {
       ratio: { x: 0, y: 0 },
       position: { x: 0, y: 0 },
       temp: { x: 0, y: 0 },
-      size: { width: 0, height: 0 }
+      size: { width: 0, height: 0 },
+      scale: {
+        value: 0,
+        step: 0.1,
+        min: 1,
+        max: 3
+      }
     };
 
     this.watermarks = {
@@ -287,6 +293,16 @@ class InputImageCut {
     this.drawBackground();
   }
 
+  handleZoom(e) {
+    const { value, step, min, max } = this.image.scale;
+    let scale = value;
+
+    e.preventDefault();
+    scale += Math.sign(e.deltaY) * -1 * step;
+    scale = Math.min(Math.max(min, scale), max);
+    this.image.scale.value = Number(scale.toFixed(1));
+  }
+
   // events pack
   addEventsDefault() {
     this.addListener(this.container, 'click', () => this.handleOpenInputFile());
@@ -305,6 +321,7 @@ class InputImageCut {
     this.addListener(canvas, 'mouseup', () => this.handleMouseUp());
     this.addListener(canvas, 'mouseleave', () => this.handleMouseUp());
     this.addListener(canvas, 'mousemove', e => this.handleMouseMove(e));
+    this.addListener(canvas, 'wheel', e => this.handleZoom(e));
     this.addListener(this.btnClose, 'click', () => this.reset());
   }
 
