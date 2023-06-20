@@ -21,6 +21,7 @@ class InputImageCut {
     this.file.type = 'file';
     this.image = {
       file: new Image(),
+      ratio: { x: 0, y: 0 },
       position: { x: 0, y: 0 },
       temp: { x: 0, y: 0 },
       size: { width: 0, height: 0 }
@@ -52,7 +53,6 @@ class InputImageCut {
     this.filter = this.buildCanvas('filter');
     this.filter.canvas.width = this.background.canvas.width;
     this.filter.canvas.height = this.background.canvas.height;
-    this.scaleFactors = { x: 0, y: 0 };
 
     // start
     this.appendWatermark(this.watermarks.default);
@@ -98,15 +98,16 @@ class InputImageCut {
 
   setScaleFactors() {
     const { canvas } = this.filter;
-    this.scaleFactors = {
+    this.image.ratio = {
       x: canvas.width / canvas.clientWidth,
       y: canvas.height / canvas.clientHeight
     };
   }
 
   doCalculateMove(relativeX, relativeY) {
-    const x = relativeX * this.scaleFactors.x - this.image.temp.x;
-    const y = relativeY * this.scaleFactors.y - this.image.temp.y;
+    const { ratio, temp } = this.image;
+    const x = relativeX * ratio.x - temp.x;
+    const y = relativeY * ratio.y - temp.y;
     this.doCalculatePosition(x, y);
   }
 
@@ -114,8 +115,8 @@ class InputImageCut {
     const { canvas } = this.filter;
     const { width, height } = this.image.size;
     const { width: resultWidth, height: resultHeight } = this.resultImage;
-    const halfHorizontal = (canvas.width - this.resultImage.width) / 2;
-    const halfVertical = (canvas.height - this.resultImage.height) / 2;
+    const halfHorizontal = (canvas.width - resultWidth) / 2;
+    const halfVertical = (canvas.height - resultHeight) / 2;
 
     if (x - halfHorizontal > 0) x = halfHorizontal;
     else if (x - halfHorizontal + width < resultWidth)
@@ -263,10 +264,11 @@ class InputImageCut {
   }
 
   handleMouseDown(e) {
-    this.mouseDown = true;
+    const { ratio, position } = this.image;
 
-    this.image.temp.x = e.offsetX * this.scaleFactors.x - this.image.position.x;
-    this.image.temp.y = e.offsetY * this.scaleFactors.y - this.image.position.y;
+    this.mouseDown = true;
+    this.image.temp.x = e.offsetX * ratio.x - position.x;
+    this.image.temp.y = e.offsetY * ratio.y - position.y;
   }
 
   handleMouseUp() {
