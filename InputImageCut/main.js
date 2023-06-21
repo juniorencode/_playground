@@ -4,7 +4,7 @@ class InputImageCut {
       throw new Error('InputImageCut constructor: missing arguments');
 
     this.container = options.container;
-    this.shape = options.shape || 'circle';
+    this.shape = options.shape || 'square';
     this.appendContent();
 
     this.resultImage = {
@@ -188,15 +188,20 @@ class InputImageCut {
     const { width: resultWidth, height: resultHeight } = this.resultImage;
     const region = new Path2D();
 
-    if (this.shape === 'square') {
-      region.rect(
-        (width - resultWidth) / 2,
-        (height - resultHeight) / 2,
-        resultWidth,
-        resultHeight
-      );
-    } else {
-      region.arc(width / 2, height / 2, resultHeight / 2, 0, 2 * Math.PI);
+    switch (this.shape) {
+      case 'square':
+        region.rect(
+          (width - resultWidth) / 2,
+          (height - resultHeight) / 2,
+          resultWidth,
+          resultHeight
+        );
+        break;
+      case 'circle':
+        region.arc(width / 2, height / 2, resultHeight / 2, 0, 2 * Math.PI);
+        break;
+      default:
+        break;
     }
 
     region.rect(0, 0, width, height);
