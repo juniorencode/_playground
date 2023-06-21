@@ -268,6 +268,10 @@ class InputImageCut {
     this.appendContent();
   }
 
+  clearContent() {
+    this.content.innerHTML = '';
+  }
+
   clearBackground() {
     const { canvas, ctx } = this.background;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -309,16 +313,16 @@ class InputImageCut {
 
   handleDragEnter(e) {
     e.preventDefault();
-    this.clearContainer();
+    this.clearContent();
     this.appendWatermark(this.watermarks.drop);
-    this.content.classList.add('InputImageCut__container--dragover');
+    this.container.classList.add('InputImageCut--dragover');
   }
 
   handleDragLeave(e) {
     e.preventDefault();
-    this.clearContainer();
+    this.clearContent();
     this.appendWatermark(this.watermarks.default);
-    this.content.classList.remove('InputImageCut--dragover');
+    this.container.classList.remove('InputImageCut--dragover');
   }
 
   handleDragOver(e) {
@@ -326,8 +330,9 @@ class InputImageCut {
   }
 
   handleDropFile(e) {
+    console.log('x');
     e.preventDefault();
-    this.content.classList.remove('InputImageCut--dragover');
+    this.container.classList.remove('InputImageCut--dragover');
     this.setFile(e.dataTransfer.files[0]);
   }
 
@@ -376,13 +381,14 @@ class InputImageCut {
 
   // events pack
   addEventsDefault() {
-    this.addListener(this.content, 'click', () => this.handleOpenInputFile());
-    this.addListener(this.content, 'dragenter', e => this.handleDragEnter(e));
-    this.addListener(this.content, 'dragleave', e => this.handleDragLeave(e));
-    this.addListener(this.content, 'dragover', e => this.handleDragOver(e));
-    this.addListener(this.content, 'drop', e => this.handleDropFile(e));
+    this.addListener(this.container, 'click', () => this.handleOpenInputFile());
+    this.addListener(this.container, 'dragenter', e => this.handleDragEnter(e));
+    this.addListener(this.container, 'dragleave', e => this.handleDragLeave(e));
+    this.addListener(this.container, 'dragover', e => this.handleDragOver(e));
+    this.addListener(this.container, 'drop', e => this.handleDropFile(e));
     this.addListener(this.file, 'change', () => this.handleSelectFile());
     this.addListener(this.image.file, 'load', () => this.handleUploadFile());
+    console.log(this._eventHandlers);
   }
 
   addEventsFilter() {
@@ -398,9 +404,7 @@ class InputImageCut {
   }
 
   removeEventsDefault() {
-    this.removeAllListeners(this.content);
-    this.removeListeners(this.file, 'change');
-    this.removeListeners(this.image.file, 'load');
+    this.removeListeners(this.container, 'click');
   }
 
   // events manager

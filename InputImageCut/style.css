@@ -17,6 +17,10 @@ body {
   width: 80%;
 }
 
+.InputImageCut--dragover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
 .InputImageCut__content {
   width: 100%;
   min-height: 300px;
@@ -25,10 +29,6 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
-}
-
-.InputImageCut__content--dragover {
-  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .InputImageCut__watermark {
