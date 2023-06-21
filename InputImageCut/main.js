@@ -398,11 +398,7 @@ class InputImageCut {
   }
 
   removeEventsDefault() {
-    this.removeListeners(this.content, 'click');
-    this.removeListeners(this.content, 'dragenter');
-    this.removeListeners(this.content, 'dragleave');
-    this.removeListeners(this.content, 'dragover');
-    this.removeListeners(this.content, 'drop');
+    this.removeAllListeners(this.content);
     this.removeListeners(this.file, 'change');
     this.removeListeners(this.image.file, 'load');
   }
