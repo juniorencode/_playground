@@ -32,7 +32,8 @@ class InputImageCut {
         step: 0.1,
         min: 1,
         max: 3
-      }
+      },
+      isFiltered: false
     };
 
     this.watermarks = {
@@ -306,8 +307,12 @@ class InputImageCut {
     this.addEventsFilter();
 
     // draw
+    if (!this.image.isFiltered) {
+      this.drawFilter();
+      this.image.isFiltered = true;
+    }
+
     this.drawBackground();
-    this.drawFilter();
     this.setScaleFactors();
   }
 
@@ -330,7 +335,6 @@ class InputImageCut {
   }
 
   handleDropFile(e) {
-    console.log('x');
     e.preventDefault();
     this.container.classList.remove('InputImageCut--dragover');
     this.setFile(e.dataTransfer.files[0]);
@@ -388,7 +392,6 @@ class InputImageCut {
     this.addListener(this.container, 'drop', e => this.handleDropFile(e));
     this.addListener(this.file, 'change', () => this.handleSelectFile());
     this.addListener(this.image.file, 'load', () => this.handleUploadFile());
-    console.log(this._eventHandlers);
   }
 
   addEventsFilter() {
