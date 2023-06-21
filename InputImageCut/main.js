@@ -274,6 +274,7 @@ class InputImageCut {
   }
 
   reset() {
+    this.removeEventsFilter();
     this.clearContainer();
     setTimeout(() => this.init(), 1);
   }
@@ -404,6 +405,14 @@ class InputImageCut {
     this.removeListeners(this.content, 'drop');
     this.removeListeners(this.file, 'change');
     this.removeListeners(this.image.file, 'load');
+  }
+
+  removeEventsFilter() {
+    const { canvas } = this.filter;
+
+    this.removeAllListeners(canvas);
+    this.removeListeners(this.rangeScale, 'input');
+    this.removeListeners(this.btnClose, 'click');
   }
 
   // events manager
