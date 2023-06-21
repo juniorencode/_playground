@@ -232,16 +232,6 @@ class InputImageCut {
     this.container.append(this.content);
   }
 
-  appendCloseButton() {
-    const button = document.createElement('button');
-    const icon = document.createElement('i');
-    button.classList.add('InputImageCut__close');
-    icon.classList.add('fas', 'fa-times');
-    button.append(icon);
-    this.btnClose = button;
-    this.content.append(button);
-  }
-
   appendCanvas() {
     this.content.append(this.background.canvas);
     this.content.append(this.filter.canvas);
@@ -258,9 +248,18 @@ class InputImageCut {
     range.step = this.image.scale.step;
     range.value = this.image.scale.min;
     div.append(range);
-    this.ctnScale = div;
-    this.rangeScale = range;
     this.container.append(div);
+    this.addListener(range, 'input', e => this.handleRange(e));
+  }
+
+  appendCloseButton() {
+    const button = document.createElement('button');
+    const icon = document.createElement('i');
+    button.classList.add('InputImageCut__close');
+    icon.classList.add('fas', 'fa-times');
+    button.append(icon);
+    this.content.append(button);
+    this.addListener(button, 'click', () => this.reset());
   }
 
   // clear and reset
@@ -402,8 +401,6 @@ class InputImageCut {
     this.addListener(canvas, 'mouseleave', () => this.handleMouseUp());
     this.addListener(canvas, 'mousemove', e => this.handleMouseMove(e));
     this.addListener(canvas, 'wheel', e => this.handleZoom(e));
-    this.addListener(this.rangeScale, 'input', e => this.handleRange(e));
-    this.addListener(this.btnClose, 'click', () => this.reset());
   }
 
   removeEventsDefault() {
