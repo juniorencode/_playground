@@ -27,18 +27,19 @@ body {
 
 .InputImageCut__content {
   width: 100%;
-  min-height: 300px;
-  border: dashed 2px #ccc;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  border: dashed 2px #ccc;
   position: relative;
 }
 
 .InputImageCut__watermark {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  padding: 0 10px;
+  width: 100%;
+  min-height: 300px;
   gap: 0.5em;
   color: #ccc;
   pointer-events: none;
@@ -46,6 +47,10 @@ body {
 
 .InputImageCut__watermark i {
   font-size: 3em;
+}
+
+.InputImageCut__watermark p {
+  text-align: center;
 }
 
 .InputImageCut__background,
