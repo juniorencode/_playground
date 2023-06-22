@@ -16,6 +16,7 @@ class PixelDraw {
   handleMouseDown(e) {
     e.preventDefault();
     this.isPress = true;
+    this.motion(e);
   }
 
   handleMouseUp(e) {
@@ -24,6 +25,11 @@ class PixelDraw {
   }
 
   handleMouseMove(e) {
+    e.preventDefault();
+    this.motion(e);
+  }
+
+  motion(e) {
     if (!this.isPress) return;
 
     const x = Math.floor((e.clientX - this.canvas.offsetLeft) / this.pixelSize);
