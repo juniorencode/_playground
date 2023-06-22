@@ -11,3 +11,8 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.PixelDraw {
+  border: solid 1px #000;
+  background-color: #fff;
+}
