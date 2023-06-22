@@ -368,6 +368,11 @@ class InputImageCut {
     this.image.temp.y = e.offsetY * ratio.y - position.y;
   }
 
+  handleTouchStart() {
+    this.image.temp.x = null;
+    this.image.temp.y = null;
+  }
+
   handleMouseUp() {
     this.mouseDown = false;
   }
@@ -381,6 +386,30 @@ class InputImageCut {
     const relativeY = e.clientY - rect.top;
 
     this.doCalculateMove(relativeX, relativeY);
+    this.drawBackground();
+  }
+
+  handleTouchMove(e) {
+    const { top, left } = this.background.canvas.getBoundingClientRect();
+    const { x: ratioX, y: ratioY } = this.image.ratio;
+    const { x, y } = this.image.position;
+    const { scrollX, scrollY } = window;
+    const { pageX, pageY } = e.targetTouches[0];
+
+    e.preventDefault();
+
+    if (e.targetTouches.length === 1) {
+      const relativeX = pageX - (Math.round(left + scrollX) + 2);
+      const relativeY = pageY - (Math.round(top + scrollY) + 2);
+
+      if (!this.image.temp.x || !this.image.temp.y) {
+        this.image.temp.x = relativeX * ratioX - x;
+        this.image.temp.y = relativeY * ratioY - y;
+      }
+
+      this.doCalculateMove(relativeX, relativeY);
+    }
+
     this.drawBackground();
   }
 
@@ -404,7 +433,6 @@ class InputImageCut {
   }
 
   handleResize() {
-    console.log('x');
     this.setScaleFactors();
     this.drawBackground();
     this.setSizeFilter();
@@ -430,6 +458,8 @@ class InputImageCut {
     this.addListener(canvas, 'mouseleave', () => this.handleMouseUp());
     this.addListener(canvas, 'mousemove', e => this.handleMouseMove(e));
     this.addListener(canvas, 'wheel', e => this.handleZoom(e));
+    this.addListener(canvas, 'touchstart', () => this.handleTouchStart());
+    this.addListener(canvas, 'touchmove', e => this.handleTouchMove(e));
     this.addListener(window, 'resize', () => this.handleResize());
   }
 
