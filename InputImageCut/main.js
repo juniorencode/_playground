@@ -57,15 +57,26 @@ class InputImageCut {
 
     // canvas
     this.background = this.buildCanvas('background');
-    this.background.canvas.width = this.resultImage.width * 2;
-    this.background.canvas.height = this.resultImage.height * 1.2;
     this.filter = this.buildCanvas('filter');
-    this.filter.canvas.width = this.background.canvas.width;
-    this.filter.canvas.height = this.background.canvas.height;
+    this.setSizeBackground();
 
     // start
     this.appendWatermark(this.watermarks.default);
     this.addEventsDefault();
+  }
+
+  setSizeBackground() {
+    const { width: resultWidth, height: resultHeight } = this.resultImage;
+
+    this.background.canvas.width = resultWidth * 2;
+    this.background.canvas.height = resultHeight * 1.2;
+  }
+
+  setSizeFilter() {
+    const { clientWidth, clientHeight } = this.background.canvas;
+
+    this.filter.canvas.width = clientWidth;
+    this.filter.canvas.height = clientHeight;
   }
 
   setFile(file) {
@@ -106,7 +117,7 @@ class InputImageCut {
   }
 
   setScaleFactors() {
-    const { canvas } = this.filter;
+    const { canvas } = this.background;
     this.image.ratio = {
       x: canvas.width / canvas.clientWidth,
       y: canvas.height / canvas.clientHeight
@@ -147,7 +158,7 @@ class InputImageCut {
   }
 
   doCalculatePosition(x, y) {
-    const { canvas } = this.filter;
+    const { canvas } = this.background;
     const { width, height } = this.image.size;
     const { width: resultWidth, height: resultHeight } = this.resultImage;
     const halfHorizontal = (canvas.width - resultWidth) / 2;
@@ -185,30 +196,39 @@ class InputImageCut {
   }
 
   drawFilter() {
-    const { width, height } = this.filter.canvas;
+    const { width: bgWidth, height: bgHeight } = this.background.canvas;
+    const { width: filterWidth, height: filterHeight } = this.filter.canvas;
     const { width: resultWidth, height: resultHeight } = this.resultImage;
+    const width = (filterWidth * resultWidth) / bgWidth;
+    const height = (filterHeight * resultHeight) / bgHeight;
     const region = new Path2D();
 
     switch (this.shape) {
       case 'square':
         region.rect(
-          (width - resultWidth) / 2,
-          (height - resultHeight) / 2,
-          resultWidth,
-          resultHeight
+          (filterWidth - width) / 2,
+          (filterHeight - height) / 2,
+          width,
+          height
         );
         break;
       case 'circle':
-        region.arc(width / 2, height / 2, resultHeight / 2, 0, 2 * Math.PI);
+        region.arc(
+          filterWidth / 2,
+          filterHeight / 2,
+          height / 2,
+          0,
+          2 * Math.PI
+        );
         break;
       default:
         break;
     }
 
-    region.rect(0, 0, width, height);
+    region.rect(0, 0, filterWidth, filterHeight);
     this.filter.ctx.clip(region, 'evenodd');
     this.filter.ctx.fillStyle = 'rgba(255, 255, 255, .8)';
-    this.filter.ctx.rect(0, 0, width, height);
+    this.filter.ctx.rect(0, 0, filterWidth, filterHeight);
     this.filter.ctx.fill();
   }
 
@@ -235,6 +255,7 @@ class InputImageCut {
   appendCanvas() {
     this.content.append(this.background.canvas);
     this.content.append(this.filter.canvas);
+    this.setSizeFilter();
   }
 
   appendScale() {
@@ -382,6 +403,14 @@ class InputImageCut {
     this.drawBackground();
   }
 
+  handleResize() {
+    console.log('x');
+    this.setScaleFactors();
+    this.drawBackground();
+    this.setSizeFilter();
+    this.drawFilter();
+  }
+
   // events pack
   addEventsDefault() {
     this.addListener(this.container, 'click', () => this.handleOpenInputFile());
@@ -401,6 +430,7 @@ class InputImageCut {
     this.addListener(canvas, 'mouseleave', () => this.handleMouseUp());
     this.addListener(canvas, 'mousemove', e => this.handleMouseMove(e));
     this.addListener(canvas, 'wheel', e => this.handleZoom(e));
+    this.addListener(window, 'resize', () => this.handleResize());
   }
 
   removeEventsDefault() {
