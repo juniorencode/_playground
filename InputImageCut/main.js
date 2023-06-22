@@ -31,7 +31,8 @@ class InputImageCut {
         value: 0,
         step: 0.1,
         min: 1,
-        max: 3
+        max: 3,
+        temp: false
       },
       isFiltered: false
     };
@@ -371,6 +372,7 @@ class InputImageCut {
   handleTouchStart() {
     this.image.temp.x = null;
     this.image.temp.y = null;
+    this.image.scale.temp = false;
   }
 
   handleMouseUp() {
@@ -408,6 +410,8 @@ class InputImageCut {
       }
 
       this.doCalculateMove(relativeX, relativeY);
+    } else {
+      this.handleGesturePinchZoom(e);
     }
 
     this.drawBackground();
@@ -424,6 +428,21 @@ class InputImageCut {
 
     this.doCalculateScale();
     this.drawBackground();
+  }
+
+  handleGesturePinchZoom(e) {
+    const { value, min, max, temp } = this.image.scale;
+    const p1 = e.targetTouches[0];
+    const p2 = e.targetTouches[1];
+    const powX = Math.pow(p2.pageX - p1.pageY, 2);
+    const powY = Math.pow(p2.pageY - p1.pageY, 2);
+    const zoomScale = Math.sqrt(powX + powY); // euclidian distance
+    const zoom = temp ? zoomScale - temp : 0;
+    const scale = Math.min(Math.max(min, value + zoom / 100), max);
+    this.image.scale.temp = zoomScale;
+    this.image.scale.value = Number(scale.toFixed(2));
+
+    this.doCalculateScale();
   }
 
   handleRange(e) {
