@@ -4,8 +4,37 @@ class PixelDraw {
     this.appendCanvas();
 
     this.pixelSize = 16;
+    this.isPress = false;
+
+    this.canvas.addEventListener('mousedown', e => this.handleMouseDown(e));
+    this.canvas.addEventListener('mouseup', e => this.handleMouseUp(e));
+    this.canvas.addEventListener('mousemove', e => this.handleMouseMove(e));
 
     this.drawGrid();
+  }
+
+  handleMouseDown(e) {
+    e.preventDefault();
+    this.isPress = true;
+  }
+
+  handleMouseUp(e) {
+    e.preventDefault();
+    this.isPress = false;
+  }
+
+  handleMouseMove(e) {
+    if (!this.isPress) return;
+
+    const x = Math.floor((e.clientX - this.canvas.offsetLeft) / this.pixelSize);
+    const y = Math.floor((e.clientY - this.canvas.offsetTop) / this.pixelSize);
+    this.drawPixel(x, y);
+  }
+
+  drawPixel(x, y) {
+    const size = this.pixelSize;
+    this.ctx.fillStyle = '#000';
+    this.ctx.fillRect(x * size, y * size, size, size);
   }
 
   appendCanvas() {
@@ -18,7 +47,6 @@ class PixelDraw {
 
   drawGrid() {
     const size = this.pixelSize;
-    this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
 
     for (let y = 0; y < this.canvas.height; y += size) {
       for (let x = 0; x < this.canvas.width; x += size) {
