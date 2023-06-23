@@ -23,16 +23,22 @@ body {
   height: 30px;
 }
 
-.InputPagination button {
-  background-color: #1565c0;
-  color: #fff;
+.InputPagination__button {
+  background-color: #bbdefb;
+  color: #000;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.InputPagination button:hover {
+.InputPagination__button:hover {
   background-color: #1e88e5;
+  color: #fff;
+}
+
+.InputPagination__button--current {
+  background-color: #1e88e5;
+  color: #fff;
 }
 
 .InputPagination span {

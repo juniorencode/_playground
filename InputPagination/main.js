@@ -15,6 +15,19 @@ class InputPagination {
     this.appendPagination();
   }
 
+  setPage(numb) {
+    if (numb < 1 || numb > this.totalPages) return;
+    this.clearContainer();
+    this.page = numb;
+    this.pagination = [];
+    this.buildPagination();
+    this.appendPagination();
+  }
+
+  clearContainer() {
+    this.container.innerHTML = '';
+  }
+
   buildPagination() {
     if (this.totalPages <= 7) {
       for (let i = 2; i < this.totalPages; i++) {
@@ -74,6 +87,12 @@ class InputPagination {
   createElement(type, content) {
     const button = document.createElement(type);
     const text = document.createTextNode(content);
+    if (type === 'button') {
+      button.classList.add('InputPagination__button');
+      button.addEventListener('click', () => this.setPage(content));
+    }
+    content === this.page &&
+      button.classList.add('InputPagination__button--current');
     button.append(text);
     return button;
   }
@@ -81,8 +100,13 @@ class InputPagination {
   createArrow(type) {
     const button = document.createElement('button');
     const icon = document.createElement('i');
+    button.classList.add('InputPagination__button');
     icon.classList.add('fa-solid', 'fa-chevron-' + type);
     button.append(icon);
+    button.addEventListener('click', () => {
+      const numb = this.page + 1 - (type === 'left' ? 2 : 0);
+      this.setPage(numb);
+    });
     return button;
   }
 
