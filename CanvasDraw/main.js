@@ -2,6 +2,7 @@ const canvas = document.querySelector('.canvas');
 const ctx = canvas.getContext('2d');
 const drawColor = document.querySelector('.color');
 const lineWidthInput = document.querySelector('.linewidth');
+const btnClear = document.querySelector('.btnclear');
 
 canvas.width = canvas.offsetWidth;
 canvas.height = canvas.offsetWidth / 2;
@@ -43,4 +44,8 @@ document.addEventListener('change', () => {
 
 document.addEventListener('change', () => {
   lineWidth = lineWidthInput.value;
+});
+
+btnClear.addEventListener('click', () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
