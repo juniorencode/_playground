@@ -79,29 +79,46 @@ class PixelDraw {
 
   appendTools() {
     const div = document.createElement('div');
+    div.classList.add('PixelDraw__tools');
+    div.append(this.appendWidth());
+    div.append(this.appendColor());
+    div.append(this.appendClear());
+    this.container.append(div);
+  }
+
+  appendWidth() {
     const width = document.createElement('div');
     const labelWidth = document.createElement('label');
     const inputWidth = document.createElement('input');
-    const color = document.createElement('div');
-    const labelColor = document.createElement('label');
-    const inputColor = document.createElement('input');
-    div.classList.add('PixelDraw__tools');
     width.classList.add('PixelDraw__width');
     labelWidth.innerText = 'Line: ';
     inputWidth.type = 'number';
     inputWidth.value = this.pixelSize / this.gridUnitSize;
     inputWidth.addEventListener('input', e => this.handleSetSize(e));
+    width.append(labelWidth);
+    width.append(inputWidth);
+    return width;
+  }
+
+  appendColor() {
+    const color = document.createElement('div');
+    const labelColor = document.createElement('label');
+    const inputColor = document.createElement('input');
     color.classList.add('PixelDraw__color');
     labelColor.innerText = 'Color: ';
     inputColor.type = 'color';
     inputColor.addEventListener('input', e => this.handleSetColor(e));
-    width.append(labelWidth);
-    width.append(inputWidth);
     color.append(labelColor);
     color.append(inputColor);
-    div.append(width);
-    div.append(color);
-    this.container.append(div);
+    return color;
+  }
+
+  appendClear() {
+    const clear = document.createElement('button');
+    clear.classList.add('PixelDraw__button');
+    clear.innerText = 'Clear';
+    clear.addEventListener('click', () => this.clearCanvas());
+    return clear;
   }
 
   appendCanvas() {
