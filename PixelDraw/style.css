@@ -13,7 +13,9 @@ body {
 }
 
 .PixelDraw {
-  border: solid 1px #000;
   background-color: #fff;
-  display: flex;
+}
+
+.PixelDraw__canvas {
+  border: solid 1px #000;
 }

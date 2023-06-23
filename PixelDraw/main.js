@@ -1,9 +1,11 @@
 class PixelDraw {
   constructor(container) {
     this.container = container;
+    this.appendTools();
     this.appendCanvas();
 
-    this.pixelSize = 16;
+    this.pixelSize = 10;
+    this.color = '#000';
     this.isPress = false;
 
     this.canvas.addEventListener('mousedown', e => this.handleMouseDown(e));
@@ -35,6 +37,10 @@ class PixelDraw {
     this.isPress = false;
   }
 
+  handleSetColor(e) {
+    this.color = e.target.value;
+  }
+
   motion(e) {
     if (!this.isPress) return;
 
@@ -45,13 +51,28 @@ class PixelDraw {
 
   drawPixel(x, y) {
     const size = this.pixelSize;
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = this.color;
     this.ctx.fillRect(x * size, y * size, size, size);
+  }
+
+  appendTools() {
+    const div = document.createElement('div');
+    const color = document.createElement('div');
+    const labelColor = document.createElement('label');
+    const inputColor = document.createElement('input');
+    labelColor.innerText = 'Color: ';
+    inputColor.type = 'color';
+    inputColor.addEventListener('input', e => this.handleSetColor(e));
+    color.append(labelColor);
+    color.append(inputColor);
+    div.append(color);
+    this.container.append(div);
   }
 
   appendCanvas() {
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d');
+    this.canvas.classList.add('PixelDraw__canvas');
     this.canvas.width = 400;
     this.canvas.height = 400;
     this.container.append(this.canvas);
