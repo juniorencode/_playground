@@ -9,6 +9,7 @@ class PixelDraw {
     this.canvas.addEventListener('mousedown', e => this.handleMouseDown(e));
     this.canvas.addEventListener('mouseup', e => this.handleMouseUp(e));
     this.canvas.addEventListener('mousemove', e => this.handleMouseMove(e));
+    this.canvas.addEventListener('mouseleave', e => this.handleMouseLeave(e));
 
     this.drawGrid();
   }
@@ -27,6 +28,11 @@ class PixelDraw {
   handleMouseMove(e) {
     e.preventDefault();
     this.motion(e);
+  }
+
+  handleMouseLeave(e) {
+    e.preventDefault();
+    this.isPress = false;
   }
 
   motion(e) {
