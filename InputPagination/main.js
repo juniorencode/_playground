@@ -30,35 +30,24 @@ class InputPagination {
 
   buildPagination() {
     if (this.totalPages <= 7) {
-      for (let i = 2; i < this.totalPages; i++) {
-        this.pagination.push(i);
-      }
+      this.pagination = Array.from(
+        { length: this.totalPages - 2 },
+        (_, i) => i + 2
+      );
     } else {
-      if (this.page <= 5) {
-        if (this.page <= 4) {
-          this.pagination.push(2);
-          this.pagination.push(3);
-        }
-
-        this.pagination.push(4);
-        this.pagination.push(5);
-      }
-
-      if (this.page >= 5 && this.page <= this.totalPages - 2) {
-        this.pagination.push(this.page - 1);
-        this.pagination.push(this.page);
-        this.pagination.push(this.page + 1);
-      }
-
-      if (this.page >= this.totalPages - 3) {
-        this.pagination.push(this.totalPages - 1);
-        this.pagination.push(this.totalPages - 2);
-        this.pagination.push(this.totalPages - 3);
-        this.pagination.push(this.totalPages - 4);
+      if (this.page <= 4) {
+        this.pagination = [2, 3, 4, 5];
+      } else if (this.page >= this.totalPages - 3) {
+        this.pagination = Array.from(
+          { length: 4 },
+          (_, i) => this.totalPages - i - 1
+        );
+      } else {
+        this.pagination = [this.page - 1, this.page, this.page + 1];
       }
     }
 
-    this.pagination = [...new Set(this.pagination)].sort((a, b) => a - b);
+    this.pagination.sort((a, b) => a - b);
   }
 
   appendPagination() {
@@ -79,7 +68,8 @@ class InputPagination {
     )
       this.container.append(this.createSpread());
 
-    this.container.append(this.createButton(this.totalPages));
+    this.totalPages > 1 &&
+      this.container.append(this.createButton(this.totalPages));
 
     this.container.append(this.createArrow('right'));
   }
