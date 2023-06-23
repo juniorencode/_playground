@@ -19,3 +19,28 @@ body {
 .PixelDraw__canvas {
   border: solid 1px #000;
 }
+
+.PixelDraw__tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.PixelDraw__width,
+.PixelDraw__color {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.PixelDraw__width input {
+  width: 40px;
+  text-align: center;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
