@@ -17,7 +17,26 @@ body {
   gap: 5px;
 }
 
-.InputPagination button {
+.InputPagination button,
+.InputPagination span {
   width: 30px;
   height: 30px;
+}
+
+.InputPagination button {
+  background-color: #1565c0;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.InputPagination button:hover {
+  background-color: #1e88e5;
+}
+
+.InputPagination span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
