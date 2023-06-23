@@ -4,7 +4,6 @@ class InputPagination {
     this.totalItems = options.size;
     this.totalToPage = options.limit;
     this.totalPages = Math.ceil(this.totalItems / this.totalToPage);
-    console.log(this.totalPages);
     this.page = 1;
 
     this.pagination = [];
@@ -50,6 +49,8 @@ class InputPagination {
   }
 
   appendPagination() {
+    this.container.append(this.createArrow('left'));
+
     this.container.append(this.createButton(1));
 
     if (this.totalPages > 7 && this.pagination[0] !== 2)
@@ -66,14 +67,8 @@ class InputPagination {
       this.container.append(this.createSpread());
 
     this.container.append(this.createButton(this.totalPages));
-  }
 
-  createSpread() {
-    return this.createElement('span', '...');
-  }
-
-  createButton(content) {
-    return this.createElement('button', content);
+    this.container.append(this.createArrow('right'));
   }
 
   createElement(type, content) {
@@ -81,5 +76,21 @@ class InputPagination {
     const text = document.createTextNode(content);
     button.append(text);
     return button;
+  }
+
+  createArrow(type) {
+    const button = document.createElement('button');
+    const icon = document.createElement('i');
+    icon.classList.add('fa-solid', 'fa-chevron-' + type);
+    button.append(icon);
+    return button;
+  }
+
+  createButton(content) {
+    return this.createElement('button', content);
+  }
+
+  createSpread() {
+    return this.createElement('span', '...');
   }
 }
