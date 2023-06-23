@@ -1,7 +1,8 @@
 class InputPagination {
-  constructor(size, limit) {
-    this.totalItems = size;
-    this.totalToPage = limit;
+  constructor(options) {
+    this.container = options.container;
+    this.totalItems = options.size;
+    this.totalToPage = options.limit;
     this.totalPages = Math.ceil(this.totalItems / this.totalToPage);
     console.log(this.totalPages);
     this.page = 1;
@@ -12,6 +13,7 @@ class InputPagination {
 
   init() {
     this.buildPagination();
+    this.appendPagination();
   }
 
   buildPagination() {
@@ -45,7 +47,39 @@ class InputPagination {
     }
 
     this.pagination = [...new Set(this.pagination)].sort((a, b) => a - b);
+  }
 
-    console.log(this.pagination);
+  appendPagination() {
+    this.container.append(this.createButton(1));
+
+    if (this.totalPages > 7 && this.pagination[0] !== 2)
+      this.container.append(this.createSpread());
+
+    this.pagination.forEach(page => {
+      this.container.append(this.createButton(page));
+    });
+
+    if (
+      this.totalPages > 7 &&
+      this.pagination[this.pagination.length - 1] !== this.totalPages - 1
+    )
+      this.container.append(this.createSpread());
+
+    this.container.append(this.createButton(this.totalPages));
+  }
+
+  createSpread() {
+    return this.createElement('span', '...');
+  }
+
+  createButton(content) {
+    return this.createElement('button', content);
+  }
+
+  createElement(type, content) {
+    const button = document.createElement(type);
+    const text = document.createTextNode(content);
+    button.append(text);
+    return button;
   }
 }
