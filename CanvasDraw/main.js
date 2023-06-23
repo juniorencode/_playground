@@ -40,3 +40,7 @@ document.addEventListener('mouseup', () => {
 document.addEventListener('change', () => {
   color = drawColor.value;
 });
+
+document.addEventListener('change', () => {
+  lineWidth = lineWidthInput.value;
+});
