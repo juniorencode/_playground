@@ -12,7 +12,6 @@ let color = '#000';
 let lineWidth = 5;
 
 const reposition = e => {
-  console.log(e);
   position.x = e.clientX - canvas.offsetLeft;
   position.y = e.clientY - canvas.offsetTop;
 };
