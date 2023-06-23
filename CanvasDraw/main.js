@@ -36,3 +36,7 @@ document.addEventListener('mousedown', e => {
 document.addEventListener('mouseup', () => {
   document.removeEventListener('mousemove', draw);
 });
+
+document.addEventListener('change', () => {
+  color = drawColor.value;
+});
