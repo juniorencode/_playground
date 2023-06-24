@@ -67,9 +67,9 @@ const charArr = [
   'Ѿ',
   'Ц'
 ];
-const maxCharCount = 1000;
+const maxCharCount = 300;
 const fallingCharArr = [];
-const fontSize = 15;
+const fontSize = 13;
 const maxColumns = window.innerWidth / fontSize;
 let frames = 0;
 
@@ -88,6 +88,12 @@ class FallingChar {
     ctx.font = fontSize + 'px sans-serif';
     ctx.fillText(this.value, this.x, this.y);
     this.y += this.speed;
+
+    if (this.y > canvas.height) {
+      this.x = Math.floor(Math.random() * maxColumns) * fontSize;
+      this.y = (Math.random() * canvas.height) / 2 - 50;
+      this.speed = (-Math.random() * fontSize * 3) / 4 + (fontSize * 3) / 4;
+    }
   }
 }
 
