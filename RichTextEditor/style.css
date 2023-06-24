@@ -3,3 +3,38 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  background-color: #338cf4;
+}
+
+.container {
+  background-color: #fff;
+  padding: 50px 30px;
+  width: 90vmin;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  border-radius: 10px;
+  box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px;
+}
+
+button {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  place-items: center;
+  border-radius: 3px;
+  border: none;
+  background-color: #fff;
+  outline: none;
+  color: #020929;
+}
