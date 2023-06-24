@@ -36,6 +36,17 @@ const initializer = () => {
     option.innerHTML = value;
     fontName.appendChild(option);
   });
+
+  // fontSize allows only till 7
+  for (let i = 1; i <= 7; i++) {
+    const option = document.createElement('option');
+    option.value = i;
+    option.innerHTML = i;
+    fontSizeRef.appendChild(option);
+  }
+
+  // default size
+  fontSizeRef.value = 3;
 };
 
 // highlight clicked button
