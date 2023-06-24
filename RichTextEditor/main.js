@@ -7,3 +7,13 @@ const linkButton = document.getElementById('createLink');
 const alignButtons = document.querySelectorAll('.align');
 const spacingButtons = document.querySelectorAll('.format');
 const scriptButtons = document.querySelectorAll('.script');
+
+const fontList = [
+  'Arial',
+  'Verdana',
+  'Times New Roman',
+  'Garamond',
+  'Georgia',
+  'Courier New',
+  'Cursive'
+];
