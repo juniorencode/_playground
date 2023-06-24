@@ -5,10 +5,11 @@ const fontSizeRef = document.getElementById('fontSize');
 const writingArea = document.getElementById('text-input');
 const linkButton = document.getElementById('createLink');
 const alignButtons = document.querySelectorAll('.align');
-const spacingButtons = document.querySelectorAll('.format');
+const spacingButtons = document.querySelectorAll('.spacing');
+const formatButtons = document.querySelectorAll('.format');
 const scriptButtons = document.querySelectorAll('.script');
 
-// List of fonts
+// list of fonts
 const fontList = [
   'Arial',
   'Verdana',
@@ -19,17 +20,17 @@ const fontList = [
   'Cursive'
 ];
 
-// Initial settings
+// initial settings
 const initializer = () => {
   // function calls for highlighting buttons
   // no highlights for link, unlink, lists, undo, redo since they are no time operations
-  highlighter(alignButtons, true);
-  highlighter(spacingButtons, true);
   highlighter(formatButtons, false);
   highlighter(scriptButtons, true);
+  highlighter(alignButtons, true);
+  highlighter(spacingButtons, true);
 };
 
-// Highlight clicked button
+// highlight clicked button
 const highlighter = (className, needsRemoval) => {
   className.forEach(button => {
     button.addEventListener('click', () => {
@@ -49,7 +50,16 @@ const highlighter = (className, needsRemoval) => {
         if (!alreadyActive) button.classList.add('active');
       } else {
         // if other buttons can be highlighted
+        button.classList.toggle('active');
       }
     });
   });
 };
+
+const highlighterRemover = className => {
+  className.forEach(button => {
+    button.classList.remove('active');
+  });
+};
+
+initializer();

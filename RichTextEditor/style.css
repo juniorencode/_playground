@@ -30,7 +30,7 @@ body {
 button {
   width: 28px;
   height: 28px;
-  display: flex;
+  display: grid;
   place-items: center;
   border-radius: 3px;
   border: none;
