@@ -49,6 +49,19 @@ const initializer = () => {
   fontSizeRef.value = 3;
 };
 
+// main logic
+const modifyText = (command, defaultUI, value) => {
+  // execComman executes command on selected text
+  document.execCommand(command, defaultUI, value);
+};
+
+// for basic operations which don't need value parameter
+optionsButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    modifyText(button.id, false, null);
+  });
+});
+
 // highlight clicked button
 const highlighter = (className, needsRemoval) => {
   className.forEach(button => {
