@@ -69,6 +69,18 @@ advancedOptionButton.forEach(button => {
   });
 });
 
+// link
+linkButton.addEventListener('click', () => {
+  let userLink = prompt('Enter a URL');
+  // if link has http then pass directly else add https
+  if (/http/i.test(userLink)) {
+    modifyText(linkButton.id, false, userLink);
+  } else {
+    userLink = 'https://' + userLink;
+    modifyText(linkButton.id, false, userLink);
+  }
+});
+
 // highlight clicked button
 const highlighter = (className, needsRemoval) => {
   className.forEach(button => {
