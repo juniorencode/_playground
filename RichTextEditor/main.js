@@ -62,6 +62,13 @@ optionsButtons.forEach(button => {
   });
 });
 
+// options that requiere value parameter (e.g colors, fonts)
+advancedOptionButton.forEach(button => {
+  button.addEventListener('change', () => {
+    modifyText(button.id, false, button.value);
+  });
+});
+
 // highlight clicked button
 const highlighter = (className, needsRemoval) => {
   className.forEach(button => {
