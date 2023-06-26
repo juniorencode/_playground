@@ -41,6 +41,10 @@ body {
   grid-template-columns: repeat(7, 1fr);
 }
 
+.InputDateRangePicker__days {
+  row-gap: 3px;
+}
+
 .InputDateRangePicker__square {
   display: flex;
   align-items: center;
@@ -51,4 +55,16 @@ body {
 
 .InputDateRangePicker__square--ghost {
   opacity: 0.5;
+}
+
+.InputDateRangePicker__square--paint {
+  background-color: #bbdefb;
+}
+
+.InputDateRangePicker__square--leftcorner {
+  border-radius: 50% 0 0 50%;
+}
+
+.InputDateRangePicker__square--rightcorner {
+  border-radius: 0 50% 50% 0;
 }
