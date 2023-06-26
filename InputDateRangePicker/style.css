@@ -1,5 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppings', sans-serif;
+  font-size: 0.9em;
+}
+
+.InputDateRangePicker__calendar {
+  width: 280px;
+}
+
+.InputDateRangePicker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.InputDateRangePicker__weeks,
+.InputDateRangePicker__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.InputDateRangePicker__square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
