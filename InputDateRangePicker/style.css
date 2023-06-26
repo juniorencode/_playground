@@ -58,7 +58,8 @@ body {
 }
 
 .InputDateRangePicker__square--paint {
-  background-color: #bbdefb;
+  background-color: #1565c0;
+  color: #fff;
 }
 
 .InputDateRangePicker__square--dashed {
