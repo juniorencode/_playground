@@ -61,10 +61,24 @@ body {
   background-color: #bbdefb;
 }
 
+.InputDateRangePicker__square--dashed {
+  border: dashed 1px transparent;
+  border-top-color: #1565c0;
+  border-bottom-color: #1565c0;
+}
+
 .InputDateRangePicker__square--leftcorner {
   border-radius: 50% 0 0 50%;
 }
 
 .InputDateRangePicker__square--rightcorner {
   border-radius: 0 50% 50% 0;
+}
+
+.InputDateRangePicker__square--leftcorner.InputDateRangePicker__square--dashed {
+  border-left-color: #1565c0;
+}
+
+.InputDateRangePicker__square--rightcorner.InputDateRangePicker__square--dashed {
+  border-right-color: #1565c0;
 }
