@@ -3,7 +3,7 @@ import Transaction from '../models/Transaction.js';
 
 const router = express.Router();
 
-router.get('/kpis', async (req, res) => {
+router.get('/transactions', async (req, res) => {
   try {
     const transactions = await Transaction.find()
       .limit(50)
