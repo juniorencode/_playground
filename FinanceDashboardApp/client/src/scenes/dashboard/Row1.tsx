@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { DashboardBox } from '@/components/DashboardBox';
 import { useGetKpisQuery } from '@/state/api';
 import { useTheme } from '@mui/material';
 import {
@@ -16,6 +15,7 @@ import {
   Bar,
   Legend
 } from 'recharts';
+import { DashboardBox } from '@/components/DashboardBox';
 import { BoxHeader } from '@/components/BoxHeader';
 
 const Row1 = () => {
