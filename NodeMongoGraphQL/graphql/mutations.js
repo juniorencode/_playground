@@ -158,6 +158,26 @@ const updateComment = {
   }
 };
 
+const deleteComment = {
+  type: CommentType,
+  description: 'Delete a comment',
+  args: {
+    id: { type: GraphQLID }
+  },
+  resolve: async (_, args, { verifiedUser }) => {
+    if (!verifiedUser) throw new Error('Unauthorized');
+
+    const deletedComment = await Comment.findOneAndDelete({
+      _id: args.id,
+      userId: verifiedUser._id
+    });
+
+    if (!deletedComment) throw new Error('Comment not found');
+
+    return deletedComment;
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -165,5 +185,6 @@ module.exports = {
   updatePost,
   deletePost,
   createComment,
-  updateComment
+  updateComment,
+  deleteComment
 };
