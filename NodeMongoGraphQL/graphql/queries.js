@@ -41,4 +41,13 @@ const comments = {
   resolve: () => Comment.find()
 };
 
-module.exports = { users, user, posts, post, comments };
+const comment = {
+  type: CommentType,
+  description: 'Get a comment by id',
+  args: {
+    id: { type: GraphQLID }
+  },
+  resolve: (_, args) => Comment.findById(args.id)
+};
+
+module.exports = { users, user, posts, post, comments, comment };
