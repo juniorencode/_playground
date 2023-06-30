@@ -112,8 +112,6 @@ const deletePost = {
 
     if (!deletedPost) throw new Error('Post not found');
 
-    console.log(deletedPost);
-
     return deletedPost;
   }
 };
