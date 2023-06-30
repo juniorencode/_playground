@@ -1,9 +1,10 @@
 const { GraphQLString } = require('graphql');
 
-const hello = {
+const users = {
   type: GraphQLString,
-  description: 'Returns a string',
-  resolve: () => 'Hello World..!!'
+  resolve: () => {
+    return 'List of users';
+  }
 };
 
-module.exports = { hello };
+module.exports = { users };
