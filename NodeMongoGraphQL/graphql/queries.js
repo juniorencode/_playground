@@ -32,7 +32,7 @@ const post = {
   args: {
     id: { type: GraphQLID }
   },
-  resolve: (_, { id }) => Post.findById(id)
+  resolve: (_, args) => Post.findById(args.id)
 };
 
 module.exports = { users, user, posts, post };

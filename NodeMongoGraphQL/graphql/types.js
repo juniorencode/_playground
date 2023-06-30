@@ -25,7 +25,7 @@ const PostType = new GraphQLObjectType({
     updatedAt: { type: GraphQLString },
     author: {
       type: UserType,
-      resolve: ({ authorId }) => User.findById(authorId)
+      resolve: parent => User.findById(parent.authorId)
     }
   }
 });
