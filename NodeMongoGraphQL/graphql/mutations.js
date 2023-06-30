@@ -97,7 +97,7 @@ const updatePost = {
 };
 
 const deletePost = {
-  type: GraphQLString,
+  type: PostType,
   description: 'Delete a post',
   args: {
     postId: { type: GraphQLID }
@@ -105,14 +105,16 @@ const deletePost = {
   resolve: async (_, args, { verifiedUser }) => {
     if (!verifiedUser) throw new Error('Unauthorized');
 
-    const postDeleted = await Post.findOneAndDelete({
+    const deletedPost = await Post.findOneAndDelete({
       _id: args.postId,
       authorId: verifiedUser._id
     });
 
-    if (!postDeleted) throw new Error('Post not found');
+    if (!deletedPost) throw new Error('Post not found');
 
-    return 'Post deleted';
+    console.log(deletedPost);
+
+    return deletedPost;
   }
 };
 
