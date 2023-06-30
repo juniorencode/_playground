@@ -1,7 +1,7 @@
 const { GraphQLString, GraphQLID } = require('graphql');
-const { User, Post } = require('../models');
+const { User, Post, Comment } = require('../models');
 const { createJWTToken } = require('../util/auth');
-const { PostType } = require('./types');
+const { PostType, CommentType } = require('./types');
 
 const register = {
   type: GraphQLString,
@@ -29,7 +29,7 @@ const register = {
       email: user.email
     });
 
-    return 'new user created';
+    return token;
   }
 };
 
@@ -116,4 +116,29 @@ const deletePost = {
   }
 };
 
-module.exports = { register, login, createPost, updatePost, deletePost };
+const createComment = {
+  type: CommentType,
+  description: 'Add a comment to a post',
+  args: {
+    comment: { type: GraphQLString },
+    postId: { type: GraphQLID }
+  },
+  resolve: async (_, args, { verifiedUser }) => {
+    const comment = new Comment({
+      comment: args.comment,
+      postId: args.postId,
+      userId: verifiedUser._id
+    });
+
+    return comment.save();
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  createPost,
+  updatePost,
+  deletePost,
+  createComment
+};
