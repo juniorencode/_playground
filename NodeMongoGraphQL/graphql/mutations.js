@@ -34,6 +34,7 @@ const register = {
 
 const login = {
   type: GraphQLString,
+  description: 'Login a user and returns a token',
   args: {
     email: { type: GraphQLString },
     password: { type: GraphQLString }
@@ -53,4 +54,22 @@ const login = {
   }
 };
 
-module.exports = { register, login };
+const createPost = {
+  type: GraphQLString,
+  description: 'Create a new post',
+  args: {
+    title: { type: GraphQLString },
+    body: { type: GraphQLString }
+  },
+  resolve: async (_, args) => {
+    const newPost = new Post({
+      title: args.title,
+      body: args.body,
+      authorId: '649dc6d78aa41e210baa6d52'
+    });
+
+    return 'New post created';
+  }
+};
+
+module.exports = { register, login, createPost };
