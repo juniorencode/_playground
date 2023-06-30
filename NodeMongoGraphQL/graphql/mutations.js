@@ -22,12 +22,35 @@ const register = {
     });
     await user.save();
 
-    const token = createJWTToken(user);
-
-    console.log(token);
+    const token = createJWTToken({
+      _id: user._id,
+      username: user.username,
+      email: user.email
+    });
 
     return 'new user created';
   }
 };
 
-module.exports = { register };
+const login = {
+  type: GraphQLString,
+  args: {
+    email: { type: GraphQLString },
+    password: { type: GraphQLString }
+  },
+  resolve: async (_, args) => {
+    const user = await User.findOne({ email: args.email }).select('+password');
+    if (!user || args.password !== user.password)
+      throw new Error('Invalid Credentials');
+
+    const token = createJWTToken({
+      _id: user._id,
+      username: user.username,
+      email: user.email
+    });
+
+    return token;
+  }
+};
+
+module.exports = { register, login };
