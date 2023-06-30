@@ -96,4 +96,24 @@ const updatePost = {
   }
 };
 
-module.exports = { register, login, createPost, updatePost };
+const deletePost = {
+  type: GraphQLString,
+  description: 'Delete a post',
+  args: {
+    postId: { type: GraphQLID }
+  },
+  resolve: async (_, args, { verifiedUser }) => {
+    if (!verifiedUser) throw new Error('Unauthorized');
+
+    const postDeleted = await Post.findOneAndDelete({
+      _id: args.postId,
+      authorId: verifiedUser._id
+    });
+
+    if (!postDeleted) throw new Error('Post not found');
+
+    return 'Post deleted';
+  }
+};
+
+module.exports = { register, login, createPost, updatePost, deletePost };
