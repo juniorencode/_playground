@@ -1,6 +1,7 @@
 const { GraphQLString } = require('graphql');
-const { User } = require('../models');
+const { User, Post } = require('../models');
 const { createJWTToken } = require('../util/auth');
+const { PostType } = require('./types');
 
 const register = {
   type: GraphQLString,
@@ -55,20 +56,20 @@ const login = {
 };
 
 const createPost = {
-  type: GraphQLString,
+  type: PostType,
   description: 'Create a new post',
   args: {
     title: { type: GraphQLString },
     body: { type: GraphQLString }
   },
   resolve: async (_, args) => {
-    const newPost = new Post({
+    const post = new Post({
       title: args.title,
       body: args.body,
       authorId: '649dc6d78aa41e210baa6d52'
     });
 
-    return 'New post created';
+    return post;
   }
 };
 
