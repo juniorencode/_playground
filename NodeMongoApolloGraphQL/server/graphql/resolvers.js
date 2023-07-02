@@ -5,7 +5,9 @@ export const resolvers = {
   Query: {
     hello: () => 'Hello World..!!',
     projects: async () => await Project.find(),
-    tasks: async () => await Task.find()
+    project: async (_, args) => await Project.findById(args._id),
+    tasks: async () => await Task.find(),
+    task: async (_, args) => await Task.findById(args._id)
   },
   Mutation: {
     createProject: async (_, args) => {
