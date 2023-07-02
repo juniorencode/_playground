@@ -22,6 +22,7 @@ export const typeDefs = gql`
     _id: ID
     name: String
     description: String
+    tasks: [Task]
     createdAt: String
     updatedAt: String
   }
@@ -30,6 +31,7 @@ export const typeDefs = gql`
     _id: ID
     title: String
     projectId: ID
+    project: Project
     createdAt: String
     updatedAt: String
   }
