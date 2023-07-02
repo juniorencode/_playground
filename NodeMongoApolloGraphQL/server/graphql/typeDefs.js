@@ -11,7 +11,9 @@ export const typeDefs = gql`
 
   type Mutation {
     createProject(name: String, description: String): Project
+    deleteProject(_id: ID!): Project
     createTask(title: String, projectId: ID): Task
+    deleteTask(_id: ID!): Task
   }
 
   type Project {
