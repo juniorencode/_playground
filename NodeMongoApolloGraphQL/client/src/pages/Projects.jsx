@@ -11,4 +11,4 @@ const Projects = () => (
   </div>
 );
 
-export default Projects;
+export { Projects };
