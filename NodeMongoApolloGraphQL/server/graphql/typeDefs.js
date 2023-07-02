@@ -4,6 +4,7 @@ export const typeDefs = gql`
   type Query {
     hello: String
     projects: [Project]
+    tasks: [Task]
   }
 
   type Mutation {
