@@ -20,10 +20,21 @@ export const resolvers = {
 
       return savedProject;
     },
+    updateProject: async (_, args) => {
+      const updatedProject = await Project.findByIdAndUpdate(args._id, args, {
+        new: true
+      });
+
+      if (!updatedProject) throw new Error('Project not found');
+
+      return updatedProject;
+    },
     deleteProject: async (_, args) => {
       const deletedProject = await Project.findByIdAndDelete(args._id);
 
       if (!deletedProject) throw new Error('Project not found');
+
+      Task.deleteMany({ projectId: deletedProject._id });
 
       return deletedProject;
     },
@@ -40,6 +51,15 @@ export const resolvers = {
       const savedTask = await task.save();
 
       return savedTask;
+    },
+    updateTask: async (_, args) => {
+      const updatedTask = await Task.findByIdAndUpdate(args._id, args, {
+        new: true
+      });
+
+      if (!updatedTask) throw new Error('Task not found');
+
+      return updatedTask;
     },
     deleteTask: async (_, args) => {
       const deletedTask = await Task.findByIdAndDelete(args._id);
