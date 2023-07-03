@@ -2,3 +2,20 @@
   margin: 0;
   padding: 0;
 }
+
+body {
+  width: 100vw;
+  text-align: center;
+}
+
+button {
+  padding: 15px 20px;
+  background-color: #1565c0;
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #1e88e5;
+}
