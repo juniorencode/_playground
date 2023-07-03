@@ -5,7 +5,12 @@ const cors = require('cors');
 const app = express();
 app.use(cors()); // allows incoming request from any IP
 
-const uploads = multer({ dest: __dirname + '/uploads' });
+const storage = multer.diskStorage({
+  destination: (req, res, callback) => callback(null, __dirname + '/uploads'),
+  filename: (req, file, callback) => callback(null, file.originalname)
+});
+
+const uploads = multer({ storage });
 
 app.get('/', (req, res) => {
   res.json({ username: 'juniorencode' });
