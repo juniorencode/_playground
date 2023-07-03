@@ -17,7 +17,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/uploads', uploads.array('files'), (req, res) => {
-  console.log(req.body);
   console.log(req.files);
   res.json({ status: 'files received' });
 });
