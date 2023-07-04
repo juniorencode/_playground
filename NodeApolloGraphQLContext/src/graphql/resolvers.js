@@ -1,6 +1,11 @@
 const resolvers = {
   Query: {
-    hello: () => 'Hello World..!!'
+    hello: async (parent, args, context) => {
+      const { db } = context;
+      const aux = await db.connection.collection('users').find().toArray();
+      console.log(aux);
+      return 'Hello World..!!';
+    }
   }
 };
 
