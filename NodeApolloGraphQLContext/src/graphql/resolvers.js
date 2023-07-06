@@ -2,8 +2,13 @@ const resolvers = {
   Query: {
     hello: async (parent, args, context) => {
       const { db } = context;
-      const aux = await db.connection.collection('users').find().toArray();
-      console.log(aux);
+      const filter = { displayName: { $regex: 'o', $options: 'i' } };
+      const users = await db.connection
+        .collection('users')
+        .find(filter)
+        .toArray();
+      console.log(users);
+
       return 'Hello World..!!';
     }
   }
