@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input Multiple Upload File</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="page" class="site">
+      <div class="container">
+        <div class="file-upload">
+          <input
+            type="file"
+            name="files"
+            class="file-input"
+            multiple="multiple"
+          />
+          <div class="icon">
+            <ion-icon name="arrow-up-outline"></ion-icon>
+          </div>
+          <h3>Drag & drop files here</h3>
+          <span>- OR -</span>
+          <strong>Browse</strong>
+          <button>
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </div>
+        <div class="list-upload">
+          <ul>
+            <li class="file-list">
+              <div class="thumbnail">
+                <ion-icon name="document-outline"></ion-icon>
+                <ion-icon name="image-outline"></ion-icon>
+                <ion-icon name="musical-notes-outline"></ion-icon>
+                <ion-icon name="videocam-outline"></ion-icon>
+                <span class="completed">
+                  <ion-icon name="checkmark"></ion-icon>
+                </span>
+              </div>
+              <div class="properties">
+                <span class="title">
+                  <strong></strong>
+                </span>
+                <span class="size"></span>
+                <span class="progress">
+                  <span class="buffer"></span>
+                  <span class="percentage">0%</span>
+                </span>
+              </div>
+              <button class="remove">
+                <ion-icon name="close"></ion-icon>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script src="./main.js"></script>
+  </body>
+</html>
