@@ -87,3 +87,43 @@ ul {
   z-index: 0;
   background-color: hsla(235, 100%, 95%, 1);
 }
+
+.file-upload h3 {
+  font-weight: 400;
+  font-size: 1.5em;
+  color: hsla(235, 100%, 78%, 1);
+}
+
+.file-upload button {
+  border: 0;
+  outline: 0;
+  border-radius: 50%;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-background: linear-gradient(
+    135deg,
+    hsla(235, 100%, 78%, 1) 0% hsla(222, 100%, 67%, 1) 100%
+  );
+  background: linear-gradient(
+    135deg,
+    hsla(235, 100%, 78%, 1) 0% hsla(222, 100%, 67%, 1) 100%
+  );
+  box-shadow: hsla(222, 100%, 67%, 0.5) 0 4px 18px;
+  -webkit-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+}
+
+.file-upload button ion-icon {
+  font-size: 1.5em;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.file-upload:hover button {
+  -webkit-transform: translateY(-10px);
+  transform: translateY(-10px);
+}
