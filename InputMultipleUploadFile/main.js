@@ -11,4 +11,14 @@ document.querySelector('.file-input').addEventListener('change', () => {
     alert('Error: No file selected');
     return;
   }
+
+  for (let i = 0; i < files_input.length; i++) {
+    const file = files_input[i];
+
+    // validate file size
+    if (file.size > allowed_size_mb * 1024 * 1024) {
+      alert('Error: Exceed size => ' + file.name);
+      return;
+    }
+  }
 });
