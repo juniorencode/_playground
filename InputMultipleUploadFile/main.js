@@ -20,5 +20,38 @@ document.querySelector('.file-input').addEventListener('change', () => {
       alert('Error: Exceed size => ' + file.name);
       return;
     }
+
+    const uniq = 'id-' + btoa(file.name).replace(/=/g, '').substring(0, 7);
+    const filetype = file.type.match(/([^\/]+)\//);
+
+    const li = `
+    <li class="file-list ${filetype[i]}" id="${uniq}" data-filename="${file.name}">
+      <div class="thumbnail">
+        <ion-icon name="document-outline"></ion-icon>
+        <ion-icon name="image-outline"></ion-icon>
+        <ion-icon name="musical-notes-outline"></ion-icon>
+        <ion-icon name="videocam-outline"></ion-icon>
+        <span class="completed">
+          <ion-icon name="checkmark"></ion-icon>
+        </span>
+      </div>
+      <div class="properties">
+        <span class="title">
+          <strong></strong>
+        </span>
+        <span class="size"></span>
+        <span class="progress">
+          <span class="buffer"></span>
+          <span class="percentage">0%</span>
+        </span>
+      </div>
+      <button class="remove">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </li>
+    `;
+
+    document.querySelector('.list-upload ul').innerHTML =
+      li + document.querySelector('.list-upload ul').innerHTML;
   }
 });
