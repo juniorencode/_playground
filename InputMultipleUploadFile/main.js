@@ -53,5 +53,11 @@ document.querySelector('.file-input').addEventListener('change', () => {
 
     document.querySelector('.list-upload ul').innerHTML =
       li + document.querySelector('.list-upload ul').innerHTML;
+
+    const li_el = document.querySelector('#' + uniq);
+    const name = li_el.querySelector('.title strong');
+    const size = li_el.querySelector('.size');
+
+    name.innerHTML = file.name;
   }
 });
