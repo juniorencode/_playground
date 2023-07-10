@@ -3,3 +3,29 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  font-family: sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #010718;
+  overflow: hidden;
+}
+
+.container {
+  width: 246px;
+  overflow: hidden;
+}
+
+.container .text {
+  position: relative;
+  color: #4070f4;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.container .text.first-text {
+  color: #fff;
+}
