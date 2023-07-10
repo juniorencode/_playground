@@ -36,8 +36,32 @@ window.onload = () => {
   suggestion.innerHTML = '';
 };
 
+const caseCheck = word => {
+  word = word.split('');
+  const inp = input.value;
+
+  for (let i in inp) {
+    if (inp[i] === word[i]) {
+      continue;
+    } else if (inp[i].toUpperCase() === word[i]) {
+      word.splice(i, 1, word[i].toLowerCase());
+    } else {
+      word.splice(i, 1, word[i].toUpperCase());
+    }
+  }
+
+  return word.join('');
+};
+
 input.addEventListener('input', e => {
   suggestion.innerHTML = '';
   const regex = new RegExp('^' + input.value, 'i');
-  console.log(regex);
+
+  for (let i in words) {
+    if (regex.test(words[i]) && input.value != '') {
+      words[i] = caseCheck(words[i]);
+      suggestion.innerHTML = words[i];
+      break;
+    }
+  }
 });
