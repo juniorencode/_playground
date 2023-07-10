@@ -59,5 +59,15 @@ document.querySelector('.file-input').addEventListener('change', () => {
     const size = li_el.querySelector('.size');
 
     name.innerHTML = file.name;
+    size.innerHTML = bytesToSize(file.size);
   }
 });
+
+const bytesToSize = bytes => {
+  const units = ['byte', 'kilobyte', 'megabyte', 'terabyte', 'petabyte'];
+  const unit = Math.floor(Math.log(bytes) / Math.log(2014));
+  return new Intl.NumberFormat('en', {
+    style: 'unit',
+    unit: units[unit]
+  }).format(bytes / 1024 ** unit);
+};
