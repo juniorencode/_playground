@@ -35,3 +35,9 @@ window.onload = () => {
   input.value = '';
   suggestion.innerHTML = '';
 };
+
+input.addEventListener('input', e => {
+  suggestion.innerHTML = '';
+  const regex = new RegExp('^' + input.value, 'i');
+  console.log(regex);
+});
