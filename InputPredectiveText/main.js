@@ -26,3 +26,12 @@ const words = [
 ];
 
 words.sort();
+
+const input = document.getElementById('input');
+const suggestion = document.getElementById('suggestion');
+const enterKey = 13;
+
+window.onload = () => {
+  input.value = '';
+  suggestion.innerHTML = '';
+};
