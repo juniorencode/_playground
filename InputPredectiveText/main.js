@@ -65,3 +65,11 @@ input.addEventListener('input', e => {
     }
   }
 });
+
+input.addEventListener('keydown', e => {
+  if (e.keyCode === enterKey && suggestion.innerText !== '') {
+    e.preventDefault();
+    input.value = suggestion.innerText;
+    suggestion.innerHTML = '';
+  }
+});
