@@ -1,4 +1,4 @@
-import { Input } from './components/Input';
+import { InputText } from './components/InputText';
 import './App.css';
 
 function App() {
