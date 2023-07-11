@@ -1,0 +1,29 @@
+.InputTextarea {
+  background-color: transparent;
+  border: 1px solid #e3e9e7;
+  font-size: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.4rem;
+  width: 100%;
+  color: #0b434c;
+  font-family: inherit;
+  resize: none;
+}
+
+.InputTextarea::placeholder {
+  color: #ccc;
+}
+
+.InputTextarea:focus {
+  outline: none;
+  border-color: #ccc;
+}
+
+.InputTextarea--error,
+.InputTextarea--error:focus {
+  border-color: #d5427a;
+}
+
+.InputTextarea::-webkit-scrollbar {
+  width: 0;
+}
