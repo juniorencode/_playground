@@ -15,11 +15,8 @@ const InputPassword = () => {
         placeholder="Type password..."
         type={`${hidden ? 'password' : 'text'}`}
       />
-      <button tabIndex="-1">
-        <span
-          className={`${hidden ? 'icon-eye-blocked' : 'icon-eye'}`}
-          onClick={() => handleHidenn()}
-        ></span>
+      <button tabIndex="-1" onClick={() => handleHidenn()}>
+        <span className={`${hidden ? 'icon-eye-blocked' : 'icon-eye'}`}></span>
       </button>
     </div>
   );
