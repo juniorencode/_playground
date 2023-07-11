@@ -1,0 +1,23 @@
+.InputText {
+  background-color: transparent;
+  border: 1px solid #e3e9e7;
+  font-size: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.4rem;
+  width: 100%;
+  color: #0b434c;
+}
+
+.InputText::placeholder {
+  color: #ccc;
+}
+
+.InputText:focus {
+  outline: none;
+  border-color: #ccc;
+}
+
+.InputText--error,
+.InputText--error:focus {
+  border-color: #d5427a;
+}

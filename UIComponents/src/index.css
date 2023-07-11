@@ -8,7 +8,7 @@
 *,
 *::before,
 *::after {
-  box-sizing: 0;
+  box-sizing: border-box;
 }
 
 body {
