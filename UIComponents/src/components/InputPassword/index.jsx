@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './InputPassword.css';
 
 const InputPassword = () => {
-  const [hidden, setHidden] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   const handleHidenn = () => {
     console.log('x');
@@ -11,7 +11,10 @@ const InputPassword = () => {
 
   return (
     <div className="InputPassword">
-      <input placeholder="Type password..." type="password" />
+      <input
+        placeholder="Type password..."
+        type={`${hidden ? 'password' : 'text'}`}
+      />
       <button tabIndex="-1">
         <span
           className={`${hidden ? 'icon-eye-blocked' : 'icon-eye'}`}
