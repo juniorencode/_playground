@@ -1,5 +1,12 @@
+import { Input } from './components/Input';
+import './App.css';
+
 function App() {
-  return <h1>Hello World..!!</h1>;
+  return (
+    <div className="container">
+      <InputText />
+    </div>
+  );
 }
 
 export default App;
