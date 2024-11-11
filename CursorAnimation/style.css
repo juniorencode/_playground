@@ -1,0 +1,108 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #161616;
+  cursor: none;
+}
+
+.cursor-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #2696e8;
+  box-shadow: 0 0 20px #2696e8, 0 0 40px #2696e8, 0 0 60px #2696e8;
+  animation: colors 5s infinite;
+}
+
+.cursor-outline {
+  width: 50px;
+  height: 50px;
+  border: 2px solid hsla(0, 0%, 100%, 0.2);
+}
+
+.cursor-dot,
+.cursor-outline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+@keyframes colors {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.cursor-dot:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  background-color: #2696e8;
+  opacity: 0.02;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.wave {
+  position: absolute;
+  top: -100px;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.wave .shape {
+  position: absolute;
+  opacity: 0;
+}
+
+.wave .shape.circle.big {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #aaa;
+  border-radius: 50%;
+}
+
+.wave .shape.circle.small {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #aaa;
+  border-radius: 50%;
+}
+
+.wave .shape.circle {
+  animation: click-animation-circle 3s ease-out;
+}
+
+@keyframes click-animation-circle {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0;
+    transform: scale(3);
+  }
+}
