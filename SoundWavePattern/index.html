@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="hero">
+      <div class="music">
+        <p>Artist: OneRepublic</p>
+        <h1>Nobody (Kaiju No. 8)</h1>
+        <div class="track">
+          <img id="btnPlay" src="./images/play.png" alt="play button" />
+          <div id="waveform"></div>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+      import WaveSurfer from 'https://cdn.jsdelivr.net/npm/wavesurfer.js@7/dist/wavesurfer.esm.js';
+
+      const wavesurfer = WaveSurfer.create({
+        container: '#waveform',
+        waveColor: '#ddd',
+        progressColor: '#ff006c',
+        barWidth: 4,
+        responsive: true,
+        height: 90,
+        barRadius: 4,
+        url: '/audio/Nobody-OneRepublic.mp3'
+      });
+
+      const btnPlay = document.getElementById('btnPlay');
+
+      btnPlay.addEventListener('click', () => {
+        wavesurfer.playPause();
+        if (btnPlay.src.includes('play.png')) {
+          btnPlay.src = './images/pause.png';
+        } else {
+          btnPlay.src = './images/play.png';
+        }
+      });
+
+      wavesurfer.on('finish', () => {
+        btnPlay.src = './images/play.png';
+        wavesurfer.stop();
+      });
+
+      // wavesurfer.on('interaction', () => {
+      //   wavesurfer.play();
+      // });
+    </script>
+  </body>
+</html>
