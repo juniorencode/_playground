@@ -90,3 +90,123 @@ section.active .profile {
   cursor: pointer;
   font-size: 16px;
 }
+
+/* pop up box styling */
+section .popup-outer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+  transform: scale(1.2);
+  transition: opacity 0.2s 0s ease-in-out, transform 0.2s 0s ease-in-out;
+}
+
+section.active .popup-outer {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+section .popup-box {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 380px;
+  width: 100%;
+}
+
+.popup-box .close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 24px;
+  color: #b4b4b4;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.popup-box .close:hover {
+  color: #333;
+}
+
+.popup-box .profile-text {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.popup-box .profile-text .text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+}
+
+.profile-text .text .name {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.profile-text .text .profession {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: -4px;
+}
+
+.popup-box img {
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.popup-box textarea {
+  min-height: 140px;
+  width: 100%;
+  resize: none;
+  outline: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 10px 10px 10px 14px;
+  font-weight: 400;
+  background: #f3f3f3;
+}
+
+.popup-box .button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popup-box .button button {
+  outline: none;
+  border: none;
+  margin-left: 10px;
+  background: #6f93f6;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.button button.cancel {
+  background: #f082ac;
+}
+
+.button button.cancel:hover {
+  background: #ec5f95;
+}
+
+.button button.send:hover {
+  background: #275df1;
+}
