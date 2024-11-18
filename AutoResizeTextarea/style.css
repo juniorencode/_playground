@@ -8,12 +8,21 @@ body {
   background-color: #121212;
 }
 
-textarea {
+#textarea {
   padding: 1rem;
-  width: 500px;
   border-radius: 1rem;
-  font-family: sans-serif;
   background-color: #222;
-  color: #fff;
+}
+
+textarea {
+  width: 500px;
+  font-family: sans-serif;
   font-size: 1rem;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+}
+
+textarea:focus {
+  outline: none;
 }
