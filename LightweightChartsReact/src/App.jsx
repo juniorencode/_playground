@@ -1,6 +1,41 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 function App() {
+  const targetLimit = 7;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetching = await axios('/data.json');
+      const response = sortByValue(fetching.data);
+      setData(response);
+    };
+
+    fetchData();
+  }, []);
+
+  const sortByValue = array => {
+    return array.sort((a, b) => a.value - b.value);
+  };
+
   return (
     <div className="bg-neutral-800 text-white p-4 w-[100vw] h-[100vh]">
+      <div className="flex flex-col gap-2 my-4">
+        <p className="font-semibold tracking-wider">
+          Number of data:
+          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+            {data.length}
+          </span>
+        </p>
+        <p className="font-semibold tracking-wider">
+          Target limit:
+          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+            {targetLimit}
+          </span>
+        </p>
+      </div>
+      <hr />
       <div className="flex flex-col gap-2 my-4">
         <p className="font-semibold tracking-wider">
           Min value:
@@ -14,8 +49,17 @@ function App() {
             0
           </span>
         </p>
+      </div>
+      <hr />
+      <div className="flex flex-col gap-2 my-4">
         <p className="font-semibold tracking-wider">
-          Target limit:
+          Adjust Min value:
+          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+            0
+          </span>
+        </p>
+        <p className="font-semibold tracking-wider">
+          Adjust Max value:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
             0
           </span>
@@ -35,6 +79,9 @@ function App() {
             0
           </span>
         </p>
+      </div>
+      <hr />
+      <div className="flex flex-col gap-2 my-4">
         <p className="font-semibold tracking-wider">
           Rounded Min:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
