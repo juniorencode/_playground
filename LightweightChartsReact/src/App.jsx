@@ -4,12 +4,18 @@ import axios from 'axios';
 function App() {
   const targetLimit = 7;
   const [data, setData] = useState([]);
+  const [minValue, setMinValue] = useState(0);
+  const [maxValue, setMaxValue] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       const fetching = await axios('/data.json');
       const response = sortByValue(fetching.data);
+      const _minValue = calculateMinValue(response);
+      const _maxValue = calculateMaxValue(response);
       setData(response);
+      setMinValue(_minValue);
+      setMaxValue(_maxValue);
     };
 
     fetchData();
@@ -17,6 +23,14 @@ function App() {
 
   const sortByValue = array => {
     return array.sort((a, b) => a.value - b.value);
+  };
+
+  const calculateMinValue = array => {
+    return Math.floor(Math.min(...array.map(item => item.value)));
+  };
+
+  const calculateMaxValue = array => {
+    return Math.ceil(Math.max(...array.map(item => item.value)));
   };
 
   return (
@@ -40,13 +54,13 @@ function App() {
         <p className="font-semibold tracking-wider">
           Min value:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            0
+            {minValue}
           </span>
         </p>
         <p className="font-semibold tracking-wider">
           Max value:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            0
+            {maxValue}
           </span>
         </p>
       </div>
