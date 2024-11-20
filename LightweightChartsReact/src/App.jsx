@@ -6,6 +6,8 @@ function App() {
   const [data, setData] = useState([]);
   const [minValue, setMinValue] = useState(0);
   const [maxValue, setMaxValue] = useState(0);
+  const [adjustedMin, setAdjustedMin] = useState(0);
+  const [adjustedMax, setAdjustedMax] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,9 +15,13 @@ function App() {
       const response = sortByValue(fetching.data);
       const _minValue = calculateMinValue(response);
       const _maxValue = calculateMaxValue(response);
+      const _adjustedMin = calculateAdjustMin(_minValue);
+      const _adjustedMax = calculateAdjustMax(_maxValue);
       setData(response);
       setMinValue(_minValue);
       setMaxValue(_maxValue);
+      setAdjustedMin(_adjustedMin);
+      setAdjustedMax(_adjustedMax);
     };
 
     fetchData();
@@ -31,6 +37,14 @@ function App() {
 
   const calculateMaxValue = array => {
     return Math.ceil(Math.max(...array.map(item => item.value)));
+  };
+
+  const calculateAdjustMin = value => {
+    return Math.min(0, value);
+  };
+
+  const calculateAdjustMax = value => {
+    return Math.max(0, value);
   };
 
   return (
@@ -69,13 +83,13 @@ function App() {
         <p className="font-semibold tracking-wider">
           Adjust Min value:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            0
+            {adjustedMin}
           </span>
         </p>
         <p className="font-semibold tracking-wider">
           Adjust Max value:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            0
+            {adjustedMax}
           </span>
         </p>
       </div>
