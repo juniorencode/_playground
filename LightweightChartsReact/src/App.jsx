@@ -8,6 +8,8 @@ function App() {
   const [maxValue, setMaxValue] = useState(0);
   const [adjustedMin, setAdjustedMin] = useState(0);
   const [adjustedMax, setAdjustedMax] = useState(0);
+  const [range, setRange] = useState(0);
+  const [interval, setInterval] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,14 +19,19 @@ function App() {
       const _maxValue = calculateMaxValue(response);
       const _adjustedMin = calculateAdjustMin(_minValue);
       const _adjustedMax = calculateAdjustMax(_maxValue);
+      const _range = calculateRange(_adjustedMin, _adjustedMax);
+      const _interval = calculateInterval(_range, targetLimit);
       setData(response);
       setMinValue(_minValue);
       setMaxValue(_maxValue);
       setAdjustedMin(_adjustedMin);
       setAdjustedMax(_adjustedMax);
+      setRange(_range);
+      setInterval(_interval);
     };
 
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   const sortByValue = array => {
@@ -45,6 +52,23 @@ function App() {
 
   const calculateAdjustMax = value => {
     return Math.max(0, value);
+  };
+
+  const calculateRange = (min, max) => {
+    return max - min;
+  };
+
+  const reduceToNearestPowerOfTen = number => {
+    const log = Math.floor(Math.log10(number));
+    return Math.pow(10, log);
+  };
+
+  const calculateInterval = (range, numLabels) => {
+    const interval = Math.ceil(range / numLabels);
+    const multiple = reduceToNearestPowerOfTen(interval);
+    const remainder = interval % multiple;
+
+    return remainder === 0 ? interval : interval + (multiple - remainder);
   };
 
   return (
@@ -98,13 +122,13 @@ function App() {
         <p className="font-semibold tracking-wider">
           Range:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            0
+            {range}
           </span>
         </p>
         <p className="font-semibold tracking-wider">
-          Interval width:
+          Interval:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            0
+            {interval}
           </span>
         </p>
       </div>
