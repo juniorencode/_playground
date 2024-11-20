@@ -10,6 +10,8 @@ function App() {
   const [adjustedMax, setAdjustedMax] = useState(0);
   const [range, setRange] = useState(0);
   const [interval, setInterval] = useState(0);
+  const [roundedMin, setRoundedMin] = useState(0);
+  const [roundedMax, setRoundedMax] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +23,8 @@ function App() {
       const _adjustedMax = calculateAdjustMax(_maxValue);
       const _range = calculateRange(_adjustedMin, _adjustedMax);
       const _interval = calculateInterval(_range, targetLimit);
+      const _roundedMin = calculateRoundMin(_adjustedMin, _interval);
+      const _roundedMax = calculateRoundMax(_adjustedMax, _interval);
       setData(response);
       setMinValue(_minValue);
       setMaxValue(_maxValue);
@@ -28,6 +32,8 @@ function App() {
       setAdjustedMax(_adjustedMax);
       setRange(_range);
       setInterval(_interval);
+      setRoundedMin(_roundedMin);
+      setRoundedMax(_roundedMax);
     };
 
     fetchData();
@@ -69,6 +75,14 @@ function App() {
     const remainder = interval % multiple;
 
     return remainder === 0 ? interval : interval + (multiple - remainder);
+  };
+
+  const calculateRoundMin = (value, interval) => {
+    return Math.floor(value / interval) * interval;
+  };
+
+  const calculateRoundMax = (value, interval) => {
+    return Math.ceil(value / interval) * interval;
   };
 
   return (
@@ -137,13 +151,13 @@ function App() {
         <p className="font-semibold tracking-wider">
           Rounded Min:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            0
+            {roundedMin}
           </span>
         </p>
         <p className="font-semibold tracking-wider">
           Rounded Max:
           <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            0
+            {roundedMax}
           </span>
         </p>
       </div>
