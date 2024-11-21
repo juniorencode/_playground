@@ -6,42 +6,54 @@ function App() {
   const targetLimit = 5;
 
   const [data, setData] = useState([]);
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(0);
-  const [adjustedMin, setAdjustedMin] = useState(0);
-  const [adjustedMax, setAdjustedMax] = useState(0);
-  const [range, setRange] = useState(0);
-  const [interval, setInterval] = useState(0);
-  const [roundedMin, setRoundedMin] = useState(0);
-  const [roundedMax, setRoundedMax] = useState(0);
-  const [labels, setLabels] = useState([]);
+
+  const [minValueY, setMinValueY] = useState(0);
+  const [maxValueY, setMaxValueY] = useState(0);
+  const [adjustedMinY, setAdjustedMinY] = useState(0);
+  const [adjustedMaxY, setAdjustedMaxY] = useState(0);
+  const [rangeY, setRangeY] = useState(0);
+  const [intervalY, setIntervalY] = useState(0);
+  const [roundedMinY, setRoundedMinY] = useState(0);
+  const [roundedMaxY, setRoundedMaxY] = useState(0);
+  const [labelsY, setLabelsY] = useState([]);
+
+  const [minDateX, setMinDateX] = useState(0);
+  const [maxDateX, setMaxDateX] = useState(0);
 
   const [canvasRef, draw] = useCanvas();
 
   useEffect(() => {
     const fetchData = async () => {
       const fetching = await axios('/data.json');
-      const response = sortByValue(fetching.data);
-      const _minValue = calculateMinValue(response);
-      const _maxValue = calculateMaxValue(response);
-      const _adjustedMin = calculateAdjustMin(_minValue);
-      const _adjustedMax = calculateAdjustMax(_maxValue);
-      const _range = calculateRange(_adjustedMin, _adjustedMax);
-      const _interval = calculateInterval(_range, targetLimit);
-      const _roundedMin = calculateRoundMin(_adjustedMin, _interval);
-      const _roundedMax = calculateRoundMax(_adjustedMax, _interval);
-      const _labels = calculateLabels(_roundedMin, _roundedMax, _interval);
+
+      const response = fetching.data;
+      const y_minValue = calculateMinValue(response);
+      const y_maxValue = calculateMaxValue(response);
+      const y_adjustedMin = calculateAdjustMin(y_minValue);
+      const y_adjustedMax = calculateAdjustMax(y_maxValue);
+      const y_range = calculateRange(y_adjustedMin, y_adjustedMax);
+      const y_interval = calculateInterval(y_range, targetLimit);
+      const y_roundedMin = calculateRoundMin(y_adjustedMin, y_interval);
+      const y_roundedMax = calculateRoundMax(y_adjustedMax, y_interval);
+      const y_labels = calculateLabels(y_roundedMin, y_roundedMax, y_interval);
+
+      const x_minDate = calculateMinDate(response);
+      const x_maxDate = calculateMaxDate(response);
 
       setData(response);
-      setMinValue(_minValue);
-      setMaxValue(_maxValue);
-      setAdjustedMin(_adjustedMin);
-      setAdjustedMax(_adjustedMax);
-      setRange(_range);
-      setInterval(_interval);
-      setRoundedMin(_roundedMin);
-      setRoundedMax(_roundedMax);
-      setLabels(_labels);
+
+      setMinValueY(y_minValue);
+      setMaxValueY(y_maxValue);
+      setAdjustedMinY(y_adjustedMin);
+      setAdjustedMaxY(y_adjustedMax);
+      setRangeY(y_range);
+      setIntervalY(y_interval);
+      setRoundedMinY(y_roundedMin);
+      setRoundedMaxY(y_roundedMax);
+      setLabelsY(y_labels);
+
+      setMinDateX(x_minDate);
+      setMaxDateX(x_maxDate);
 
       draw(ctx => {
         const fontSize = 12; // Ajusta según la estética
@@ -50,13 +62,13 @@ function App() {
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
 
-        const x = 52; // Centra el texto horizontalmente
-        const topMargin = 20; // Margen superior
-        const bottomMargin = 10; // Margen inferior
+        const x = 52;
+        const topMargin = 20;
+        const bottomMargin = 10;
         const availableHeight = 272 - topMargin - bottomMargin;
-        const step = availableHeight / (_labels.length - 1);
+        const step = availableHeight / (y_labels.length - 1);
 
-        _labels.forEach((num, index) => {
+        y_labels.forEach((num, index) => {
           const y = topMargin + index * step;
           ctx.fillText(num.toFixed(2), x, y);
         });
@@ -67,10 +79,7 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
-  const sortByValue = array => {
-    return array.sort((a, b) => a.value - b.value);
-  };
-
+  // axis y
   const calculateMinValue = array => {
     return Math.floor(Math.min(...array.map(item => item.value)));
   };
@@ -113,97 +122,151 @@ function App() {
   };
 
   const calculateLabels = (min, max, interval) => {
-    const _labels = [];
+    const y_labels = [];
     for (let i = min; i <= max; i += interval) {
-      _labels.unshift(Math.round(i));
+      y_labels.unshift(Math.round(i));
     }
-    return _labels;
+    return y_labels;
   };
+
+  // axis x
+  const calculateMinDate = array => {
+    return new Date(
+      Math.min(...array.map(item => new Date(item.time).getTime()))
+    );
+  };
+
+  const calculateMaxDate = array => {
+    return new Date(
+      Math.max(...array.map(item => new Date(item.time).getTime()))
+    );
+  };
+
+  function calculateYearsSimple(date1, date2) {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    return Math.abs(d2.getFullYear() - d1.getFullYear());
+  }
 
   return (
     <div className="bg-neutral-800 text-white p-4 w-[100vw] min-h-[100vh]">
-      <div className="flex flex-col gap-2 my-4">
-        <p className="font-semibold tracking-wider">
-          Number of data:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {data.length}
-          </span>
-        </p>
-        <p className="font-semibold tracking-wider">
-          Target limit:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {targetLimit}
-          </span>
-        </p>
-      </div>
-      <hr />
-      <div className="flex flex-col gap-2 my-4">
-        <p className="font-semibold tracking-wider">
-          Min value:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {minValue}
-          </span>
-        </p>
-        <p className="font-semibold tracking-wider">
-          Max value:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {maxValue}
-          </span>
-        </p>
-      </div>
-      <hr />
-      <div className="flex flex-col gap-2 my-4">
-        <p className="font-semibold tracking-wider">
-          Adjust Min value:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {adjustedMin}
-          </span>
-        </p>
-        <p className="font-semibold tracking-wider">
-          Adjust Max value:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {adjustedMax}
-          </span>
-        </p>
-      </div>
-      <hr />
-      <div className="flex flex-col gap-2 my-4">
-        <p className="font-semibold tracking-wider">
-          Range:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {range}
-          </span>
-        </p>
-        <p className="font-semibold tracking-wider">
-          Interval:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {interval}
-          </span>
-        </p>
-      </div>
-      <hr />
-      <div className="flex flex-col gap-2 my-4">
-        <p className="font-semibold tracking-wider">
-          Rounded Min:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {roundedMin}
-          </span>
-        </p>
-        <p className="font-semibold tracking-wider">
-          Rounded Max:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {roundedMax}
-          </span>
-        </p>
-      </div>
-      <hr />
-      <div className="flex flex-col gap-2 my-4">
-        <p className="font-semibold tracking-wider">
-          Labels:
-          <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
-            {labels.length}
-          </span>
-        </p>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Number of data:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {data.length}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Target limit:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {targetLimit}
+              </span>
+            </p>
+          </div>
+          <hr />
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Min value:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {minValueY}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Max value:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {maxValueY}
+              </span>
+            </p>
+          </div>
+          <hr />
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Adjust Min value:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {adjustedMinY}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Adjust Max value:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {adjustedMaxY}
+              </span>
+            </p>
+          </div>
+          <hr />
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Range:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {rangeY}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Interval:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {intervalY}
+              </span>
+            </p>
+          </div>
+          <hr />
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Rounded Min:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {roundedMinY}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Rounded Max:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {roundedMaxY}
+              </span>
+            </p>
+          </div>
+          <hr />
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Labels:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {labelsY.length}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div>
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Number of data:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {data.length}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Target limit:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {targetLimit}
+              </span>
+            </p>
+          </div>
+          <hr />
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Min date:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {minDateX.toLocaleString()}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Max date:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {maxDateX.toLocaleString()}
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
       <div className="border border-neutral-700">
         <canvas ref={canvasRef} width={52} height={272}></canvas>
