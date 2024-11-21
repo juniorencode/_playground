@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useCanvas } from './hooks/useCanvas.hook';
 
 function App() {
-  const targetLimit = 5;
+  const targetLimit = 7;
 
   const [data, setData] = useState([]);
 
@@ -19,6 +19,9 @@ function App() {
 
   const [minDateX, setMinDateX] = useState(0);
   const [maxDateX, setMaxDateX] = useState(0);
+  const [years, setYears] = useState(0);
+  const [months, setMonths] = useState(0);
+  const [days, setDays] = useState(0);
 
   const [canvasRef, draw] = useCanvas();
 
@@ -39,6 +42,9 @@ function App() {
 
       const x_minDate = calculateMinDate(response);
       const x_maxDate = calculateMaxDate(response);
+      const x_years = calculateYearsSimple(x_minDate, x_maxDate);
+      const x_months = calculateMonthsSimple(x_minDate, x_maxDate);
+      const x_days = calculateDaysSimple(x_minDate, x_maxDate);
 
       setData(response);
 
@@ -54,6 +60,9 @@ function App() {
 
       setMinDateX(x_minDate);
       setMaxDateX(x_maxDate);
+      setYears(x_years);
+      setMonths(x_months);
+      setDays(x_days);
 
       draw(ctx => {
         const fontSize = 12; // Ajusta según la estética
@@ -146,6 +155,24 @@ function App() {
     const d1 = new Date(date1);
     const d2 = new Date(date2);
     return Math.abs(d2.getFullYear() - d1.getFullYear());
+  }
+
+  function calculateMonthsSimple(date1, date2) {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+
+    return Math.abs(
+      (d2.getFullYear() - d1.getFullYear()) * 12 +
+        (d2.getMonth() - d1.getMonth())
+    );
+  }
+
+  function calculateDaysSimple(date1, date2) {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+
+    const millisecondsPerDay = 1000 * 60 * 60 * 24;
+    return Math.abs((d2 - d1) / millisecondsPerDay);
   }
 
   return (
@@ -263,6 +290,27 @@ function App() {
               Max date:
               <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
                 {maxDateX.toLocaleString()}
+              </span>
+            </p>
+          </div>
+          <hr />
+          <div className="flex flex-col gap-2 my-4">
+            <p className="font-semibold tracking-wider">
+              Years:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {years}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Months:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {months}
+              </span>
+            </p>
+            <p className="font-semibold tracking-wider">
+              Days:
+              <span className="bg-blue-600 ml-2 px-2 py-0.5 text-sm font-medium tracking-widest rounded-lg">
+                {days}
               </span>
             </p>
           </div>
