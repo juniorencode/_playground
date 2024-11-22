@@ -1,5 +1,24 @@
+import { useArray } from './hooks/useArray.hook';
+
 function App() {
-  return <h1>Hello World..!!</h1>;
+  const { array, set, push, insert, remove, filter, update, reverse, clear } =
+    useArray([1, 2, 3, 4, 5, 6]);
+
+  return (
+    <div>
+      <div>{array.join(', ')}</div>
+      <button onClick={() => push(7)}>Add 7</button>
+      <button onClick={() => insert(200, 100)}>Add 100</button>
+      <button onClick={() => update(1, 9)}>Change Second Element To 9</button>
+      <button onClick={() => remove(1)}>Remove Second Element</button>
+      <button onClick={() => filter(n => n < 3)}>
+        Keep Numbers Less Than 4
+      </button>
+      <button onClick={() => set([1, 2])}>Set To 1, 2</button>
+      <button onClick={reverse}>Reverse</button>
+      <button onClick={clear}>Clear</button>
+    </div>
+  );
 }
 
 export default App;
