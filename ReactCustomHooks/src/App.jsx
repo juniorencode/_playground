@@ -1,30 +1,19 @@
-import { useState } from 'react';
-import { useToggle } from './hooks/useToggle.hook';
-import { useDebugInformation } from './hooks/useDebugInformation.hook';
+import { useGeolocation } from './hooks/useGeolocation.hook';
 
 function App() {
-  const [boolean, toggle] = useToggle(false);
-  const [count, setCount] = useState(0);
+  const {
+    loading,
+    error,
+    data: { latitude, longitude }
+  } = useGeolocation();
 
   return (
     <>
-      <ChildComponent boolean={boolean} count={count} />
-      <button onClick={toggle}>Toggle</button>
-      <button onClick={() => setCount(prevCount => prevCount + 1)}>
-        Increment
-      </button>
-    </>
-  );
-}
-
-function ChildComponent(props) {
-  const info = useDebugInformation('ChildComponent', props);
-
-  return (
-    <>
-      <div>{props.boolean.toString()}</div>
-      <div>{props.count}</div>
-      <div>{JSON.stringify(info, null, 2)}</div>
+      <div>Loading: {loading.toString()}</div>
+      <div>Error: {error?.message}</div>
+      <div>
+        {latitude} x {longitude}
+      </div>
     </>
   );
 }
