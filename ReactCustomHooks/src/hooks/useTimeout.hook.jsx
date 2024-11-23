@@ -13,7 +13,10 @@ const useTimeout = (callback, delay) => {
   }, [delay]);
 
   const clear = useCallback(() => {
-    timeoutRef.current && clearTimeout(timeoutRef.current);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = undefined;
+    }
   }, []);
 
   useEffect(() => {
