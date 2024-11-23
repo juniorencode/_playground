@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useClickOutside } from './hooks/useClickOutside.hook';
 
 function App() {
@@ -6,19 +5,16 @@ function App() {
     console.log('Clicked outside of all referenced elements');
   });
 
-  const ref1 = useRef(null);
-  const ref2 = useRef(null);
-
   return (
     <div>
       <div
-        ref={node => register((ref1.current = node))}
+        ref={register}
         style={{ padding: '10px', backgroundColor: 'lightblue' }}
       >
         Box 1 (Click inside me)
       </div>
       <div
-        ref={node => register((ref2.current = node))}
+        ref={register}
         style={{
           padding: '10px',
           backgroundColor: 'lightgreen',
