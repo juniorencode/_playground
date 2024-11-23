@@ -1,19 +1,17 @@
-import { useDarkMode } from './hooks/useDarkMode.hook';
+import { useState } from 'react';
+import { useTimeout } from './hooks/useTimeout.hook';
 
 function App() {
-  const [darkMode, setDarkMode] = useDarkMode();
+  const [count, setCount] = useState(10);
+  const { clear, reset } = useTimeout(() => setCount(0), 1000);
 
   return (
-    <button
-      onClick={() => setDarkMode(prevDarkMode => !prevDarkMode)}
-      style={{
-        border: `1px solid ${darkMode ? 'white' : 'black'}`,
-        background: 'none',
-        color: darkMode ? 'white' : 'black'
-      }}
-    >
-      Toggle Dark Mode
-    </button>
+    <div>
+      <div>{count}</div>
+      <button onClick={() => setCount(c => c + 1)}>Increment</button>
+      <button onClick={clear}>Clear Timeout</button>
+      <button onClick={reset}>Reset Timeout</button>
+    </div>
   );
 }
 
