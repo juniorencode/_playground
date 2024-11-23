@@ -1,21 +1,9 @@
-import { useGeolocation } from './hooks/useGeolocation.hook';
+import { useOnlineStatus } from './hooks/useOnlineStatus.hook';
 
 function App() {
-  const {
-    loading,
-    error,
-    data: { latitude, longitude }
-  } = useGeolocation();
+  const online = useOnlineStatus();
 
-  return (
-    <>
-      <div>Loading: {loading.toString()}</div>
-      <div>Error: {error?.message}</div>
-      <div>
-        {latitude} x {longitude}
-      </div>
-    </>
-  );
+  return <div>{online.toString()}</div>;
 }
 
 export default App;
