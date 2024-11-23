@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { useDebounce } from './hooks/useDebounce.hook';
+import { useToggle } from './hooks/useToggle.hook';
 
 function App() {
-  const [count, setCount] = useState(10);
-  useDebounce(() => alert(count), 1000, [count]);
+  const [value, toggleValue] = useToggle(false);
 
   return (
     <div>
-      <div>{count}</div>
-      <button onClick={() => setCount(c => c + 1)}>Increment</button>
+      <div>{value.toString()}</div>
+      <button onClick={toggleValue}>Toggle</button>
+      <button onClick={() => toggleValue(true)}>Make True</button>
+      <button onClick={() => toggleValue(false)}>Make False</button>
     </div>
   );
 }
