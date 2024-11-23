@@ -1,15 +1,16 @@
 import { useToggle } from './hooks/useToggle.hook';
+import { useRenderCount } from './hooks/useRenderCount.hook';
 
 function App() {
-  const [value, toggleValue] = useToggle(false);
+  const [boolean, toggle] = useToggle(false);
+  const renderCount = useRenderCount();
 
   return (
-    <div>
-      <div>{value.toString()}</div>
-      <button onClick={toggleValue}>Toggle</button>
-      <button onClick={() => toggleValue(true)}>Make True</button>
-      <button onClick={() => toggleValue(false)}>Make False</button>
-    </div>
+    <>
+      <div>{boolean.toString()}</div>
+      <div>{renderCount}</div>
+      <button onClick={toggle}>Toggle</button>
+    </>
   );
 }
 
