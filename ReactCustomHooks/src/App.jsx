@@ -1,19 +1,19 @@
-import { useSessionStorage, useLocalStorage } from './hooks/useStorage.hook';
+import { useDarkMode } from './hooks/useDarkMode.hook';
 
 function App() {
-  const [name, setName, removeName] = useSessionStorage('name', 'Sergey');
-  const [age, setAge, removeAge] = useLocalStorage('age', 26);
+  const [darkMode, setDarkMode] = useDarkMode();
 
   return (
-    <div>
-      <div>
-        {name} - {age}
-      </div>
-      <button onClick={() => setName('John')}>Set Name</button>
-      <button onClick={() => setAge(40)}>Set Age</button>
-      <button onClick={removeName}>Remove Name</button>
-      <button onClick={removeAge}>Remove Age</button>
-    </div>
+    <button
+      onClick={() => setDarkMode(prevDarkMode => !prevDarkMode)}
+      style={{
+        border: `1px solid ${darkMode ? 'white' : 'black'}`,
+        background: 'none',
+        color: darkMode ? 'white' : 'black'
+      }}
+    >
+      Toggle Dark Mode
+    </button>
   );
 }
 
