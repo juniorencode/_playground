@@ -1,15 +1,30 @@
+import { useState } from 'react';
 import { useToggle } from './hooks/useToggle.hook';
-import { useRenderCount } from './hooks/useRenderCount.hook';
+import { useDebugInformation } from './hooks/useDebugInformation.hook';
 
 function App() {
   const [boolean, toggle] = useToggle(false);
-  const renderCount = useRenderCount();
+  const [count, setCount] = useState(0);
 
   return (
     <>
-      <div>{boolean.toString()}</div>
-      <div>{renderCount}</div>
+      <ChildComponent boolean={boolean} count={count} />
       <button onClick={toggle}>Toggle</button>
+      <button onClick={() => setCount(prevCount => prevCount + 1)}>
+        Increment
+      </button>
+    </>
+  );
+}
+
+function ChildComponent(props) {
+  const info = useDebugInformation('ChildComponent', props);
+
+  return (
+    <>
+      <div>{props.boolean.toString()}</div>
+      <div>{props.count}</div>
+      <div>{JSON.stringify(info, null, 2)}</div>
     </>
   );
 }
