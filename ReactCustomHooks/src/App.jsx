@@ -1,12 +1,18 @@
-import { useWindowSize } from './hooks/useWindowSize.hook';
+import { useTranslation } from './hooks/useTranslation.hook';
 
 function App() {
-  const { width, height } = useWindowSize();
+  const { language, setLanguage, setFallbackLanguage, t } = useTranslation();
 
   return (
-    <div>
-      {width} x {height}
-    </div>
+    <>
+      <div>{language}</div>
+      <div>{t('hi')}</div>
+      <div>{t('bye')}</div>
+      <div>{t('nested.value')}</div>
+      <button onClick={() => setLanguage('es')}>Change To Spanish</button>
+      <button onClick={() => setLanguage('en')}>Change To English</button>
+      <button onClick={() => setFallbackLanguage('es')}>Change FB Lang</button>
+    </>
   );
 }
 
