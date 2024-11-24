@@ -1,0 +1,19 @@
+{
+  "name": "tailwindanimationplugin",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.15"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^3.0.0"
+  }
+}
