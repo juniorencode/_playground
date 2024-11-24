@@ -20,7 +20,6 @@ export function generatePluginCSS(options) {
 
 console.log(
   await generatePluginCSS({
-    content:
-      '<div class="animate-zoom-in">Hello</div><div class="animate-rotate-90">Hello</div>'
+    content: '<div class="animation-delay-150 animate-zoom-in">Hello</div>'
   })
 );
