@@ -1,5 +1,5 @@
-import createPlugin from 'tailwind/plugin';
-import theme from './theme';
+import createPlugin from 'tailwindcss/plugin.js';
+import theme from './theme.js';
 
 const pluginCreator = api => {
   console.log('pluginCreator');
