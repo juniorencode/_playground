@@ -6,13 +6,21 @@ import animationPlugin from '../src/index.js';
 const TAILWIND_BASE = '@tailwind utilities;';
 
 export function generatePluginCSS(options) {
+  const { inline = '', content = '' } = options;
+
   return postcss([
     tailwindcss({
-      plugins: [animationPlugin]
+      plugins: [animationPlugin],
+      content: [{ raw: content }]
     })
   ])
-    .process(`${TAILWIND_BASE} .content { @apply animate-fade-in }`)
+    .process(`${TAILWIND_BASE} ${inline}`)
     .then(result => result.css);
 }
 
-console.log(await generatePluginCSS());
+console.log(
+  await generatePluginCSS({
+    content:
+      '<div class="animate-zoom-in">Hello</div><div class="animate-rotate-90">Hello</div>'
+  })
+);
