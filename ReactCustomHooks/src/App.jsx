@@ -1,30 +1,11 @@
-import { useRef } from 'react';
-import { useOnScreen } from './hooks/useOnScreen.hook';
+import { useWindowSize } from './hooks/useWindowSize.hook';
 
 function App() {
-  const headerTwoRef = useRef(null);
-  const visible = useOnScreen(headerTwoRef, '-100px');
+  const { width, height } = useWindowSize();
 
   return (
     <div>
-      <h1>Header</h1>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <h1 ref={headerTwoRef}>Header 2 {visible && '(Visible)'}</h1>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
-      <div>...</div>
+      {width} x {height}
     </div>
   );
 }
