@@ -82,6 +82,14 @@ const usePagination = (totalPages, currentPage, mobileWidth = 768) => {
       }
     };
 
+    const setActivePage = () => {
+      pages.forEach(elem => {
+        if (elem.number === currentPage) {
+          elem.active = true;
+        }
+      });
+    };
+
     if (totalPages <= (isSmallScreen ? 5 : 7)) {
       for (let i = 2; i < totalPages; i++) {
         insertElement(i);
@@ -120,6 +128,7 @@ const usePagination = (totalPages, currentPage, mobileWidth = 768) => {
 
       insertElement(totalPages);
       insertSkips();
+      setActivePage();
     }
 
     setPagination([...pages]);

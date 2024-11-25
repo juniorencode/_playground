@@ -14,7 +14,12 @@ function App() {
       <div>
         <ul>
           {pagination.map((elem, index) => (
-            <li key={index}>{elem.type === 'page' ? elem.number : '...'}</li>
+            <li
+              key={index}
+              style={elem.active && { fontWeight: 'bolder', color: 'red' }}
+            >
+              {elem.type === 'page' ? elem.number : '...'}
+            </li>
           ))}
         </ul>
       </div>
