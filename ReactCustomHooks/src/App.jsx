@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { usePagination } from './hooks/usePagination.hook';
 
 function App() {
-  const { pagination, setPage, prevPage, nextPage, isSmallScreen } =
+  const { pagination, currentPage, setPage, goToPreviousPage, goToNextPage } =
     usePagination(10, 5, 640);
 
   useEffect(() => {
@@ -11,16 +11,22 @@ function App() {
 
   return (
     <>
-      <div>Mobile: {isSmallScreen.toString()}</div>
-      <button onClick={() => prevPage()}>Prev</button>
+      <button onClick={() => goToPreviousPage()}>Prev</button>
       <button onClick={() => setPage(2)}>2</button>
-      <button onClick={() => nextPage()}>Next</button>
+      <button onClick={() => goToNextPage()}>Next</button>
       <div>
         <ul>
           {pagination.map((elem, index) => (
             <li
               key={index}
-              style={elem.active && { fontWeight: 'bolder', color: 'red' }}
+              style={
+                elem.number === currentPage
+                  ? {
+                      fontWeight: 'bolder',
+                      color: 'red'
+                    }
+                  : {}
+              }
             >
               {elem.type === 'page' ? elem.number : '...'}
             </li>

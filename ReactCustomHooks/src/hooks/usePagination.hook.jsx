@@ -134,21 +134,26 @@ const usePagination = (totalPages, currentPage = 1, mobileWidth = 768) => {
 
   const _setPage = num => {
     if (num < 1 || num > totalPages) return;
-
     setPage(num);
   };
 
-  const prevPage = () => {
+  const goToPreviousPage = () => {
     if (page <= 1) return;
     setPage(page - 1);
   };
 
-  const nextPage = () => {
+  const goToNextPage = () => {
     if (page >= totalPages) return;
     setPage(page + 1);
   };
 
-  return { pagination, setPage: _setPage, prevPage, nextPage, isSmallScreen };
+  return {
+    pagination,
+    currentPage: page,
+    setPage: _setPage,
+    goToPreviousPage,
+    goToNextPage
+  };
 };
 
 export { usePagination };
