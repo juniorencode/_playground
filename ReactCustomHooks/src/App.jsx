@@ -1,17 +1,23 @@
-import { useTranslation } from './hooks/useTranslation.hook';
+import { useEffect } from 'react';
+import { usePagination } from './hooks/usePagination.hook';
 
 function App() {
-  const { language, setLanguage, setFallbackLanguage, t } = useTranslation();
+  const { pagination, isSmallScreen } = usePagination(10, 5, 640);
+
+  useEffect(() => {
+    console.log(pagination);
+  }, [pagination]);
 
   return (
     <>
-      <div>{language}</div>
-      <div>{t('hi')}</div>
-      <div>{t('bye')}</div>
-      <div>{t('nested.value')}</div>
-      <button onClick={() => setLanguage('es')}>Change To Spanish</button>
-      <button onClick={() => setLanguage('en')}>Change To English</button>
-      <button onClick={() => setFallbackLanguage('es')}>Change FB Lang</button>
+      <div>Mobile: {isSmallScreen.toString()}</div>
+      <div>
+        <ul>
+          {pagination.map((elem, index) => (
+            <li key={index}>{elem.type === 'page' ? elem.number : '...'}</li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 }
