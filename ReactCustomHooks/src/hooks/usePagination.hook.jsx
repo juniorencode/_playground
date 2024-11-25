@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useWindowSize } from './useWindowSize.hook';
 
-const usePagination = (totalPages, currentPage, mobileWidth = 768) => {
+const usePagination = (totalPages, currentPage = 1, mobileWidth = 768) => {
   const { width } = useWindowSize();
+  const [page, setPage] = useState(currentPage);
   const [pagination, setPagination] = useState([]);
   const isSmallScreen = width < mobileWidth;
 
@@ -84,7 +85,7 @@ const usePagination = (totalPages, currentPage, mobileWidth = 768) => {
 
     const setActivePage = () => {
       pages.forEach(elem => {
-        if (elem.number === currentPage) {
+        if (elem.number === page) {
           elem.active = true;
         }
       });
@@ -97,8 +98,8 @@ const usePagination = (totalPages, currentPage, mobileWidth = 768) => {
     } else {
       insertElement(1);
 
-      if (currentPage <= (isSmallScreen ? 3 : 5)) {
-        if (currentPage <= 4 || isSmallScreen) {
+      if (page <= (isSmallScreen ? 3 : 5)) {
+        if (page <= 4 || isSmallScreen) {
           insertElement(2);
           insertElement(3);
         }
@@ -108,16 +109,13 @@ const usePagination = (totalPages, currentPage, mobileWidth = 768) => {
         }
       }
 
-      if (
-        currentPage >= (isSmallScreen ? 3 : 5) &&
-        currentPage <= totalPages - 2
-      ) {
-        if (!isSmallScreen) insertElement(currentPage - 1);
-        insertElement(currentPage);
-        if (!isSmallScreen) insertElement(currentPage + 1);
+      if (page >= (isSmallScreen ? 3 : 5) && page <= totalPages - 2) {
+        if (!isSmallScreen) insertElement(page - 1);
+        insertElement(page);
+        if (!isSmallScreen) insertElement(page + 1);
       }
 
-      if (currentPage >= totalPages - (isSmallScreen ? 2 : 3)) {
+      if (page >= totalPages - (isSmallScreen ? 2 : 3)) {
         insertElement(totalPages - 1);
         insertElement(totalPages - 2);
         if (!isSmallScreen) {
@@ -132,9 +130,25 @@ const usePagination = (totalPages, currentPage, mobileWidth = 768) => {
     }
 
     setPagination([...pages]);
-  }, [totalPages, currentPage, isSmallScreen]);
+  }, [totalPages, page, isSmallScreen]);
 
-  return { pagination, isSmallScreen };
+  const _setPage = num => {
+    if (num < 1 || num > totalPages) return;
+
+    setPage(num);
+  };
+
+  const prevPage = () => {
+    if (page <= 1) return;
+    setPage(page - 1);
+  };
+
+  const nextPage = () => {
+    if (page >= totalPages) return;
+    setPage(page + 1);
+  };
+
+  return { pagination, setPage: _setPage, prevPage, nextPage, isSmallScreen };
 };
 
 export { usePagination };
