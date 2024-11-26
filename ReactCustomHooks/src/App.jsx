@@ -3,7 +3,7 @@ import { usePagination } from './hooks/usePagination.hook';
 
 function App() {
   const { pagination, currentPage, setPage, goToPreviousPage, goToNextPage } =
-    usePagination(10, 5, 640);
+    usePagination(10, 1, 640);
 
   useEffect(() => {
     console.log(pagination);
@@ -20,7 +20,7 @@ function App() {
             <li
               key={index}
               style={
-                elem.number === currentPage
+                elem === currentPage
                   ? {
                       fontWeight: 'bolder',
                       color: 'red'
@@ -28,7 +28,7 @@ function App() {
                   : {}
               }
             >
-              {elem.type === 'page' ? elem.number : '...'}
+              {elem}
             </li>
           ))}
         </ul>
