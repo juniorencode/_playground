@@ -12,23 +12,25 @@ function App() {
   return (
     <>
       <button onClick={() => goToPreviousPage()}>Prev</button>
-      <button onClick={() => setPage(2)}>2</button>
       <button onClick={() => goToNextPage()}>Next</button>
       <div>
         <ul>
           {pagination.map((elem, index) => (
-            <li
-              key={index}
-              style={
-                elem === currentPage
-                  ? {
-                      fontWeight: 'bolder',
-                      color: 'red'
-                    }
-                  : {}
-              }
-            >
-              {elem}
+            <li key={index}>
+              {elem > 0 ? (
+                <button
+                  style={
+                    elem === currentPage
+                      ? { backgroundColor: '#424242', color: '#fff' }
+                      : {}
+                  }
+                  onClick={() => setPage(elem)}
+                >
+                  {elem}
+                </button>
+              ) : (
+                '...'
+              )}
             </li>
           ))}
         </ul>
