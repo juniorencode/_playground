@@ -1,17 +1,20 @@
-import { useOverlay } from './hooks/useOverlay.hook';
+import { useFilter } from './hooks/useFilter.hook';
 
 function App() {
-  const {
-    register: { domRef, isVisible },
-    showOverlay
-  } = useOverlay();
+  const { filter, setPage, setSearch } = useFilter({ page: { number: 5 } });
 
   return (
     <>
-      <button onClick={showOverlay}>Open Modal</button>
-      <div ref={domRef} style={!isVisible ? { display: 'none' } : {}}>
-        <h1>Hello World!</h1>
+      <div>{JSON.stringify(filter)}</div>
+      <div>
+        <input
+          type="text"
+          placeholder="search..."
+          value={filter.search || ''}
+          onChange={e => setSearch(e.target.value)}
+        />
       </div>
+      <button onClick={() => setPage(filter.page.number + 1)}>Next Page</button>
     </>
   );
 }
