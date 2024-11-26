@@ -1,40 +1,15 @@
-import { useEffect } from 'react';
-import { usePagination } from './hooks/usePagination.hook';
+import { useState } from 'react';
+import { useEffectOnce } from './hooks/useEffectOnce.hook';
 
 function App() {
-  const { pagination, currentPage, setPage, goToPreviousPage, goToNextPage } =
-    usePagination(10, 1, 640);
+  const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    console.log(pagination);
-  }, [pagination]);
+  useEffectOnce(() => alert('Hi'));
 
   return (
     <>
-      <button onClick={() => goToPreviousPage()}>Prev</button>
-      <button onClick={() => goToNextPage()}>Next</button>
-      <div>
-        <ul>
-          {pagination.map((elem, index) => (
-            <li key={index}>
-              {elem > 0 ? (
-                <button
-                  style={
-                    elem === currentPage
-                      ? { backgroundColor: '#424242', color: '#fff' }
-                      : {}
-                  }
-                  onClick={() => setPage(elem)}
-                >
-                  {elem}
-                </button>
-              ) : (
-                '...'
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <div>{count}</div>
+      <button onClick={() => setCount(c => c + 1)}>Increment</button>
     </>
   );
 }
