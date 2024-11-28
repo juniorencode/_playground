@@ -98,6 +98,16 @@ const convertValueToType = (value, output) => {
   }
 };
 
+const clamp = (value, min, max) => {
+  if (!isNumber(value) || !isNumber(min) || !isNumber(max)) return value;
+  return Math.min(Math.max(value, min), max);
+};
+
+const capitalize = str => {
+  if (!isString(str)) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 export {
   isDefined,
   typeOf,
@@ -112,5 +122,7 @@ export {
   isEqual,
   deepClone,
   deepMerge,
-  convertValueToType
+  convertValueToType,
+  clamp,
+  capitalize
 };
