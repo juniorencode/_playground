@@ -82,6 +82,22 @@ const deepMerge = (target, source) => {
   return target;
 };
 
+const convertValueToType = (value, output) => {
+  if (!isString(output)) return value;
+  if (!isNumber(value) || !isString(value) || !isBoolean(value)) return value;
+
+  switch (output.toUpperCase()) {
+    case 'NUMBER':
+      return typeof value === 'string' ? parseFloat(value) : value;
+    case 'STRING':
+      return typeof value === 'number' ? value.toString() : value;
+    case 'BOOLEAN':
+      return value === 'true' || value === 1;
+    default:
+      return value;
+  }
+};
+
 export {
   isDefined,
   typeOf,
@@ -95,5 +111,6 @@ export {
   isEmpty,
   isEqual,
   deepClone,
-  deepMerge
+  deepMerge,
+  convertValueToType
 };
