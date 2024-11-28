@@ -30,6 +30,10 @@ const isObject = value => {
   return typeOf(value, 'object') && !isFunction(value) && !isArray(value);
 };
 
+const isDate = value => {
+  return isObject(value) && value instanceof Date && !isNaN(value);
+};
+
 export {
   isDefined,
   typeOf,
@@ -38,5 +42,6 @@ export {
   isBoolean,
   isFunction,
   isArray,
-  isObject
+  isObject,
+  isDate
 };
