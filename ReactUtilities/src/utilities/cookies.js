@@ -45,4 +45,9 @@ const set = (name, value, attributes) => {
   document.cookie = `${encodedName}=${encodedValue}; ${stringifiedAttributes}`;
 };
 
-export { get, set };
+const remove = (name, attributes) => {
+  if (!get(name)) return;
+  set(name, '', { ...attributes, expires: -1 });
+};
+
+export { get, set, remove };
