@@ -40,7 +40,23 @@ export const getValidationError = (value, validation) => {
         message: `El valor debe tener máximo ${validation.maxLength} caracteres.`
       };
     }
+    if (validation.isEmail && !validateEmail(value)) {
+      return {
+        type: 'isEmail',
+        message: 'Por favor ingrese un correo electrónico válido.'
+      };
+    }
   }
 
   return null;
+};
+
+const validateEmail = email => {
+  const [localPart, domainPart] = email.split('@');
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  if (!emailRegex.test(email)) return false;
+  if (localPart.length > 64 || domainPart.length > 255) return false;
+
+  return true;
 };
