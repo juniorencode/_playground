@@ -27,5 +27,20 @@ export const getValidationError = (value, validation) => {
     }
   }
 
+  if (value && typeof value === 'string') {
+    if (validation.minLength && value.length < validation.minLength) {
+      return {
+        type: 'minLength',
+        message: `El valor debe tener mínimo ${validation.minLength} caracteres.`
+      };
+    }
+    if (validation.maxLength && value.length > validation.maxLength) {
+      return {
+        type: 'maxLength',
+        message: `El valor debe tener máximo ${validation.maxLength} caracteres.`
+      };
+    }
+  }
+
   return null;
 };
