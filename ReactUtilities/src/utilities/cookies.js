@@ -1,3 +1,21 @@
+const get = name => {
+  if (typeof document === 'undefined' || !name) return;
+
+  const cookies = document.cookie ? document.cookie.split('; ') : [];
+
+  const jar = cookies.reduce((acc, cookie) => {
+    const [key, ...valueParts] = cookie.split('=');
+    const value = valueParts
+      .join('=')
+      .replace(/(%[\dA-F]{2})+/gi, decodeURIComponent);
+    acc[decodeURIComponent(key)] =
+      value[0] === '"' ? value.slice(1, -1) : value;
+    return acc;
+  }, {});
+
+  return name ? jar[name] : jar;
+};
+
 const set = (name, value, attributes) => {
   if (typeof document === 'undefined') return;
 
@@ -27,4 +45,4 @@ const set = (name, value, attributes) => {
   document.cookie = `${encodedName}=${encodedValue}; ${stringifiedAttributes}`;
 };
 
-export { set };
+export { get, set };
