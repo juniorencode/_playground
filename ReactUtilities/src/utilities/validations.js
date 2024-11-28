@@ -18,5 +18,14 @@ export const getValidationError = (value, validation) => {
     }
   }
 
+  if (value && Array.isArray(value)) {
+    if (validation.maxElem && value.length > validation.maxElem) {
+      return {
+        type: 'maxElem',
+        message: `El valor debe tener máximo ${validation.maxElem} elementos.`
+      };
+    }
+  }
+
   return null;
 };
