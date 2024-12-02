@@ -141,3 +141,17 @@ export const addYears = (value, num = 1) => {
   date.setFullYear(date.getFullYear() + num);
   return date;
 };
+
+export const setStartOfDay = value => {
+  const date = haveDate(value);
+  if (!isDate(date)) return date;
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
+export const setEndOfDay = value => {
+  const date = haveDate(value);
+  if (!isDate(date)) return date;
+  date.setHours(23, 59, 59, 999);
+  return date;
+};
