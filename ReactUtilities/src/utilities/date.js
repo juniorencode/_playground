@@ -198,3 +198,23 @@ export const formatDateWithDay = value => {
   const formattedDate = formatDateLong(value);
   return `${dayOfWeek}, ${formattedDate}`;
 };
+
+export const formatTime = (value, withSeconds = true) => {
+  const date = haveDate(value);
+  if (!isDate(date)) return 'Invalid Date';
+  const hours = padWithZeros(date.getHours());
+  const minutes = padWithZeros(date.getMinutes());
+  const seconds = padWithZeros(date.getSeconds());
+
+  return `${hours}:${minutes}${withSeconds ? ':' + seconds : ''}`;
+};
+
+export const formatTime12Hour = (value, capitalize = true) => {
+  const date = haveDate(value);
+  if (!isDate(date)) return 'Invalid Date';
+  const hours = padWithZeros(date.getHours() % 12 || 12);
+  const minutes = padWithZeros(date.getMinutes());
+  const ampm = date.getHours() < 12 ? 'AM' : 'PM';
+
+  return `${hours}:${minutes} ${capitalize ? ampm : ampm.toLocaleLowerCase()}`;
+};
