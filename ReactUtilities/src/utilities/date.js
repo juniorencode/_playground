@@ -155,3 +155,46 @@ export const setEndOfDay = value => {
   date.setHours(23, 59, 59, 999);
   return date;
 };
+
+export const formatDate = (value, separator = '/') => {
+  const date = haveDate(value);
+  if (!isDate(date)) return 'Invalid Date';
+  if (!isString(separator)) {
+    separator = '/';
+  }
+  const day = padWithZeros(date.getDate());
+  const month = padWithZeros(date.getMonth() + 1);
+  const year = date.getFullYear();
+  return `${day}${separator}${month}${separator}${year}`;
+};
+
+export const formatDateShort = (value, abbr = false) => {
+  const date = haveDate(value);
+  if (!isDate(date)) return 'Invalid Date';
+  if (!isString(abbr)) {
+    abbr = false;
+  }
+  const day = padWithZeros(date.getDate());
+  const month = abbr
+    ? shortMonthNames[date.getMonth()]
+    : monthNames[date.getMonth()];
+  const year = date.getFullYear();
+  return `${month} ${day}, ${year}`;
+};
+
+export const formatDateLong = value => {
+  const date = haveDate(value);
+  if (!isDate(date)) return 'Invalid Date';
+  const day = padWithZeros(date.getDate());
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+  return `${day} de ${month} del ${year}`;
+};
+
+export const formatDateWithDay = value => {
+  const date = haveDate(value);
+  if (!isDate(date)) return 'Invalid Date';
+  const dayOfWeek = daysOfWeekNames[(date.getDay() + 6) % 7];
+  const formattedDate = formatDateLong(value);
+  return `${dayOfWeek}, ${formattedDate}`;
+};
