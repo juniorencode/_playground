@@ -218,3 +218,20 @@ export const formatTime12Hour = (value, capitalize = true) => {
 
   return `${hours}:${minutes} ${capitalize ? ampm : ampm.toLocaleLowerCase()}`;
 };
+
+export const formatDateTime = value => {
+  const date = haveDate(value);
+  if (!isDate(date)) return 'Invalid Date';
+  const formattedDate = formatDate(date, '-');
+  const formattedTime = formatTime(date);
+  return `${formattedDate} ${formattedTime}`;
+};
+
+export const formatDateTimeLong = value => {
+  const date = haveDate(value);
+  if (!isDate(date)) return 'Invalid Date';
+  const dayOfWeek = daysOfWeekNames[(date.getDay() + 6) % 7];
+  const formattedDate = formatDateLong(date);
+  const formattedTime = formatTime12Hour(date);
+  return `${dayOfWeek}, ${formattedDate} a las ${formattedTime}`;
+};
