@@ -1,0 +1,55 @@
+:root {
+  --bg: #0c0c0c;
+  --border: #303030;
+  --color: #7e7e7e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg);
+}
+
+.container {
+  width: max-content;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto 2em auto;
+  padding: 1em 0.5rem;
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  transform-origin: center;
+}
+
+.dock {
+  display: flex;
+  justify-content: space-around;
+}
+
+.dock-item {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin: 0 10px;
+  background-color: var(--bg);
+  color: var(--color);
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 700ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transform-origin: bottom;
+}
