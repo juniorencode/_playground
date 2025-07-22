@@ -2,14 +2,14 @@ const dockContainer = document.querySelector('.dock');
 const dockItems = dockContainer.querySelectorAll('.dock-item');
 
 const defaultItemScale = 1;
-const hoverItemScale = 2.5;
-const neighborItemScale = 2;
+const hoverItemScale = 1.6;
+const neighborItemScale = 1.3;
 
 const defaultMargin = '10px';
-const expandedMargin = '40px';
+const expandedMargin = '20px';
 
 const updateDockItems = () => {
-  dockItems.forEach((item, index) => {
+  dockItems.forEach(item => {
     let scale = defaultItemScale;
     let margin = defaultMargin;
 
@@ -22,7 +22,7 @@ const updateDockItems = () => {
     }
 
     item.style.transform = `scale(${scale})`;
-    item.style.margin = `0 ${margin}`;
+    item.style.margin = `${margin} 0`;
   });
 };
 
